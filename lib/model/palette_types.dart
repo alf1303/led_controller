@@ -1,0 +1,4 @@
+enum PaletteType {
+  PALETTE,
+  PROGRAM
+}

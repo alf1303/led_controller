@@ -4,19 +4,22 @@ import 'dart:typed_data';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:ledcontroller/model/settings.dart';
+import 'package:ledcontroller/palettes_provider.dart';
 import 'package:ledcontroller/provider_model_attribute.dart';
 import 'package:ledcontroller/udp_controller.dart';
 import 'package:ledcontroller/provider_model.dart';
 //import 'package:flutter/src/material/slider_theme.dart';
 import 'model/esp_model.dart';
+import 'model/palette.dart';
 
 abstract class Controller {
   static Random random = new Random();
   static final providerModel = ProviderModel();
   static final providerModelAttribute = ProviderModelAttribute();
+  static final paletteProvider = PaletteProvider();
   static bool highlite = false;
 
-  static void init() {
+  static init() {
     for (int i = 21; i <= 40; i++) {
       Settings fs_set = Settings(random.nextInt(4), random.nextInt(3), i, i+100, Color.fromRGBO(random.nextInt(255), random.nextInt(255), 0, 1), random.nextInt(255));
       Settings ram_set = Settings(random.nextInt(4), random.nextInt(3), i, i+100, Color.fromRGBO(random.nextInt(255), random.nextInt(255), 0, 1), random.nextInt(255));
@@ -26,7 +29,7 @@ abstract class Controller {
     providerModel.notify();
   }
 
-  static void initWiFi() {
+  static initWiFi() {
     UDPCotroller.setLocalIp();
   }
 
@@ -193,5 +196,25 @@ abstract class Controller {
 
   static resetAttributeProviderFlag() {
     providerModelAttribute.flag = false;
+  }
+
+  static initPalettes() async{
+    paletteProvider.createEmptyPalettes();
+  }
+
+  static loadPalettesFromFS() async{
+
+  }
+
+  static savePalettesToFS() async{
+
+  }
+
+  static savePalette(Palette palette) {
+
+  }
+
+  static loadPalette(Palette palette) {
+
   }
 }

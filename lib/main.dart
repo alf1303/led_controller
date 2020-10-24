@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ledcontroller/elements/my_value_setter.dart';
+import 'package:ledcontroller/palettes_provider.dart';
 import 'package:ledcontroller/provider_model.dart';
 import 'package:ledcontroller/provider_model_attribute.dart';
 import 'package:ledcontroller/styles.dart';
@@ -9,10 +10,11 @@ import 'controller.dart';
 import 'elements/fixtures_view.dart';
 import 'elements/my_bottom_bar.dart';
 
-void main() {
-  Controller.init();
+void main() async{
+  await Controller.init();
+  await Controller.initPalettes();
   WidgetsFlutterBinding.ensureInitialized();
-  Controller.initWiFi();
+  await Controller.initWiFi();
   runApp(Main());
 }
 
@@ -24,7 +26,8 @@ class Main extends StatelessWidget {
         child: MultiProvider(
           providers: [
             ChangeNotifierProvider<ProviderModel>(create: (_) => ProviderModel(),),
-            ChangeNotifierProvider<ProviderModelAttribute>(create: (_) => ProviderModelAttribute(),)
+            ChangeNotifierProvider<ProviderModelAttribute>(create: (_) => ProviderModelAttribute(),),
+            ChangeNotifierProvider<PaletteProvider>(create: (_) => PaletteProvider(),)
           ],
           child: Scaffold(
             body: MainPage(),
