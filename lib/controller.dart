@@ -3,6 +3,7 @@ import 'dart:math';
 import 'dart:typed_data';
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:ledcontroller/model/palette_types.dart';
 import 'package:ledcontroller/model/settings.dart';
 import 'package:ledcontroller/palettes_provider.dart';
 import 'package:ledcontroller/provider_model_attribute.dart';
@@ -23,6 +24,8 @@ abstract class Controller {
     for (int i = 21; i <= 40; i++) {
       Settings fs_set = Settings(random.nextInt(4), random.nextInt(3), i, i+100, Color.fromRGBO(random.nextInt(255), random.nextInt(255), 0, 1), random.nextInt(255));
       Settings ram_set = Settings(random.nextInt(4), random.nextInt(3), i, i+100, Color.fromRGBO(random.nextInt(255), random.nextInt(255), 0, 1), random.nextInt(255));
+      ram_set.address = 223;
+      ram_set.reverse = false;
       EspModel esp = new EspModel(i, "192.168.0.$i", "v_0.5.9", fs_set, ram_set);
       providerModel.list.add(esp);
     }
@@ -72,7 +75,8 @@ abstract class Controller {
   }
 
   static setSend(int save) {
-    UDPCotroller.setSend(save);
+    //UDPCotroller.setSend(save);
+    providerModel.notify();
   }
 
   static void setArea(int pixelCount, RangeValues curRange) async{
@@ -211,10 +215,45 @@ abstract class Controller {
   }
 
   static savePalette(Palette palette) {
-
+    if(providerModel.countSelected() == 1) {
+      palette.settings.clear();
+      Settings set = Settings.empty();
+      set.copy(providerModel.getFirstChecked().ram_set);
+      palette.settings.putIfAbsent(0, () => set);
+      palette.paletteType = PaletteType.PALETTE;
+    }
+    else {
+      palette.settings.clear();
+      providerModel.list.forEach((element) {
+        Settings set = Settings.empty();
+        set.copy(element.ram_set);
+          palette.settings.putIfAbsent(element.uni, () => set);
+      });
+      palette.paletteType = PaletteType.PROGRAM;
+    }
+    paletteProvider.notify();
   }
 
   static loadPalette(Palette palette) {
+    if(palette.paletteType == PaletteType.PALETTE) {
+      providerModel.list.forEach((element) {
+        if(element.selected && palette.isNotEmpty()) {
+          element.ram_set.copy(palette.settings[0]);
+        }
+      });
+    }
+    else {
+      if(palette.isNotEmpty() && providerModel.list.isNotEmpty) {
+        palette.settings.forEach((key, value) {
+          providerModel.list.firstWhere((element) => element.uni == key).ram_set.copy(value);
+        });
+      }
+    }
+    providerModel.notify();
+  }
 
+  static clearPalette(Palette palette) {
+    palette.settings.clear();
+    paletteProvider.notify();
   }
 }

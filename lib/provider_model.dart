@@ -31,8 +31,18 @@ class ProviderModel extends ChangeNotifier {
     return _flag;
   }
 
+  int countSelected() {
+    int count = 0;
+    if(list.isNotEmpty) {
+      count = list.where((element) => element.selected).toList().length;
+    }
+    return count;
+  }
+
   EspModel getFirstChecked() {
     if(list.isNotEmpty)
       return list.firstWhere((element) => element.selected);
   }
+
+
 }
