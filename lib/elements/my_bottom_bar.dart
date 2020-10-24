@@ -1,13 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:ledcontroller/elements/custom/custom_radio.dart';
+import 'package:ledcontroller/model/settings.dart';
 import 'package:ledcontroller/styles.dart';
+import 'package:ledcontroller/provider_model.dart';
+import 'package:provider/provider.dart';
 
 import '../controller.dart';
 
 class MyBottomBar extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
+    final providerModel = Provider.of<ProviderModel>(context, listen: true);
     return Container(
       decoration: bottomDecoration,
       child: SizedBox(
@@ -25,15 +29,77 @@ class MyBottomBar extends StatelessWidget {
                       child: Text("Reset", style: mainText,),
                       color: buttonColor,
                       shape: buttonShape,
-                      onPressed: () {
-
+                      onPressed: !providerModel.selected ? null : () {
+                        Controller.setReset();
                       }),
                   RaisedButton(
                       child: Text("Area", style: mainText,),
                       color: buttonColor,
                       shape: buttonShape,
-                      onPressed: () {
-
+                      onPressed: !Controller.providerModel.selected ? null : () {
+                        showDialog(
+                            context: context,
+                          builder: (context) {
+                            Settings set = providerModel.getFirstChecked().ram_set;
+                            RangeValues val = RangeValues(set.startPixel.roundToDouble(), set.endPixel.roundToDouble());
+                              return Row(
+                                children: <Widget>[
+                                  Material(
+                                    color:Colors.transparent,
+                                    child: Container(
+                                      color: Colors.transparent,
+                                      height: 50,
+                                      width: MediaQuery.of(context).size.width,
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: StatefulBuilder(
+                                            builder: (context, setState) {
+                                              return Row(
+                                                children: <Widget>[
+                                                  Container(
+                                                    //color:Colors.red,
+                                                    child: Padding(
+                                                      padding: const EdgeInsets.all(8.0),
+                                                      child: Text("${val.start.round()}"),
+                                                    ),
+                                                    decoration: roundedDecoration,
+                                                  ),
+                                                  Expanded(
+                                                    child: RangeSlider(
+                                                        values: val,
+                                                        min: 0,
+                                                        max: set.pixelCount.roundToDouble(),
+                                                        divisions: set.pixelCount,
+//                                                        labels: RangeLabels(
+//                                                          val.start.toString(),
+//                                                          val.end.toString()
+//                                                        ),
+                                                        onChanged: (values) {
+                                                          val = values;
+                                                          setState(() {});
+                                                        },
+                                                    onChangeEnd: (values) {
+                                                          Controller.setArea(set.pixelCount, values);
+                                                    },
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                      decoration: roundedDecoration,
+                                                      child: Padding(
+                                                        padding: const EdgeInsets.all(8.0),
+                                                        child: Text("${val.end.round()}"),
+                                                      )),
+                                                ],
+                                              );
+                                            }
+                                        )
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              );
+                          }
+                        );
                       }),
                   StatefulBuilder(builder: (context, setState) {
                     onChanged(bool value) {

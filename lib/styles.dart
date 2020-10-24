@@ -26,7 +26,7 @@ BoxDecoration mainDecoration = BoxDecoration( //GRADIENT
         ],
         begin: Alignment.topCenter,
         end: Alignment.bottomCenter
-    )
+    ),
 );
 
 BoxDecoration secondaryDecoration = BoxDecoration( //GRADIENT
@@ -50,5 +50,17 @@ BoxDecoration bottomDecoration = BoxDecoration(
         end: Alignment.topCenter,
         tileMode: TileMode.repeated
     )
+);
+
+BoxDecoration roundedDecoration = BoxDecoration( //GRADIENT
+  gradient: LinearGradient(
+      colors: [
+        mainBackgroundColor,
+        secondaryBackgroundColor
+      ],
+      begin: Alignment.topCenter,
+      end: Alignment.bottomCenter
+  ),
+  borderRadius: BorderRadius.circular(20)
 );
 

@@ -10,6 +10,8 @@ import '../controller.dart';
 class FixturesView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
     final model = Provider.of<ProviderModel>(context, listen: true);
     return Container(
         //color: espViewMainColor,
@@ -22,7 +24,8 @@ class FixturesView extends StatelessWidget {
               physics: ClampingScrollPhysics(),
               mainAxisSpacing: 5,
               crossAxisSpacing: 5,
-              crossAxisCount: (MediaQuery.of(context).size.width/75).floor(),
+              //crossAxisCount: (MediaQuery.of(context).size.width/75).floor(),
+                crossAxisCount: width > height ? 10 : 5 ,
             children: List.generate(model.list.length, (index) {
             return EspView(model.list[index]);
           })
@@ -64,7 +67,7 @@ class _EspViewState extends State<EspView> {
     final BoxDecoration espViewDecoration = BoxDecoration(
         gradient: LinearGradient(
             colors: [
-              widget._espModel.selected ? mainBackgroundColor : mainBackgroundColor.withOpacity(0.6),
+              (Controller.highlite && widget._espModel.selected) ? Colors.white : widget._espModel.selected ? mainBackgroundColor : mainBackgroundColor.withOpacity(0.6),
               secondaryBackgroundColor.withOpacity(0.8)
             ],
             begin: Alignment.topCenter,
@@ -106,7 +109,7 @@ class _EspViewState extends State<EspView> {
               Expanded(
                 child: Row(
                   //mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
                     ColorView(widget._espModel.ram_set.color, true),

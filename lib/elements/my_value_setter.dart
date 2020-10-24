@@ -25,8 +25,8 @@ class MyValueSetter extends StatelessWidget {
                color: buttonColor,
                elevation: 10,
                shape: buttonShape,
-               onPressed: () {
-
+               onPressed: () async{
+                 await Controller.scan();
                }),
            Text("LedController", style: headerText,),
            Text("")
@@ -61,6 +61,13 @@ class _ValueSetterViewState extends State<ValueSetterView> {
         element.ram_set.dimmer = _dim.round();
       }
     });
+  }
+
+  void onSavePressed() {
+    if(Controller.providerModel.list != null) {
+      processAttributes();
+      Controller.setSend(255);
+    }
   }
 
   onDimmerChanged(double value) {
@@ -175,8 +182,14 @@ class _ValueSetterViewState extends State<ValueSetterView> {
                   RaisedButton(
                     child: Icon(Icons.clear, size: 24,),
                     color: buttonColor,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20),side: BorderSide(color: linesColor)),
                     onPressed: _zeroVals
+                  ),
+                  RaisedButton(
+                      child: Icon(Icons.save, size: 24,),
+                      color: buttonColor,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20),side: BorderSide(color: linesColor)),
+                      onPressed: onSavePressed
                   )
                 ],
               ),

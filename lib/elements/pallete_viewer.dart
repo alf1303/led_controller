@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:ledcontroller/controller.dart';
 import 'package:ledcontroller/model/palette.dart';
 import 'package:ledcontroller/model/palette_types.dart';
+import 'package:ledcontroller/styles.dart';
 import 'package:provider/provider.dart';
 
 import '../palettes_provider.dart';
@@ -12,15 +14,18 @@ class PaletteViewer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final paletteProvider = Provider.of<PaletteProvider>(context, listen: true);
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: GridView.count(
-          scrollDirection: Axis.horizontal,
-          shrinkWrap: true,
-          mainAxisSpacing: 3,
-          childAspectRatio: 1,
-          children: List.generate(paletteProvider.list.length, (index) => ViewPaletteItem(paletteProvider.list[index])),
-          crossAxisCount: 1),
+    return Scrollbar(
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        physics: BouncingScrollPhysics(),
+        child: GridView.count(
+            scrollDirection: Axis.horizontal,
+            shrinkWrap: true,
+            mainAxisSpacing: 3,
+            childAspectRatio: 1,
+            children: List.generate(paletteProvider.list.length, (index) => ViewPaletteItem(paletteProvider.list[index])),
+            crossAxisCount: 1),
+      ),
     );
   }
 }
@@ -42,6 +47,9 @@ void _showCustomMenu() {
 
   showMenu(
       context: context,
+      color: mainBackgroundColor.withOpacity(0),
+      //shape: Border.all(color: secondaryBackgroundColor),
+      elevation: 34,
       items: <PopupMenuEntry<int>>[MyPaletteEntry(widget._palette)],
       position: RelativeRect.fromRect(
           _tapPosition & const Size(40, 40), // smaller rect, the touch area
@@ -81,6 +89,7 @@ void _storePosition(TapDownDetails details) {
     return GestureDetector(
       onTap: () {
         Controller.loadPalette(widget._palette);
+        Controller.setSend(128);
         },
       onLongPress: () {
         _showCustomMenu();
@@ -95,7 +104,7 @@ void _storePosition(TapDownDetails details) {
               Expanded(
                 child: Container(
                   decoration: isPalette ? BoxDecoration(border: Border.all(color: Colors.blueGrey), color: colorPal, shape: BoxShape.circle) :
-                    BoxDecoration(border: Border.all(color: Colors.blueGrey), shape: BoxShape.rectangle, gradient: colorPal != Colors.transparent? LinearGradient(
+                    BoxDecoration(border: Border.all(color: Colors.blueGrey), borderRadius: BorderRadius.circular(8), shape: BoxShape.rectangle, gradient: colorPal != Colors.transparent? LinearGradient(
                         colors: [Colors.cyanAccent, Colors.amber, Colors.pink,],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight) : null
@@ -141,13 +150,14 @@ class MyPaletteEntryState extends State<MyPaletteEntry> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: <Widget>[
-          FlatButton(onPressed: save, color: Colors.transparent, child: Text("Save"),),
-          FlatButton(onPressed: clear, child: Text("Clear"),)
-        ],
-      ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        RaisedButton(materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,shape: buttonShape, onPressed: save, color: buttonColor.withOpacity(0.7), child: Text("Save"),),
+        SizedBox(height: 2,),
+        RaisedButton(materialTapTargetSize: MaterialTapTargetSize.shrinkWrap, shape: buttonShape, onPressed: clear, color: buttonColor.withOpacity(0.6), child: Text("Clear", style: TextStyle(color: Colors.white),),)
+      ],
     );
   }
 }

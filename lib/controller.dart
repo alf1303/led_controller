@@ -26,6 +26,9 @@ abstract class Controller {
       Settings ram_set = Settings(random.nextInt(4), random.nextInt(3), i, i+100, Color.fromRGBO(random.nextInt(255), random.nextInt(255), 0, 1), random.nextInt(255));
       ram_set.address = 223;
       ram_set.reverse = false;
+      ram_set.startPixel = 0;
+      ram_set.endPixel = 112;
+      ram_set.pixelCount = 120;
       EspModel esp = new EspModel(i, "192.168.0.$i", "v_0.5.9", fs_set, ram_set);
       providerModel.list.add(esp);
     }
