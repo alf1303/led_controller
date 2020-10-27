@@ -28,6 +28,7 @@ class MyBottomBar extends StatelessWidget {
                   RaisedButton(
                       child: Text("Reset", style: mainText,),
                       color: buttonColor,
+                      splashColor: splashColor,
                       shape: buttonShape,
                       onPressed: !providerModel.selected ? null : () {
                         Controller.setReset();
@@ -35,6 +36,7 @@ class MyBottomBar extends StatelessWidget {
                   RaisedButton(
                       child: Text("Area", style: mainText,),
                       color: buttonColor,
+                      splashColor: splashColor,
                       shape: buttonShape,
                       onPressed: !Controller.providerModel.selected ? null : () {
                         showDialog(
@@ -117,6 +119,7 @@ class MyBottomBar extends StatelessWidget {
                   RaisedButton(
                       child: Icon(Icons.select_all),
                       color: buttonColor,
+                      splashColor: splashColor,
                       shape: buttonShape,
                       onPressed: () {
                         Controller.selectAll();
@@ -124,6 +127,7 @@ class MyBottomBar extends StatelessWidget {
                   RaisedButton(
                       child: Icon(Icons.clear),
                       color: buttonColor,
+                      splashColor: splashColor,
                       shape: buttonShape,
                       onPressed: () {
                         Controller.deselectAll();
@@ -150,7 +154,8 @@ const IndicatorRaisedButton({
   Widget build(BuildContext context) {
     return ButtonTheme(
       buttonColor: buttonColor,
-      minWidth: 36,
+        splashColor: splashColor,
+        minWidth: 36,
       child: RaisedButton(
         //padding: EdgeInsets.only(top: 25),
             child: Column(
@@ -158,7 +163,15 @@ const IndicatorRaisedButton({
               children: <Widget>[
                 Text(label == null ? "" : label, style: mainText,),
                 Container(
-                  color: value ? Colors.white : Colors.black,
+                  decoration: BoxDecoration(
+                      color: value ? Colors.white : Colors.black,
+                    boxShadow: [
+                      BoxShadow(color: Colors.white,
+                      blurRadius: value ? 3 : 0,
+                      spreadRadius: value ? 2 : 0)
+                    ]
+                  ),
+
                   width: 12,
                   height: 12,
                 ),

@@ -11,9 +11,9 @@ import 'elements/fixtures_view.dart';
 import 'elements/my_bottom_bar.dart';
 
 void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
   await Controller.init();
   await Controller.initPalettes();
-  WidgetsFlutterBinding.ensureInitialized();
   await Controller.initWiFi();
   runApp(Main());
 }

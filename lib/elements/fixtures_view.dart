@@ -73,7 +73,7 @@ class _EspViewState extends State<EspView> {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter
         ),
-        border: Border.all(color: widget._espModel.selected ? Colors.white : Colors.black, width: widget._espModel.selected ? 4 : 1),
+        border: Border.all(color: widget._espModel.selected ? Colors.white : Colors.black, width: widget._espModel.selected ? 2 : 1),
         borderRadius: BorderRadius.circular(6),
         boxShadow: [
           BoxShadow(
@@ -112,8 +112,9 @@ class _EspViewState extends State<EspView> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
-                    ColorView(widget._espModel.ram_set.color, true),
-                    ColorView(widget._espModel.fs_set.color, false)
+                    Expanded(child: ColorView(widget._espModel.ram_set.color, true)),
+                    SizedBox(width: 2,),
+                    Expanded(child: ColorView(widget._espModel.fs_set.color, false))
                   ],
                 ),
               )
@@ -144,10 +145,11 @@ class DimmerWidget  extends StatelessWidget{
         });
   }
 }
-
-Widget ColorView(final Color color, final bool shape) {
+int k = 0;
+ Widget ColorView(final Color color, final bool shape) {
+  //print("ColorViewBuild ${k++}");
   return Container(
-    width: 30,
+    //width: 30,
     decoration: BoxDecoration(
       color: color,
       shape: shape ? BoxShape.circle : BoxShape.rectangle,

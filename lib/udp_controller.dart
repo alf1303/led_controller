@@ -135,6 +135,7 @@ abstract class UDPCotroller {
           int addr_low = 0;
           int addr_high = 0;
           int reverse = 0;
+//          print("UdpController.setSend: ramse addr: ${element.ram_set.address}");
           if(element.ram_set.address > 255) {
             addr_low = 255;
             addr_high = element.ram_set.address%255;

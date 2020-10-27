@@ -1,15 +1,18 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data';
 import 'dart:ui';
+import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:ledcontroller/model/palette_entry.dart';
 import 'package:ledcontroller/model/palette_types.dart';
 import 'package:ledcontroller/model/settings.dart';
 import 'package:ledcontroller/palettes_provider.dart';
 import 'package:ledcontroller/provider_model_attribute.dart';
 import 'package:ledcontroller/udp_controller.dart';
 import 'package:ledcontroller/provider_model.dart';
-//import 'package:flutter/src/material/slider_theme.dart';
+import 'package:path_provider/path_provider.dart';
 import 'model/esp_model.dart';
 import 'model/palette.dart';
 
@@ -19,6 +22,8 @@ abstract class Controller {
   static final providerModelAttribute = ProviderModelAttribute();
   static final paletteProvider = PaletteProvider();
   static bool highlite = false;
+  static File f;
+
 
   static init() {
     for (int i = 21; i <= 40; i++) {
@@ -39,9 +44,45 @@ abstract class Controller {
     UDPCotroller.setLocalIp();
   }
 
+  static initPalettes() async{
+    paletteProvider.createEmptyPalettes();
+    String dir = (await getApplicationDocumentsDirectory()).path;
+    f = new File("$dir/palettes.txt");
+    //f.delete();
+    if(!await f.exists()) {
+      print("palette file notExists");
+      //List<Palette> palettes = List();
+      Settings white = new Settings.full(2, 0, 0, 128, Color.fromRGBO(255, 255, 255, 1), 255, 0, 0, false, 120, 0, 120, 8);
+      Palette p_white = new Palette.withParams(PaletteType.PALETTE, white);
+      Settings red = new Settings.full(2, 0, 0, 128, Color.fromRGBO(255, 0, 0, 1), 255, 0, 0, false, 120, 0, 120, 8);
+      Palette p_red = new Palette.withParams(PaletteType.PALETTE, red);
+      Settings green = new Settings.full(2, 0, 0, 128, Color.fromRGBO(0, 255, 0, 1), 255, 0, 0, false, 120, 0, 120, 8);
+      Palette p_green = new Palette.withParams(PaletteType.PALETTE, green);
+      Settings blue = new Settings.full(2, 0, 0, 128, Color.fromRGBO(0, 0, 255, 1), 255, 0, 0, false, 120, 0, 120, 8);
+      Palette p_blue = new Palette.withParams(PaletteType.PALETTE, blue);
+      Settings black = new Settings.full(2, 0, 0, 128, Color.fromRGBO(0, 0, 0, 1), 255, 0, 0, false, 120, 0, 120, 8);
+      Palette p_black = new Palette.withParams(PaletteType.PALETTE, black);
+      List<Palette> palettes = [p_white, p_red, p_green, p_blue, p_black];
+      for(int i = 0; i < paletteProvider.PALETTES_COUNT - 5; i++) {
+        palettes.add(new Palette());
+      }
+      var sink = f.openWrite();
+      palettes.forEach((element) {
+        sink.write('${jsonEncode(element)}\n');
+      });
+      sink.close();
+    }
+    await loadPalettesFromFS(f);
+  }
+
   static Future<bool> scan() async{
     providerModel.list.clear();
     await UDPCotroller.scanRequest();
+    providerModel.list.forEach((element) {
+      element.ram_set.mode = 2;
+      element.ram_set.automode = 0;
+    });
+    setSend(255);
     await Future.delayed(Duration(seconds: 1), () {return false;});
   }
 
@@ -78,8 +119,13 @@ abstract class Controller {
   }
 
   static setSend(int save) {
-    //UDPCotroller.setSend(save);
+    UDPCotroller.setSend(save);
     providerModel.notify();
+  }
+
+  static setSendWithoutUpdate(int save) {
+    UDPCotroller.setSend(save);
+    //providerModel.notify();
   }
 
   static void setArea(int pixelCount, RangeValues curRange) async{
@@ -183,7 +229,7 @@ abstract class Controller {
         }
       });
       providerModel.notify();
-//      print(version);
+     // print("red: ${d[21]}, green: ${d[22]}, blue: ${d[23]}");
 //      print(ipaddr);
 //      print(uni);
     }
@@ -205,24 +251,40 @@ abstract class Controller {
     providerModelAttribute.flag = false;
   }
 
-  static initPalettes() async{
-    paletteProvider.createEmptyPalettes();
-  }
-
-  static loadPalettesFromFS() async{
-
+  static loadPalettesFromFS(File f) async{
+    Stream<List<int>> inputStream = f.openRead();
+    int ii = 0;
+    inputStream.transform(utf8.decoder).
+    transform(new LineSplitter()).
+    listen((String line) {
+      paletteProvider.list[ii++] = (Palette.fromJson(jsonDecode(line)));
+    });
+    paletteProvider.notify();
+    providerModel.notify();
+    print("Controller.LoadPAletteFromFs: notified");
   }
 
   static savePalettesToFS() async{
+    var sink = f.openWrite();
+    paletteProvider.list.forEach((element) {
+      sink.write('${jsonEncode(element)}\n');
+    });
+    sink.close();
 
+    Stream<List<int>> inputStream = f.openRead();
+    inputStream.transform(utf8.decoder).
+    transform(new LineSplitter()).
+    listen((String line) {
+      print("Controller.savePaletteToFs: $line");
+    });
   }
 
-  static savePalette(Palette palette) {
+  static savePalette(Palette palette) async{
     if(providerModel.countSelected() == 1) {
       palette.settings.clear();
       Settings set = Settings.empty();
       set.copy(providerModel.getFirstChecked().ram_set);
-      palette.settings.putIfAbsent(0, () => set);
+      palette.settings.add(new PaletteEntry(21, set));
       palette.paletteType = PaletteType.PALETTE;
     }
     else {
@@ -230,33 +292,34 @@ abstract class Controller {
       providerModel.list.forEach((element) {
         Settings set = Settings.empty();
         set.copy(element.ram_set);
-          palette.settings.putIfAbsent(element.uni, () => set);
+          palette.settings.add(new PaletteEntry(element.uni, set));
       });
       palette.paletteType = PaletteType.PROGRAM;
     }
     paletteProvider.notify();
+    await savePalettesToFS();
   }
 
   static loadPalette(Palette palette) {
     if(palette.paletteType == PaletteType.PALETTE) {
       providerModel.list.forEach((element) {
         if(element.selected && palette.isNotEmpty()) {
-          element.ram_set.copy(palette.settings[0]);
-        }
+          element.ram_set.copy(palette.settings[0].settings);}
       });
     }
     else {
       if(palette.isNotEmpty() && providerModel.list.isNotEmpty) {
-        palette.settings.forEach((key, value) {
-          providerModel.list.firstWhere((element) => element.uni == key).ram_set.copy(value);
+        palette.settings.forEach((el) {
+          providerModel.list.firstWhere((element) => element.uni == el.uni).ram_set.copy(el.settings);
         });
       }
     }
-    providerModel.notify();
+    //providerModel.notify();
   }
 
-  static clearPalette(Palette palette) {
+  static clearPalette(Palette palette) async{
     palette.settings.clear();
     paletteProvider.notify();
+    await savePalettesToFS();
   }
 }

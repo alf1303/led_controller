@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -38,18 +40,41 @@ ViewPaletteItem(this._palette);
   _ViewPaletteItemState createState() => _ViewPaletteItemState();
 }
 
-class _ViewPaletteItemState extends State<ViewPaletteItem> {
+class _ViewPaletteItemState extends State<ViewPaletteItem> with TickerProviderStateMixin {
+  AnimationController _controller;
+  Animation _animation;
+  bool _allowResetanimation = true;
 var _tapPosition;
 var _count;
 
-void _showCustomMenu() {
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 300),lowerBound: 0.5,
+      vsync: this,
+    )..addListener(() {
+      if(_controller.status == AnimationStatus.completed && _allowResetanimation) _controller.reset();
+    });
+    _animation = CurvedAnimation(parent: _controller, curve: Curves.fastOutSlowIn);
+  }
+
+
+  @override
+  void dispose() {
+    super.dispose();
+    _controller.dispose();
+  }
+
+  void _showCustomMenu() {
   final RenderBox overlay = Overlay.of(context).context.findRenderObject();
 
   showMenu(
       context: context,
       color: mainBackgroundColor.withOpacity(0),
       //shape: Border.all(color: secondaryBackgroundColor),
-      elevation: 34,
+      elevation: 10,
       items: <PopupMenuEntry<int>>[MyPaletteEntry(widget._palette)],
       position: RelativeRect.fromRect(
           _tapPosition & const Size(40, 40), // smaller rect, the touch area
@@ -83,35 +108,43 @@ void _storePosition(TapDownDetails details) {
 
   @override
   Widget build(BuildContext context) {
+    final paletteProvider = Provider.of<PaletteProvider>(context, listen: true);
+  //print("palettesCount: ${paletteProvider.list.length}");
     bool isPalette = widget._palette.paletteType == PaletteType.PALETTE;
     Color colorPal = widget._palette.getColor();
     //print(color);
     return GestureDetector(
       onTap: () {
+        _controller.animateTo(1);
         Controller.loadPalette(widget._palette);
-        Controller.setSend(128);
+        Controller.setSendWithoutUpdate(128);
         },
       onLongPress: () {
+        _controller.animateTo(1);
+        _allowResetanimation = false;
         _showCustomMenu();
       },
       onTapDown: _storePosition,
       child: Padding(
         padding: const EdgeInsets.all(4.0),
-        child: Container(
-          child: Column(
-            children: <Widget>[
-              //Text(isPalette ? "Palette" : "Program"),
-              Expanded(
-                child: Container(
-                  decoration: isPalette ? BoxDecoration(border: Border.all(color: Colors.blueGrey), color: colorPal, shape: BoxShape.circle) :
-                    BoxDecoration(border: Border.all(color: Colors.blueGrey), borderRadius: BorderRadius.circular(8), shape: BoxShape.rectangle, gradient: colorPal != Colors.transparent? LinearGradient(
-                        colors: [Colors.cyanAccent, Colors.amber, Colors.pink,],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight) : null
-                    ),
-                ),
-              )
-            ],
+        child: ScaleTransition(
+          scale: _animation,
+          child: Container(
+            child: Column(
+              children: <Widget>[
+                //Text(isPalette ? "Palette" : "Program"),
+                Expanded(
+                  child: Container(
+                    decoration: isPalette ? BoxDecoration(border: Border.all(color: Colors.blueGrey), color: colorPal, shape: BoxShape.circle) :
+                      BoxDecoration(border: Border.all(color: Colors.blueGrey), borderRadius: BorderRadius.circular(8), shape: BoxShape.rectangle, gradient: colorPal != Colors.transparent? LinearGradient(
+                          colors: [Colors.cyanAccent, Colors.amber, Colors.pink,],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight) : null
+                      ),
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),

@@ -23,6 +23,11 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  expandable: ^4.1.4
+  wifi_ip: ^0.0.1
+  provider: ^4.1.2
+  udp: ^3.0.3
+  path_provider: ^1.6.22
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -32,10 +37,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  expandable: ^4.1.4
-  wifi_ip: ^0.0.1
-  provider: ^4.1.2
-  udp: ^3.0.3
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

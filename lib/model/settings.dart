@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'dart:convert';
 
 class Settings {
   int mode;
@@ -17,6 +18,22 @@ class Settings {
 
   Settings(this.mode, this.automode, this.numEffect, this.speed, this.color, this.dimmer);
 
+
+  Settings.full(
+      this.mode,
+      this.automode,
+      this.numEffect,
+      this.speed,
+      this.color,
+      this.dimmer,
+      this.address,
+      this.universe,
+      this.reverse,
+      this.pixelCount,
+      this.startPixel,
+      this.endPixel,
+      this.segment);
+
   Settings.empty();
 
   copy(Settings settings) {
@@ -34,4 +51,38 @@ class Settings {
     endPixel = settings.endPixel;
     segment = settings.segment;
   }
+
+  Settings.fromJson(Map<String, dynamic> json) :
+      mode = json['mode'],
+      automode = json['automode'],
+      numEffect = json['numEffect'],
+      speed = json['speed'],
+      color = Color.fromRGBO(json['red'], json['green'], json['blue'], json['opacity']),
+      dimmer = json['dimmer'],
+      address = json['address'],
+      universe = json['universe'],
+      reverse = json['reverse'],
+      pixelCount = json['pixelCount'],
+      startPixel = json['startPixel'],
+      endPixel = json['endPixel'],
+      segment = json['segment'];
+
+  Map<String, dynamic> toJson() => {
+    'mode' : mode,
+    'automode' : automode,
+    'numEffect' : numEffect,
+    'speed' : speed,
+    'red' : color.red,
+    'green' : color.green,
+    'blue' : color.blue,
+    'opacity' : color.opacity,
+    'dimmer' : dimmer,
+    'address' : address,
+    'universe' : universe,
+    'reverse' : reverse,
+    'pixelCount' : pixelCount,
+    'startPixel' : startPixel,
+    'endPixel' : endPixel,
+    'segment' : segment
+  };
 }

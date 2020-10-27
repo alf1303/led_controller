@@ -23,6 +23,7 @@ class MyValueSetter extends StatelessWidget {
            RaisedButton(
                child: Text("Scan", style: mainText,),
                color: buttonColor,
+               splashColor: splashColor,
                elevation: 10,
                shape: buttonShape,
                onPressed: () async{
@@ -123,6 +124,8 @@ class _ValueSetterViewState extends State<ValueSetterView> {
     _red = 0;
     _green = 0;
     _blue = 0;
+    processAttributes();
+    Controller.setSend(2);
     setState(() {  });
   }
 
