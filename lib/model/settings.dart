@@ -1,5 +1,4 @@
 import 'dart:ui';
-import 'dart:convert';
 
 class Settings {
   int mode;

@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:ledcontroller/elements/custom/custom_radio.dart';
 import 'package:ledcontroller/model/settings.dart';
 import 'package:ledcontroller/styles.dart';
 import 'package:ledcontroller/provider_model.dart';
@@ -42,7 +41,7 @@ class MyBottomBar extends StatelessWidget {
                         showDialog(
                             context: context,
                           builder: (context) {
-                            Settings set = providerModel.getFirstChecked().ram_set;
+                            Settings set = providerModel.getFirstChecked().ramSet;
                             RangeValues val = RangeValues(set.startPixel.roundToDouble(), set.endPixel.roundToDouble());
                               return Row(
                                 children: <Widget>[

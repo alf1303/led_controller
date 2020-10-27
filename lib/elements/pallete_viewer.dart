@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +6,6 @@ import 'package:ledcontroller/model/palette.dart';
 import 'package:ledcontroller/model/palette_types.dart';
 import 'package:ledcontroller/styles.dart';
 import 'package:provider/provider.dart';
-
 import '../palettes_provider.dart';
 
 class PaletteViewer extends StatelessWidget {
@@ -45,14 +42,13 @@ class _ViewPaletteItemState extends State<ViewPaletteItem> with TickerProviderSt
   Animation _animation;
   bool _allowResetanimation = true;
 var _tapPosition;
-var _count;
-
 
   @override
   void initState() {
     super.initState();
+            //Animating pallete element on pressing
     _controller = AnimationController(
-      duration: const Duration(milliseconds: 300),lowerBound: 0.5,
+      duration: const Duration(milliseconds: 300),lowerBound: 0.65,
       vsync: this,
     )..addListener(() {
       if(_controller.status == AnimationStatus.completed && _allowResetanimation) _controller.reset();
@@ -60,6 +56,12 @@ var _count;
     _animation = CurvedAnimation(parent: _controller, curve: Curves.fastOutSlowIn);
   }
 
+        //allow pallete item to resize to default size after resizing on long press
+  void resetAllowAnimation(bool val) {
+    _allowResetanimation = val;
+    _controller.animateTo(0.65);
+    setState(() {  });
+  }
 
   @override
   void dispose() {
@@ -75,21 +77,18 @@ var _count;
       color: mainBackgroundColor.withOpacity(0),
       //shape: Border.all(color: secondaryBackgroundColor),
       elevation: 10,
-      items: <PopupMenuEntry<int>>[MyPaletteEntry(widget._palette)],
+      items: <PopupMenuEntry<void>>[MyPaletteEntry(widget._palette, resetAllowAnimation)],
       position: RelativeRect.fromRect(
           _tapPosition & const Size(40, 40), // smaller rect, the touch area
           Offset.zero & overlay.size   // Bigger rect, the entire screen
       )
   )
   // This is how you handle user selection
-      .then<void>((int delta) {
+      .then<void>((void g) {
     // delta would be null if user taps on outside the popup menu
     // (causing it to close without making selection)
-    if (delta == null) return;
 
-    setState(() {
-      _count = _count + delta;
-    });
+    setState(() { });
   });
 
   // Another option:
@@ -108,7 +107,6 @@ void _storePosition(TapDownDetails details) {
 
   @override
   Widget build(BuildContext context) {
-    final paletteProvider = Provider.of<PaletteProvider>(context, listen: true);
   //print("palettesCount: ${paletteProvider.list.length}");
     bool isPalette = widget._palette.paletteType == PaletteType.PALETTE;
     Color colorPal = widget._palette.getColor();
@@ -154,9 +152,9 @@ void _storePosition(TapDownDetails details) {
 
 class MyPaletteEntry extends PopupMenuEntry<int>{
   final Palette _palette;
+  final ValueChanged<bool> valueChanged;
 
-  MyPaletteEntry(this._palette);
-
+  MyPaletteEntry(this._palette, this.valueChanged);
 
   @override
   MyPaletteEntryState createState() {
@@ -164,7 +162,7 @@ class MyPaletteEntry extends PopupMenuEntry<int>{
   }
 
   @override
-  double height = 100;
+  final double height = 100;
 
   @override
   bool represents(int value) => value == 1 || value == -1;
@@ -173,11 +171,13 @@ class MyPaletteEntry extends PopupMenuEntry<int>{
 class MyPaletteEntryState extends State<MyPaletteEntry> {
   void save() {
     Controller.savePalette(widget._palette);
+    widget.valueChanged(true);
     Navigator.pop(context);
   }
 
   void clear() {
     Controller.clearPalette(widget._palette);
+    widget.valueChanged(true);
     Navigator.pop(context);
   }
 

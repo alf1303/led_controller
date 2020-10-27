@@ -25,16 +25,16 @@ abstract class Controller {
   static File f;
 
 
-  static init() {
+  static fakeInit() {
     for (int i = 21; i <= 40; i++) {
-      Settings fs_set = Settings(random.nextInt(4), random.nextInt(3), i, i+100, Color.fromRGBO(random.nextInt(255), random.nextInt(255), 0, 1), random.nextInt(255));
-      Settings ram_set = Settings(random.nextInt(4), random.nextInt(3), i, i+100, Color.fromRGBO(random.nextInt(255), random.nextInt(255), 0, 1), random.nextInt(255));
-      ram_set.address = 223;
-      ram_set.reverse = false;
-      ram_set.startPixel = 0;
-      ram_set.endPixel = 112;
-      ram_set.pixelCount = 120;
-      EspModel esp = new EspModel(i, "192.168.0.$i", "v_0.5.9", fs_set, ram_set);
+      Settings fsSet = Settings(random.nextInt(4), random.nextInt(3), i, i+100, Color.fromRGBO(random.nextInt(255), random.nextInt(255), 0, 1), random.nextInt(255));
+      Settings ramSet = Settings(random.nextInt(4), random.nextInt(3), i, i+100, Color.fromRGBO(random.nextInt(255), random.nextInt(255), 0, 1), random.nextInt(255));
+      ramSet.address = 223;
+      ramSet.reverse = false;
+      ramSet.startPixel = 0;
+      ramSet.endPixel = 112;
+      ramSet.pixelCount = 120;
+      EspModel esp = new EspModel(i, "192.168.0.$i", "v_0.5.9", fsSet, ramSet);
       providerModel.list.add(esp);
     }
     providerModel.notify();
@@ -53,16 +53,16 @@ abstract class Controller {
       print("palette file notExists");
       //List<Palette> palettes = List();
       Settings white = new Settings.full(2, 0, 0, 128, Color.fromRGBO(255, 255, 255, 1), 255, 0, 0, false, 120, 0, 120, 8);
-      Palette p_white = new Palette.withParams(PaletteType.PALETTE, white);
+      Palette pWhite = new Palette.withParams(PaletteType.PALETTE, white);
       Settings red = new Settings.full(2, 0, 0, 128, Color.fromRGBO(255, 0, 0, 1), 255, 0, 0, false, 120, 0, 120, 8);
-      Palette p_red = new Palette.withParams(PaletteType.PALETTE, red);
+      Palette pRed = new Palette.withParams(PaletteType.PALETTE, red);
       Settings green = new Settings.full(2, 0, 0, 128, Color.fromRGBO(0, 255, 0, 1), 255, 0, 0, false, 120, 0, 120, 8);
-      Palette p_green = new Palette.withParams(PaletteType.PALETTE, green);
+      Palette pGreen = new Palette.withParams(PaletteType.PALETTE, green);
       Settings blue = new Settings.full(2, 0, 0, 128, Color.fromRGBO(0, 0, 255, 1), 255, 0, 0, false, 120, 0, 120, 8);
-      Palette p_blue = new Palette.withParams(PaletteType.PALETTE, blue);
+      Palette pBlue = new Palette.withParams(PaletteType.PALETTE, blue);
       Settings black = new Settings.full(2, 0, 0, 128, Color.fromRGBO(0, 0, 0, 1), 255, 0, 0, false, 120, 0, 120, 8);
-      Palette p_black = new Palette.withParams(PaletteType.PALETTE, black);
-      List<Palette> palettes = [p_white, p_red, p_green, p_blue, p_black];
+      Palette pBlack = new Palette.withParams(PaletteType.PALETTE, black);
+      List<Palette> palettes = [pWhite, pRed, pGreen, pBlue, pBlack];
       for(int i = 0; i < paletteProvider.PALETTES_COUNT - 5; i++) {
         palettes.add(new Palette());
       }
@@ -79,11 +79,11 @@ abstract class Controller {
     providerModel.list.clear();
     await UDPCotroller.scanRequest();
     providerModel.list.forEach((element) {
-      element.ram_set.mode = 2;
-      element.ram_set.automode = 0;
+      element.ramSet.mode = 2;
+      element.ramSet.automode = 0;
     });
     setSend(255);
-    await Future.delayed(Duration(seconds: 1), () {return false;});
+    return await Future.delayed(Duration(seconds: 1), () {return false;});
   }
 
   static void setHighlite() {
@@ -131,9 +131,9 @@ abstract class Controller {
   static void setArea(int pixelCount, RangeValues curRange) async{
     providerModel.list.forEach((element) {
       if(element.selected) {
-        element.ram_set.pixelCount = pixelCount;
-        element.ram_set.startPixel = curRange.start.round();
-        element.ram_set.endPixel = curRange.end.round();
+        element.ramSet.pixelCount = pixelCount;
+        element.ramSet.startPixel = curRange.start.round();
+        element.ramSet.endPixel = curRange.end.round();
       }
     });
     setSend(64);
@@ -166,26 +166,25 @@ abstract class Controller {
       Uint8List d = datagr.data;
       //print(datagr.data[33]);
       int uni = d[2];
-      Color color_fs = Color.fromRGBO(d[18], d[19], d[20], 1);
-      Color color_ram = Color.fromRGBO(d[21], d[22], d[23], 1);
-      Settings fs_set = Settings(d[10], d[12], d[14], d[16], color_fs, d[24]);
-      Settings ram_set = Settings(d[11], d[13], d[15], d[17], color_ram, d[25]);
-      fs_set.universe = d[26];
-      fs_set.address = d[27] == 0 ? d[28] : d[27] + d[28] + 1;
-      ram_set.universe = d[26];
-      ram_set.address = d[27] == 0 ? d[28] : d[27] + d[28] + 1;
-      d[29] == 1 ? fs_set.reverse = true : fs_set.reverse = false;
-      d[29] == 1 ? ram_set.reverse = true : ram_set.reverse = false;
-      fs_set.pixelCount = d[30];
-      fs_set.startPixel = d[31];
-      fs_set.endPixel = d[32];
-      fs_set.segment = d[33];
-      ram_set.pixelCount = d[30];
-      ram_set.startPixel = d[31];
-      ram_set.endPixel = d[32];
-      ram_set.segment = d[33];
-      EspModel espModel = EspModel(uni, ipaddr, version, fs_set, ram_set);
-      String ad = String.fromCharCodes(datagr.data, 27);
+      Color colorFs = Color.fromRGBO(d[18], d[19], d[20], 1);
+      Color colorRam = Color.fromRGBO(d[21], d[22], d[23], 1);
+      Settings fsSet = Settings(d[10], d[12], d[14], d[16], colorFs, d[24]);
+      Settings ramSet = Settings(d[11], d[13], d[15], d[17], colorRam, d[25]);
+      fsSet.universe = d[26];
+      fsSet.address = d[27] == 0 ? d[28] : d[27] + d[28] + 1;
+      ramSet.universe = d[26];
+      ramSet.address = d[27] == 0 ? d[28] : d[27] + d[28] + 1;
+      d[29] == 1 ? fsSet.reverse = true : fsSet.reverse = false;
+      d[29] == 1 ? ramSet.reverse = true : ramSet.reverse = false;
+      fsSet.pixelCount = d[30];
+      fsSet.startPixel = d[31];
+      fsSet.endPixel = d[32];
+      fsSet.segment = d[33];
+      ramSet.pixelCount = d[30];
+      ramSet.startPixel = d[31];
+      ramSet.endPixel = d[32];
+      ramSet.segment = d[33];
+      EspModel espModel = EspModel(uni, ipaddr, version, fsSet, ramSet);
 //      print("datagr.length: ${datagr.data.length}");
 //      print("d[26] ${d[26]}");
 //      print("d[27] ${d[27]}");
@@ -205,27 +204,27 @@ abstract class Controller {
       int uni = d[2];
       providerModel.list.forEach((element) {
         if(element.uni == uni) {
-          Color color_fs = Color.fromRGBO(d[18], d[19], d[20], 1);
-          Color color_ram = Color.fromRGBO(d[21], d[22], d[23], 1);
-          Settings fs_set = Settings(d[10], d[12], d[14], d[16], color_fs, d[24]);
-          Settings ram_set = Settings(d[11], d[13], d[15], d[17], color_ram, d[25]);
-          fs_set.universe = d[26];
-          fs_set.address = d[27] == 0 ? d[28] : d[27] + d[28] + 1;
-          ram_set.universe = d[26];
-          ram_set.address = d[27] == 0 ? d[28] : d[27] + d[28] + 1;
+          Color colorFs = Color.fromRGBO(d[18], d[19], d[20], 1);
+          Color colorRam = Color.fromRGBO(d[21], d[22], d[23], 1);
+          Settings fsSet = Settings(d[10], d[12], d[14], d[16], colorFs, d[24]);
+          Settings ramSet = Settings(d[11], d[13], d[15], d[17], colorRam, d[25]);
+          fsSet.universe = d[26];
+          fsSet.address = d[27] == 0 ? d[28] : d[27] + d[28] + 1;
+          ramSet.universe = d[26];
+          ramSet.address = d[27] == 0 ? d[28] : d[27] + d[28] + 1;
           //print("d[29]: ${d[29]}");
-          d[29] == 1 ? fs_set.reverse = true : fs_set.reverse = false;
-          d[29] == 1 ? ram_set.reverse = true : ram_set.reverse = false;
-          fs_set.pixelCount = d[30];
-          fs_set.startPixel = d[31];
-          fs_set.endPixel = d[32];
-          fs_set.segment = d[33];
-          ram_set.pixelCount = d[30];
-          ram_set.startPixel = d[31];
-          ram_set.endPixel = d[32];
-          ram_set.segment = d[33];
-          element.fs_set = fs_set;
-          element.ram_set = ram_set;
+          d[29] == 1 ? fsSet.reverse = true : fsSet.reverse = false;
+          d[29] == 1 ? ramSet.reverse = true : ramSet.reverse = false;
+          fsSet.pixelCount = d[30];
+          fsSet.startPixel = d[31];
+          fsSet.endPixel = d[32];
+          fsSet.segment = d[33];
+          ramSet.pixelCount = d[30];
+          ramSet.startPixel = d[31];
+          ramSet.endPixel = d[32];
+          ramSet.segment = d[33];
+          element.fsSet = fsSet;
+          element.ramSet = ramSet;
         }
       });
       providerModel.notify();
@@ -270,20 +269,13 @@ abstract class Controller {
       sink.write('${jsonEncode(element)}\n');
     });
     sink.close();
-
-    Stream<List<int>> inputStream = f.openRead();
-    inputStream.transform(utf8.decoder).
-    transform(new LineSplitter()).
-    listen((String line) {
-      print("Controller.savePaletteToFs: $line");
-    });
   }
 
   static savePalette(Palette palette) async{
     if(providerModel.countSelected() == 1) {
       palette.settings.clear();
       Settings set = Settings.empty();
-      set.copy(providerModel.getFirstChecked().ram_set);
+      set.copy(providerModel.getFirstChecked().ramSet);
       palette.settings.add(new PaletteEntry(21, set));
       palette.paletteType = PaletteType.PALETTE;
     }
@@ -291,7 +283,7 @@ abstract class Controller {
       palette.settings.clear();
       providerModel.list.forEach((element) {
         Settings set = Settings.empty();
-        set.copy(element.ram_set);
+        set.copy(element.ramSet);
           palette.settings.add(new PaletteEntry(element.uni, set));
       });
       palette.paletteType = PaletteType.PROGRAM;
@@ -304,13 +296,13 @@ abstract class Controller {
     if(palette.paletteType == PaletteType.PALETTE) {
       providerModel.list.forEach((element) {
         if(element.selected && palette.isNotEmpty()) {
-          element.ram_set.copy(palette.settings[0].settings);}
+          element.ramSet.copy(palette.settings[0].settings);}
       });
     }
     else {
       if(palette.isNotEmpty() && providerModel.list.isNotEmpty) {
         palette.settings.forEach((el) {
-          providerModel.list.firstWhere((element) => element.uni == el.uni).ram_set.copy(el.settings);
+          providerModel.list.firstWhere((element) => element.uni == el.uni).ramSet.copy(el.settings);
         });
       }
     }

@@ -56,10 +56,10 @@ class _ValueSetterViewState extends State<ValueSetterView> {
   void processAttributes() {
     Controller.providerModel.list.forEach((element) {
       if(element.selected) {
-        element.ram_set.speed = _speed.round();
-        element.ram_set.numEffect = _numEff;
-        element.ram_set.color = Color.fromRGBO((_red).round(), (_green).round(), (_blue).round(), 1);
-        element.ram_set.dimmer = _dim.round();
+        element.ramSet.speed = _speed.round();
+        element.ramSet.numEffect = _numEff;
+        element.ramSet.color = Color.fromRGBO((_red).round(), (_green).round(), (_blue).round(), 1);
+        element.ramSet.dimmer = _dim.round();
       }
     });
   }
@@ -217,7 +217,7 @@ class _ValueSetterViewState extends State<ValueSetterView> {
                 )
               ]
             ),
-            height: height > width ? height/15 : width/15,
+            height: height > width ? height/13 : width/13,
             width: width,
           ),
         ),

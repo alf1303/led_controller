@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:ledcontroller/model/palette_types.dart';
 
 import 'model/palette.dart';
 class PaletteProvider extends ChangeNotifier{

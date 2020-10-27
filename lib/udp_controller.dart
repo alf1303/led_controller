@@ -70,7 +70,7 @@ abstract class UDPCotroller {
       Controller.providerModel.list.forEach((element) async{
         if (element.selected) {
           Uint8List data = formHeader(element.uni, "S", "H");
-          var dataLength = await sender.send(data, Endpoint.unicast(InternetAddress(element.ipAddr), port: Port(_PORT_OUT)));
+          await sender.send(data, Endpoint.unicast(InternetAddress(element.ipAddress), port: Port(_PORT_OUT)));
         }
       });
     }
@@ -98,7 +98,7 @@ abstract class UDPCotroller {
       Controller.providerModel.list.forEach((element) async{
         if (element.selected) {
           Uint8List data = formHeader(element.uni, "S", "R");
-          var dataLength = await sender.send(data, Endpoint.unicast(InternetAddress(element.ipAddr), port: Port(_PORT_OUT)));
+          var dataLength = await sender.send(data, Endpoint.unicast(InternetAddress(element.ipAddress), port: Port(_PORT_OUT)));
         }
       });
     }
@@ -113,7 +113,7 @@ abstract class UDPCotroller {
       Controller.providerModel.list.forEach((element) async{
         if (element.selected) {
           Uint8List data = formHeader(element.uni, "S", "F");
-          var dataLength = await sender.send(data, Endpoint.unicast(InternetAddress(element.ipAddr), port: Port(_PORT_OUT)));
+          var dataLength = await sender.send(data, Endpoint.unicast(InternetAddress(element.ipAddress), port: Port(_PORT_OUT)));
         }
       });
     }
@@ -132,41 +132,41 @@ abstract class UDPCotroller {
           Uint8List header = formHeader(element.uni, "S", "S");
           Uint8List data = Uint8List(17);
           //print(save);
-          int addr_low = 0;
-          int addr_high = 0;
+          int addrLow = 0;
+          int addrHigh = 0;
           int reverse = 0;
 //          print("UdpController.setSend: ramse addr: ${element.ram_set.address}");
-          if(element.ram_set.address > 255) {
-            addr_low = 255;
-            addr_high = element.ram_set.address%255;
+          if(element.ramSet.address > 255) {
+            addrLow = 255;
+            addrHigh = element.ramSet.address%255;
           }
           else {
-            addr_low = element.ram_set.address;
-            addr_high = 0;
+            addrLow = element.ramSet.address;
+            addrHigh = 0;
           }
-          if(element.ram_set.reverse) reverse = 1;
+          if(element.ramSet.reverse) reverse = 1;
           data.setRange(0, 17, List.from([
-            element.ram_set.mode,
-            element.ram_set.automode,
-            element.ram_set.numEffect,
-            element.ram_set.speed,
-            element.ram_set.color.red,
-            element.ram_set.color.green,
-            element.ram_set.color.blue,
-            element.ram_set.dimmer,
+            element.ramSet.mode,
+            element.ramSet.automode,
+            element.ramSet.numEffect,
+            element.ramSet.speed,
+            element.ramSet.color.red,
+            element.ramSet.color.green,
+            element.ramSet.color.blue,
+            element.ramSet.dimmer,
             save,
-            element.ram_set.universe,
-            addr_low,
-            addr_high,
+            element.ramSet.universe,
+            addrLow,
+            addrHigh,
             reverse,
-            element.ram_set.pixelCount,
-            element.ram_set.startPixel,
-            element.ram_set.endPixel,
-            element.ram_set.segment
+            element.ramSet.pixelCount,
+            element.ramSet.startPixel,
+            element.ramSet.endPixel,
+            element.ramSet.segment
           ]));
           List<int> temp = header + data;
           //print(temp);
-          int datalength = await sender.send(temp, Endpoint.unicast(InternetAddress(element.ipAddr), port: Port(_PORT_OUT)));
+          int datalength = await sender.send(temp, Endpoint.unicast(InternetAddress(element.ipAddress), port: Port(_PORT_OUT)));
         }
       });
     }
@@ -180,9 +180,9 @@ abstract class UDPCotroller {
   }
 
   static InternetAddress _getDestinationIp(int uni) {
-    String ip_start = _local_ip.address.substring(0, _local_ip.address.lastIndexOf('.') + 1);
-    String res_ip = ip_start + uni.toString();
-    return InternetAddress(res_ip);
+    String ipStart = _local_ip.address.substring(0, _local_ip.address.lastIndexOf('.') + 1);
+    String resIp = ipStart + uni.toString();
+    return InternetAddress(resIp);
   }
 
 }

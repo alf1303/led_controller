@@ -12,7 +12,7 @@ import 'elements/my_bottom_bar.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
-  await Controller.init();
+  //await Controller.init();
   await Controller.initPalettes();
   await Controller.initWiFi();
   runApp(Main());

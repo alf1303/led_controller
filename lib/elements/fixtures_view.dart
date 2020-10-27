@@ -49,7 +49,7 @@ class _EspViewState extends State<EspView> {
     widget._espModel.selected = !widget._espModel.selected;
     Controller.providerModel.checkSelected();
     if(widget._espModel.selected) {
-      Controller.setFaders(widget._espModel.ram_set);
+      Controller.setFaders(widget._espModel.ramSet);
     }
     if(Controller.highlite) {
       if (widget._espModel.selected) {
@@ -102,7 +102,7 @@ class _EspViewState extends State<EspView> {
                         decoration: BoxDecoration(
                           border: Border.all(color: Colors.black)
                         ),
-                        child: DimmerWidget(widget._espModel.ram_set.dimmer)),
+                        child: DimmerWidget(widget._espModel.ramSet.dimmer)),
                   ),
                 ],
               ),
@@ -112,9 +112,9 @@ class _EspViewState extends State<EspView> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
-                    Expanded(child: ColorView(widget._espModel.ram_set.color, true)),
+                    Expanded(child: ColorView(widget._espModel.ramSet.color, true)),
                     SizedBox(width: 2,),
-                    Expanded(child: ColorView(widget._espModel.fs_set.color, false))
+                    Expanded(child: ColorView(widget._espModel.fsSet.color, false))
                   ],
                 ),
               )
@@ -145,7 +145,6 @@ class DimmerWidget  extends StatelessWidget{
         });
   }
 }
-int k = 0;
  Widget ColorView(final Color color, final bool shape) {
   //print("ColorViewBuild ${k++}");
   return Container(
