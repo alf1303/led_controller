@@ -9,6 +9,7 @@ Color linesColor = Colors.white70;
 Color textBlack = Colors.black;
 Color dividerColor = Colors.black12;
 Color splashColor = Colors.purpleAccent;
+Color emptyPaletteColor = Colors.grey.withOpacity(0.7);
 
 //TEXT STYLES
 TextStyle headerText = TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: Colors.black.withOpacity(1));

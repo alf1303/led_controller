@@ -257,10 +257,13 @@ abstract class Controller {
     transform(new LineSplitter()).
     listen((String line) {
       paletteProvider.list[ii++] = (Palette.fromJson(jsonDecode(line)));
+      if(ii == 14) {
+        paletteProvider.notify();
+        //providerModel.notify();
+      }
     });
-    paletteProvider.notify();
-    providerModel.notify();
-    print("Controller.LoadPAletteFromFs: notified");
+
+    //print("Controller.LoadPAletteFromFs: notified");
   }
 
   static savePalettesToFS() async{

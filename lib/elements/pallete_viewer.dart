@@ -108,41 +108,52 @@ void _storePosition(TapDownDetails details) {
   @override
   Widget build(BuildContext context) {
   //print("palettesCount: ${paletteProvider.list.length}");
+    final paletteProvider = Provider.of<PaletteProvider>(context, listen: true);
     bool isPalette = widget._palette.paletteType == PaletteType.PALETTE;
     Color colorPal = widget._palette.getColor();
-    //print(color);
-    return GestureDetector(
-      onTap: () {
-        _controller.animateTo(1);
-        Controller.loadPalette(widget._palette);
-        Controller.setSendWithoutUpdate(128);
-        },
-      onLongPress: () {
-        _controller.animateTo(1);
-        _allowResetanimation = false;
-        _showCustomMenu();
-      },
-      onTapDown: _storePosition,
-      child: Padding(
-        padding: const EdgeInsets.all(4.0),
-        child: ScaleTransition(
-          scale: _animation,
-          child: Container(
-            child: Column(
-              children: <Widget>[
-                //Text(isPalette ? "Palette" : "Program"),
-                Expanded(
-                  child: Container(
-                    decoration: isPalette ? BoxDecoration(border: Border.all(color: Colors.blueGrey), color: colorPal, shape: BoxShape.circle) :
-                      BoxDecoration(border: Border.all(color: Colors.blueGrey), borderRadius: BorderRadius.circular(8), shape: BoxShape.rectangle, gradient: colorPal != Colors.transparent? LinearGradient(
-                          colors: [Colors.cyanAccent, Colors.amber, Colors.pink,],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight) : null
-                      ),
+    print(colorPal);
+    return Padding(
+      padding: const EdgeInsets.all(4.0),
+      child: ScaleTransition(
+        scale: _animation,
+        child: Container(
+          child: Column(
+            children: <Widget>[
+              //Text(isPalette ? "Palette" : "Program"),
+              Expanded(
+                child: Container(
+                  decoration: isPalette ? BoxDecoration(border: Border.all(color: Colors.transparent, width: 0), color: colorPal, shape: BoxShape.circle, boxShadow: [
+                    BoxShadow(color: mainBackgroundColor, spreadRadius: 2, blurRadius: 4)]) :
+                    BoxDecoration(border: Border.all(color: Colors.transparent, width: 0), borderRadius: BorderRadius.circular(8), shape: BoxShape.rectangle, gradient: colorPal != emptyPaletteColor ? LinearGradient(
+                        colors: [Colors.cyanAccent, Colors.amber, Colors.pink,],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight) : LinearGradient(colors: [Colors.grey.withOpacity(0.7), Colors.grey.withOpacity(0.7)]),
+                      boxShadow: [
+                        BoxShadow(color: mainBackgroundColor, spreadRadius: 2, blurRadius: 4)
+                      ]
+                    ),
+                  child: Material(
+                    clipBehavior: Clip.antiAlias,
+                    shape: RoundedRectangleBorder(side: BorderSide(color: Colors.transparent, width: 0), borderRadius: BorderRadius.all(Radius.circular(isPalette ? 20 : 5))),
+                    color: Colors.transparent,
+                    child: InkWell(
+                      splashColor: mainBackgroundColor,
+                      onTap: () {
+                        _controller.animateTo(1);
+                        Controller.loadPalette(widget._palette);
+                        Controller.setSendWithoutUpdate(128);
+                      },
+                      onLongPress: () {
+                        _controller.animateTo(1);
+                        _allowResetanimation = false;
+                        _showCustomMenu();
+                      },
+                      onTapDown: _storePosition,
+                    ),
                   ),
-                )
-              ],
-            ),
+                ),
+              )
+            ],
           ),
         ),
       ),

@@ -6,6 +6,8 @@ import 'package:ledcontroller/model/palette_types.dart';
 import 'package:ledcontroller/model/settings.dart';
 import 'dart:convert';
 
+import 'package:ledcontroller/styles.dart';
+
 class Palette {
   List<PaletteEntry> settings =  List();
   PaletteType paletteType;
@@ -23,7 +25,7 @@ class Palette {
 
   Color getColor() {
     if(settings.isEmpty)
-      return Colors.transparent;
+      return emptyPaletteColor;
     else{
       if(paletteType == PaletteType.PALETTE) {
         return settings[0].settings.color;
