@@ -12,12 +12,22 @@ Color splashColor = Colors.purpleAccent;
 Color emptyPaletteColor = Colors.grey.withOpacity(0.7);
 
 //TEXT STYLES
-TextStyle headerText = TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: Colors.black.withOpacity(1));
+TextStyle headerText = TextStyle(fontSize: 25, letterSpacing: 2, fontWeight: FontWeight.bold, color: Colors.black.withOpacity(1),
+    shadows: [Shadow(color: Colors.pinkAccent, blurRadius: 5,)]
+);
 TextStyle mainText = TextStyle(color: textBlack);
 TextStyle smallText = TextStyle(fontSize: 8, color: textBlack);
 
 //SHAPES AND BORDERS
 RoundedRectangleBorder buttonShape = RoundedRectangleBorder(side: BorderSide(color: linesColor, width: 2), borderRadius: BorderRadius.circular(6));
+RoundedRectangleBorder roundedButtonShape = RoundedRectangleBorder(borderRadius: BorderRadius.circular(20),side: BorderSide(color: linesColor));
+
+//BUTTON THEME
+ButtonTheme mainButtonTheme = ButtonTheme(
+  buttonColor: buttonColor,
+  splashColor: splashColor,
+  shape: buttonShape,
+);
 
 //DECORATION
 BoxDecoration mainDecoration = BoxDecoration( //GRADIENT

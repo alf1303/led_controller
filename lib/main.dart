@@ -23,7 +23,7 @@ class Main extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-        //buttonTheme: mainButtonTheme
+        buttonTheme: mainButtonTheme.data
       ),
       home: SafeArea(
         child: MultiProvider(

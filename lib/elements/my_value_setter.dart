@@ -22,14 +22,11 @@ class MyValueSetter extends StatelessWidget {
          children: <Widget>[
            RaisedButton(
                child: Text("Scan", style: mainText,),
-               color: buttonColor,
-               splashColor: splashColor,
                elevation: 10,
-               shape: buttonShape,
                onPressed: () async{
                  await Controller.scan();
                }),
-           Text("LedController", style: headerText,),
+           Text("LEDController", style: headerText,),
            Text("")
          ],
        ),
@@ -184,14 +181,12 @@ class _ValueSetterViewState extends State<ValueSetterView> {
                   ),
                   RaisedButton(
                     child: Icon(Icons.clear, size: 24,),
-                    color: buttonColor,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20),side: BorderSide(color: linesColor)),
+                    shape: roundedButtonShape,
                     onPressed: _zeroVals
                   ),
                   RaisedButton(
                       child: Icon(Icons.save, size: 24,),
-                      color: buttonColor,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20),side: BorderSide(color: linesColor)),
+                      shape: roundedButtonShape,
                       onPressed: onSavePressed
                   )
                 ],

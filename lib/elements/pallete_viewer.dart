@@ -111,7 +111,7 @@ void _storePosition(TapDownDetails details) {
     final paletteProvider = Provider.of<PaletteProvider>(context, listen: true);
     bool isPalette = widget._palette.paletteType == PaletteType.PALETTE;
     Color colorPal = widget._palette.getColor();
-    print(colorPal);
+    //print(colorPal);
     return Padding(
       padding: const EdgeInsets.all(4.0),
       child: ScaleTransition(

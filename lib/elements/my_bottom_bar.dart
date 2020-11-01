@@ -26,17 +26,11 @@ class MyBottomBar extends StatelessWidget {
                 children: <Widget>[
                   RaisedButton(
                       child: Text("Reset", style: mainText,),
-                      color: buttonColor,
-                      splashColor: splashColor,
-                      shape: buttonShape,
                       onPressed: !providerModel.selected ? null : () {
                         Controller.setReset();
                       }),
                   RaisedButton(
                       child: Text("Area", style: mainText,),
-                      color: buttonColor,
-                      splashColor: splashColor,
-                      shape: buttonShape,
                       onPressed: !Controller.providerModel.selected ? null : () {
                         showDialog(
                             context: context,
@@ -117,17 +111,11 @@ class MyBottomBar extends StatelessWidget {
                   }),
                   RaisedButton(
                       child: Icon(Icons.select_all),
-                      color: buttonColor,
-                      splashColor: splashColor,
-                      shape: buttonShape,
                       onPressed: () {
                         Controller.selectAll();
                       }),
                   RaisedButton(
                       child: Icon(Icons.clear),
-                      color: buttonColor,
-                      splashColor: splashColor,
-                      shape: buttonShape,
                       onPressed: () {
                         Controller.deselectAll();
                       }),
