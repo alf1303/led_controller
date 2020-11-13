@@ -301,10 +301,10 @@ abstract class Controller {
     providerModelAttribute.red = set.color.red*1.0;
     providerModelAttribute.green = set.color.green*1.0;
     providerModelAttribute.blue = set.color.blue*1.0;
-    providerModelAttribute.speed = set.speed*1.0;
+    providerModelAttribute.fxSpeed = set.speed*1.0;
     providerModelAttribute.mode = set.mode;
     providerModelAttribute.automode = set.automode;
-    providerModelAttribute.numEff = set.numEffect;
+    providerModelAttribute.fxNum = set.numEffect;
     providerModelAttribute.notify();
   }
 
