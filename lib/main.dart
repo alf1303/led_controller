@@ -12,7 +12,7 @@ import 'elements/my_bottom_bar.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
-  await Controller.fakeInit();
+  //await Controller.fakeInit();
   await Controller.initPalettes();
   await Controller.initWiFi();
   runApp(Main());
@@ -23,7 +23,7 @@ class Main extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-        buttonTheme: mainButtonTheme.data
+        buttonTheme: mainButtonTheme.data,
       ),
       home: SafeArea(
         child: MultiProvider(

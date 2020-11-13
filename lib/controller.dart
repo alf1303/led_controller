@@ -77,11 +77,15 @@ abstract class Controller {
 
   static Future<bool> scan() async{
     providerModel.list.clear();
+    providerModel.selected = false;
+    providerModel.notify();
+    //providerModel.list.forEach((element) { element.isAlive = false;});
     await UDPCotroller.scanRequest();
     providerModel.list.forEach((element) {
       element.ramSet.mode = 2;
       element.ramSet.automode = 0;
     });
+    //providerModel.list.removeWhere((element) => !element.isAlive);
     setSend(255);
     return await Future.delayed(Duration(seconds: 1), () {return false;});
   }
@@ -91,16 +95,16 @@ abstract class Controller {
     providerModel.notify();
   }
 
-  static void unsetHL(int uni) {
-    List<int> list = List.from([uni]);
+  static void unsetHL(EspModel model) {
+    List<EspModel> list = List.from([model]);
     UDPCotroller.unsetHighlite(list);
     providerModel.notify();
   }
 
   static void unsetHLAll() {
-    List<int> list = List<int>();
+    List<EspModel> list = List();
     providerModel.list.forEach((element) {
-      list.add(element.uni);
+      list.add(element);
     });
     UDPCotroller.unsetHighlite(list);
     providerModel.notify();
@@ -139,6 +143,18 @@ abstract class Controller {
     setSend(64);
   }
 
+  static void setName(String text) {
+    UDPCotroller.setName(text);
+  }
+
+  static Future<void> setPixelCount(int count) async{
+    await UDPCotroller.setPixelCount(count);
+  }
+
+  static Future<void> setNetworkSettings(String ssid, String password, bool netmode) async{
+    await UDPCotroller.setNetworkSettings(ssid, password, netmode);
+  }
+
   static bool areNotSelected() {
     List<EspModel> subList = List();
     subList = providerModel.list.where((element) => element.selected).toList();
@@ -166,35 +182,47 @@ abstract class Controller {
       Uint8List d = datagr.data;
       //print(datagr.data[33]);
       int uni = d[2];
-      Color colorFs = Color.fromRGBO(d[18], d[19], d[20], 1);
-      Color colorRam = Color.fromRGBO(d[21], d[22], d[23], 1);
-      Settings fsSet = Settings(d[10], d[12], d[14], d[16], colorFs, d[24]);
-      Settings ramSet = Settings(d[11], d[13], d[15], d[17], colorRam, d[25]);
-      fsSet.universe = d[26];
-      fsSet.address = d[27] == 0 ? d[28] : d[27] + d[28] + 1;
-      ramSet.universe = d[26];
-      ramSet.address = d[27] == 0 ? d[28] : d[27] + d[28] + 1;
-      d[29] == 1 ? fsSet.reverse = true : fsSet.reverse = false;
-      d[29] == 1 ? ramSet.reverse = true : ramSet.reverse = false;
-      fsSet.pixelCount = d[30];
-      fsSet.startPixel = d[31];
-      fsSet.endPixel = d[32];
-      fsSet.segment = d[33];
-      ramSet.pixelCount = d[30];
-      ramSet.startPixel = d[31];
-      ramSet.endPixel = d[32];
-      ramSet.segment = d[33];
-      EspModel espModel = EspModel(uni, ipaddr, version, fsSet, ramSet);
-//      print("datagr.length: ${datagr.data.length}");
-//      print("d[26] ${d[26]}");
-//      print("d[27] ${d[27]}");
-//      print("d[28] ${d[28]}");
-//      print("addr: ${d[27] + d[28] + 1}");
-      providerModel.list.add(espModel);
+      print("***fillEspView*** $uni");
+      //int uni = int.parse(ipaddr.split('.')[3]);
+      EspModel espModel = createEspFromData(d);
+      espModel.ipAddress = ipaddr;
+      espModel.version = version;
+      espModel.uni = uni;
+      EspModel findModel;
+      if(providerModel.list.isNotEmpty) {
+        findModel = providerModel.list.firstWhere((element) => element.uni == uni, orElse: null);
+      }
+      if(findModel == null) {
+        providerModel.list.add(espModel);
+        print("**fillEspView** added");
+      }
       providerModel.notify();
-//      print(version);
-//      print(ipaddr);
-//      print(uni);
+    }
+  }
+
+  static void updateEspView2(Datagram datagr) {
+    print("updateEspView");
+    if(datagr != null) {
+      Uint8List d = datagr.data;
+      int uni = d[2];
+      String version = String.fromCharCodes(datagr.data, 3, 10);
+      String ipaddr = datagr.address.address;
+      EspModel espModel = createEspFromData(d);
+      espModel.uni = uni;
+      espModel.ipAddress = ipaddr;
+      espModel.version = version;
+      EspModel findModel = null;
+      if(providerModel.list.isNotEmpty) {
+        findModel = providerModel.list.firstWhere((element) => element.uni == uni, orElse: null);
+      }
+      if(findModel == null) {
+        providerModel.list.add(espModel);
+        print("**upddateEspView2** added");
+      }
+      else {
+        findModel.copyFrom(espModel);
+      }
+      providerModel.notify();
     }
   }
 
@@ -202,29 +230,13 @@ abstract class Controller {
     if(datagr != null) {
       Uint8List d = datagr.data;
       int uni = d[2];
+     // print("uni: $uni");
       providerModel.list.forEach((element) {
+        //print("element.uni: ${element.uni}");
         if(element.uni == uni) {
-          Color colorFs = Color.fromRGBO(d[18], d[19], d[20], 1);
-          Color colorRam = Color.fromRGBO(d[21], d[22], d[23], 1);
-          Settings fsSet = Settings(d[10], d[12], d[14], d[16], colorFs, d[24]);
-          Settings ramSet = Settings(d[11], d[13], d[15], d[17], colorRam, d[25]);
-          fsSet.universe = d[26];
-          fsSet.address = d[27] == 0 ? d[28] : d[27] + d[28] + 1;
-          ramSet.universe = d[26];
-          ramSet.address = d[27] == 0 ? d[28] : d[27] + d[28] + 1;
-          //print("d[29]: ${d[29]}");
-          d[29] == 1 ? fsSet.reverse = true : fsSet.reverse = false;
-          d[29] == 1 ? ramSet.reverse = true : ramSet.reverse = false;
-          fsSet.pixelCount = d[30];
-          fsSet.startPixel = d[31];
-          fsSet.endPixel = d[32];
-          fsSet.segment = d[33];
-          ramSet.pixelCount = d[30];
-          ramSet.startPixel = d[31];
-          ramSet.endPixel = d[32];
-          ramSet.segment = d[33];
-          element.fsSet = fsSet;
-          element.ramSet = ramSet;
+          EspModel model = createEspFromData(d);
+          element.fsSet.copy(model.fsSet);
+          element.ramSet.copy(model.ramSet);
         }
       });
       providerModel.notify();
@@ -232,6 +244,56 @@ abstract class Controller {
 //      print(ipaddr);
 //      print(uni);
     }
+  }
+
+  static EspModel createEspFromData(Uint8List d) {
+    String name = "", ssid = "", password = "";
+    int netMode;
+    Color colorFs = Color.fromRGBO(d[18], d[19], d[20], 1);
+    Color colorRam = Color.fromRGBO(d[21], d[22], d[23], 1);
+    Settings fsSet = Settings(d[10], d[12], d[14], d[16], colorFs, d[24]);
+    Settings ramSet = Settings(d[11], d[13], d[15], d[17], colorRam, d[25]);
+    fsSet.universe = d[26];
+    fsSet.address = d[27] == 0 ? d[28] : d[27] + d[28] + 1;
+    ramSet.universe = d[26];
+    ramSet.address = d[27] == 0 ? d[28] : d[27] + d[28] + 1;
+    d[29] == 1 ? fsSet.reverse = true : fsSet.reverse = false;
+    d[29] == 1 ? ramSet.reverse = true : ramSet.reverse = false;
+    fsSet.pixelCount = d[30];
+    fsSet.startPixel = d[31];
+    fsSet.endPixel = d[32];
+    fsSet.segment = d[33];
+    ramSet.pixelCount = d[30];
+    ramSet.startPixel = d[31];
+    ramSet.endPixel = d[32];
+    ramSet.segment = d[33];
+    //туц
+    if(d.length > 34) {
+      ramSet.pixelCount = d[30] + (d[34]<<8);
+      ramSet.startPixel = d[31] + (d[35]<<8);
+      ramSet.endPixel = d[32] + (d[36]<<8);
+      ramSet.fxColor = Color.fromRGBO(d[37], d[38], d[39], 1);
+      ramSet.strobe = d[40];
+      ramSet.fxSize = d[41];
+      ramSet.fxParts = d[42];
+      ramSet.fxFade = d[43];
+      ramSet.fxReverse = d[44];
+      netMode = d[45];
+      int nameSize = d[46];
+      int ssidSize = d[47];
+      int passSize = d[48];
+      int playListSize = d[49];
+      print("***createEspFromData*** data.length: ${d.length}");
+      name = String.fromCharCodes(d, 49, 49+nameSize);
+      ssid = String.fromCharCodes(d, 49+nameSize, 49+nameSize+ssidSize);
+      password = String.fromCharCodes(d, 49+nameSize+ssidSize, 49+nameSize+ssidSize+passSize);
+    }
+    EspModel espModel = EspModel(0, "", "", fsSet, ramSet);
+    espModel.name = name;
+    espModel.netMode = netMode;
+    espModel.ssid = ssid;
+    espModel.password = password;
+    return espModel;
   }
 
   static void setFaders(Settings set) {
@@ -317,4 +379,6 @@ abstract class Controller {
     paletteProvider.notify();
     await savePalettesToFS();
   }
+
+
 }

@@ -56,7 +56,7 @@ class _EspViewState extends State<EspView> {
         Controller.setHighlite();
       }
       else {
-        Controller.unsetHL(widget._espModel.uni);
+        Controller.unsetHL(widget._espModel);
       }
     }
     setState(() {
@@ -91,7 +91,7 @@ class _EspViewState extends State<EspView> {
         child: Padding(
           padding: const EdgeInsets.all(3.0),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Row(
                 children: <Widget>[
@@ -117,7 +117,8 @@ class _EspViewState extends State<EspView> {
                     Expanded(child: ColorView(widget._espModel.fsSet.color, false))
                   ],
                 ),
-              )
+              ),
+              Text(widget._espModel.name, style: smallText,)
             ],
           ),
         ),

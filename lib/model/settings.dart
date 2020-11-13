@@ -3,8 +3,8 @@ import 'dart:ui';
 class Settings {
   int mode;
   int automode;
-  int numEffect;
-  int speed;
+  int numEffect; //fxNumber
+  int speed; //fxSpeed
   Color color;
   int dimmer;
   int address;
@@ -14,6 +14,15 @@ class Settings {
   int startPixel;
   int endPixel;
   int segment;
+  int playlistSize;
+  Color fxColor; //*
+  int strobe;
+  int fxSize;
+  int fxParts;
+  int fxFade;
+  int fxReverse;
+
+
 
   Settings(this.mode, this.automode, this.numEffect, this.speed, this.color, this.dimmer);
 
@@ -49,6 +58,13 @@ class Settings {
     startPixel = settings.startPixel;
     endPixel = settings.endPixel;
     segment = settings.segment;
+    playlistSize = settings.playlistSize;
+    fxColor = settings.fxColor;
+    strobe = settings.strobe;
+    fxSize = settings.fxSize;
+    fxParts = settings.fxParts;
+    fxFade = settings.fxFade;
+    fxReverse = settings.fxReverse;
   }
 
   Settings.fromJson(Map<String, dynamic> json) :
@@ -64,7 +80,14 @@ class Settings {
       pixelCount = json['pixelCount'],
       startPixel = json['startPixel'],
       endPixel = json['endPixel'],
-      segment = json['segment'];
+      segment = json['segment'],
+      playlistSize = json['playlistSize'],
+      fxColor = Color.fromRGBO(json['fxRed'], json['fxGreen'], json['fxBlue'], json['fxOpacity']),
+      strobe = json['strobe'],
+      fxSize = json['fxSize'],
+      fxParts = json['fxParts'],
+      fxFade = json['fxFade'],
+      fxReverse = json['fxReverse'];
 
   Map<String, dynamic> toJson() => {
     'mode' : mode,
@@ -82,6 +105,16 @@ class Settings {
     'pixelCount' : pixelCount,
     'startPixel' : startPixel,
     'endPixel' : endPixel,
-    'segment' : segment
+    'segment' : segment,
+    'playlistSize' : playlistSize,
+    'fxRed' : fxColor.red,
+    'fxGreen' : fxColor.green,
+    'fxBlue' : fxColor.blue,
+    'fxOpacity' : fxColor.opacity,
+    'strobe' : strobe,
+    'fxSize' : fxSize,
+    'fxParts' : fxParts,
+    'fxFade' : fxFade,
+    'fxReverse' : fxReverse
   };
 }
