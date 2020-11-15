@@ -52,17 +52,17 @@ abstract class Controller {
     if(!await f.exists()) {
       print("palette file notExists");
       //List<Palette> palettes = List();
-      Settings white = new Settings.full(2, 0, 0, 128, Color.fromRGBO(255, 255, 255, 1), 255, 0, 0, false, 120, 0, 120, 8);
+      Settings white = new Settings.full(2, 0, 0, 128, Color.fromRGBO(255, 255, 255, 1), 255, 0, 0, false, 120, 0, 120, 8, 0, Colors.blue, 0, 100, 1, 0, 0, 1, 1, false, false);
       Palette pWhite = new Palette.withParams(PaletteType.PALETTE, white);
-      Settings red = new Settings.full(2, 0, 0, 128, Color.fromRGBO(255, 0, 0, 1), 255, 0, 0, false, 120, 0, 120, 8);
-      Palette pRed = new Palette.withParams(PaletteType.PALETTE, red);
-      Settings green = new Settings.full(2, 0, 0, 128, Color.fromRGBO(0, 255, 0, 1), 255, 0, 0, false, 120, 0, 120, 8);
-      Palette pGreen = new Palette.withParams(PaletteType.PALETTE, green);
-      Settings blue = new Settings.full(2, 0, 0, 128, Color.fromRGBO(0, 0, 255, 1), 255, 0, 0, false, 120, 0, 120, 8);
-      Palette pBlue = new Palette.withParams(PaletteType.PALETTE, blue);
-      Settings black = new Settings.full(2, 0, 0, 128, Color.fromRGBO(0, 0, 0, 1), 255, 0, 0, false, 120, 0, 120, 8);
-      Palette pBlack = new Palette.withParams(PaletteType.PALETTE, black);
-      List<Palette> palettes = [pWhite, pRed, pGreen, pBlue, pBlack];
+//      Settings red = new Settings.full(2, 0, 0, 128, Color.fromRGBO(255, 0, 0, 1), 255, 0, 0, false, 120, 0, 120, 8);
+//      Palette pRed = new Palette.withParams(PaletteType.PALETTE, red);
+//      Settings green = new Settings.full(2, 0, 0, 128, Color.fromRGBO(0, 255, 0, 1), 255, 0, 0, false, 120, 0, 120, 8);
+//      Palette pGreen = new Palette.withParams(PaletteType.PALETTE, green);
+//      Settings blue = new Settings.full(2, 0, 0, 128, Color.fromRGBO(0, 0, 255, 1), 255, 0, 0, false, 120, 0, 120, 8);
+//      Palette pBlue = new Palette.withParams(PaletteType.PALETTE, blue);
+//      Settings black = new Settings.full(2, 0, 0, 128, Color.fromRGBO(0, 0, 0, 1), 255, 0, 0, false, 120, 0, 120, 8);
+//      Palette pBlack = new Palette.withParams(PaletteType.PALETTE, black);
+      List<Palette> palettes = [pWhite];
       for(int i = 0; i < paletteProvider.PALETTES_COUNT - 5; i++) {
         palettes.add(new Palette());
       }
@@ -201,7 +201,7 @@ abstract class Controller {
   }
 
   static void updateEspView2(Datagram datagr) {
-    print("updateEspView");
+   // print("updateEspView");
     if(datagr != null) {
       Uint8List d = datagr.data;
       int uni = d[2];
@@ -217,7 +217,7 @@ abstract class Controller {
       }
       if(findModel == null) {
         providerModel.list.add(espModel);
-        print("**upddateEspView2** added");
+        //print("**upddateEspView2** added");
       }
       else {
         findModel.copyFrom(espModel);
@@ -277,16 +277,20 @@ abstract class Controller {
       ramSet.fxSize = d[41];
       ramSet.fxParts = d[42];
       ramSet.fxFade = d[43];
-      ramSet.fxReverse = d[44];
-      netMode = d[45];
-      int nameSize = d[46];
-      int ssidSize = d[47];
-      int passSize = d[48];
-      int playListSize = d[49];
-      print("***createEspFromData*** data.length: ${d.length}");
-      name = String.fromCharCodes(d, 49, 49+nameSize);
-      ssid = String.fromCharCodes(d, 49+nameSize, 49+nameSize+ssidSize);
-      password = String.fromCharCodes(d, 49+nameSize+ssidSize, 49+nameSize+ssidSize+passSize);
+      ramSet.fxParams = d[44];
+      ramSet.fxSpread = d[45];
+      ramSet.fxWidth = d[46];
+      ramSet.fxReverse = ramSet.fxParams&1 == 1 ? true : false;
+      ramSet.fxAttack = (ramSet.fxParams>>1)&1 == 1 ? true : false;
+      netMode = d[47];
+      int nameSize = d[48];
+      int ssidSize = d[49];
+      int passSize = d[50];
+      int playListSize = d[51];
+      //print("***createEspFromData*** data.length: ${d.length}");
+      name = String.fromCharCodes(d, 51, 51+nameSize);
+      ssid = String.fromCharCodes(d, 51+nameSize, 51+nameSize+ssidSize);
+      password = String.fromCharCodes(d, 51+nameSize+ssidSize, 51+nameSize+ssidSize+passSize);
     }
     EspModel espModel = EspModel(0, "", "", fsSet, ramSet);
     espModel.name = name;
@@ -305,6 +309,13 @@ abstract class Controller {
     providerModelAttribute.mode = set.mode;
     providerModelAttribute.automode = set.automode;
     providerModelAttribute.fxNum = set.numEffect;
+    providerModelAttribute.fxColor = set.fxColor;
+    providerModelAttribute.fxParts = set.fxParts*1.0;
+    providerModelAttribute.fxSpread = set.fxSpread*1.0;
+    providerModelAttribute.fxSize = set.fxSize*1.0;
+    providerModelAttribute.fxWidth = set.fxWidth*1.0;
+    providerModelAttribute.fxAttack = set.fxAttack;
+    providerModelAttribute.fxReverse = set.fxReverse;
     providerModelAttribute.notify();
   }
 
@@ -361,7 +372,9 @@ abstract class Controller {
     if(palette.paletteType == PaletteType.PALETTE) {
       providerModel.list.forEach((element) {
         if(element.selected && palette.isNotEmpty()) {
-          element.ramSet.copy(palette.settings[0].settings);}
+          element.ramSet.copy(palette.settings[0].settings);
+        print("num: ${element.ramSet.numEffect}");
+        }
       });
     }
     else {
@@ -371,6 +384,7 @@ abstract class Controller {
         });
       }
     }
+    setFaders(palette.settings[0].settings);
     //providerModel.notify();
   }
 

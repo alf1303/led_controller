@@ -15,7 +15,13 @@ class ProviderModelAttribute extends ChangeNotifier{
   int fxNum = 0;
   Color fxColor = Colors.red;
   double fxSpeed = 0.0;
-  double fxParts = 0.0;
+  double fxParts = 1;
+  double fxSpread = 1;
+  double fxWidth = 1;
+  double fxFade = 0;
+  double fxSize = 100;
+  bool fxReverse = false;
+  bool fxAttack = false;
   //int fxReverse = false;
   bool flag = false;
 

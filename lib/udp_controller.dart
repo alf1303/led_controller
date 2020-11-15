@@ -185,7 +185,7 @@ abstract class UDPCotroller {
       Controller.providerModel.list.forEach((element) async{
         if(element.selected) {
           Uint8List header = formHeader(element.uni, "S", "S");
-          Uint8List data = Uint8List(28);
+          Uint8List data = Uint8List(30);
           //print(save);
           int addrLow = 0;
           int addrHigh = 0;
@@ -200,7 +200,7 @@ abstract class UDPCotroller {
             addrHigh = 0;
           }
           if(element.ramSet.reverse) reverse = 1;
-          data.setRange(0, 28, List.from([
+          data.setRange(0, 30, List.from([
             element.ramSet.mode,
             element.ramSet.automode,
             element.ramSet.numEffect,
@@ -228,7 +228,9 @@ abstract class UDPCotroller {
             element.ramSet.fxSize,
             element.ramSet.fxParts,
             element.ramSet.fxFade,
-            element.ramSet.fxReverse
+            element.ramSet.fxParams,
+            element.ramSet.fxSpread,
+            element.ramSet.fxWidth
           ]));
           List<int> temp = header + data;
           //print(temp);

@@ -11,6 +11,14 @@ const Color dividerColor = Colors.black12;
 const Color splashColor = Colors.purpleAccent;
 Color emptyPaletteColor = Colors.grey.withOpacity(0.7);
 
+//SHADOWS
+BoxShadow boxShadow1 = BoxShadow(
+    color: mainBackgroundColor.withOpacity(0.3),
+    spreadRadius: 0.5,
+    blurRadius: 2,
+    offset: Offset(1, 2)
+);
+
 //TEXT STYLES
 TextStyle headerText = TextStyle(fontSize: 25, letterSpacing: 2, fontWeight: FontWeight.bold, color: Colors.black.withOpacity(1),
     shadows: [Shadow(color: Colors.pinkAccent, blurRadius: 5,)]

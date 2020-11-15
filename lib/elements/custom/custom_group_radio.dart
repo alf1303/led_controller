@@ -1,47 +1,51 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class CustomRadio extends StatefulWidget {
+class CustomGroupRadio extends StatefulWidget {
   final String label;
-  final bool value;
-  final ValueChanged<bool> onChanged;
+  final value;
+  final groupValue;
+  final ValueChanged<dynamic> onChanged;
   final Color color;
+  final bool enabled;
   final double margin;
   final double padding;
   @override
   State createState() {
-    return CustomRadioState();
+    return CustomGroupRadioState();
   }
-  const CustomRadio({
+  const CustomGroupRadio({
     @required this.label,
     @required this.value,
+    @required this.groupValue,
     @required this.onChanged,
+    @required this.enabled,
     this.color,
     this.margin,
     this.padding
   });
 }
 
-class CustomRadioState extends State<CustomRadio> {
+class CustomGroupRadioState extends State<CustomGroupRadio> {
   void onTapFunction() {
     setState(() {
-      widget.onChanged(!widget.value);
+      widget.onChanged(widget.value);
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTapFunction,
+      onTap: widget.enabled ? onTapFunction : null,
       child: Container(
         margin: EdgeInsets.symmetric(vertical: 6, horizontal: widget.margin == null ? 6 : widget.margin),
         padding: EdgeInsets.symmetric(vertical: 6, horizontal: widget.padding == null ? 6 : widget.padding),
         decoration: BoxDecoration(
-            border: Border.all(color: (widget.value) ? widget.color : Colors.grey),
+            border: Border.all(color: (widget.enabled && widget.value == widget.groupValue) ? widget.color : Colors.grey),
             color: Colors.transparent,
             borderRadius: BorderRadius.circular(7)
         ),
-        child: Text(widget.label, style: TextStyle(color: (widget.value) ? widget.color : Colors.grey),),
+        child: Text(widget.label, style: TextStyle(color: (widget.enabled && widget.value == widget.groupValue) ? widget.color : Colors.grey),),
       ),
     );
   }

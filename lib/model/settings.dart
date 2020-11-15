@@ -20,9 +20,11 @@ class Settings {
   int fxSize;
   int fxParts;
   int fxFade;
-  int fxReverse;
-
-
+  int fxParams;
+  int fxSpread;
+  int fxWidth;
+  bool fxReverse;
+  bool fxAttack;
 
   Settings(this.mode, this.automode, this.numEffect, this.speed, this.color, this.dimmer);
 
@@ -40,7 +42,19 @@ class Settings {
       this.pixelCount,
       this.startPixel,
       this.endPixel,
-      this.segment);
+      this.segment,
+      this.playlistSize,
+      this.fxColor,
+      this.strobe,
+      this.fxSize,
+      this.fxParts,
+      this.fxFade,
+      this.fxParams,
+      this.fxSpread,
+      this.fxWidth,
+      this.fxReverse,
+      this.fxAttack,
+      );
 
   Settings.empty();
 
@@ -64,7 +78,11 @@ class Settings {
     fxSize = settings.fxSize;
     fxParts = settings.fxParts;
     fxFade = settings.fxFade;
+    fxParams = settings.fxParams;
+    fxSpread = settings.fxSpread;
+    fxWidth = settings.fxWidth;
     fxReverse = settings.fxReverse;
+    fxAttack = settings.fxAttack;
   }
 
   Settings.fromJson(Map<String, dynamic> json) :
@@ -87,7 +105,11 @@ class Settings {
       fxSize = json['fxSize'],
       fxParts = json['fxParts'],
       fxFade = json['fxFade'],
-      fxReverse = json['fxReverse'];
+      fxParams = json['fxParams'],
+      fxSpread = json['fxSpread'],
+      fxWidth = json['fxWidth'],
+      fxReverse = json['fxReverse'] == 1 ? true : false,
+      fxAttack = json['fxAttack'] == 1 ? true : false;
 
   Map<String, dynamic> toJson() => {
     'mode' : mode,
@@ -115,6 +137,30 @@ class Settings {
     'fxSize' : fxSize,
     'fxParts' : fxParts,
     'fxFade' : fxFade,
-    'fxReverse' : fxReverse
+    'fxParams' : fxParams,
+    'fxSpread' : fxSpread,
+    'fxWidth' : fxWidth,
+    'fxReverse' : fxReverse,
+    'fxAttack' : fxAttack
   };
+
+  setReverse(bool reverse) {
+    this.fxReverse = reverse;
+    if(reverse) {
+      this.fxParams = this.fxParams | (1);
+    }
+    else {
+      this.fxParams = this.fxParams & ~(1);
+    }
+  }
+
+  setFxAttack(bool attack) {
+    this.fxAttack = attack;
+    if(attack) {
+      this.fxParams = this.fxParams | (1<<1);
+    }
+    else {
+      this.fxParams = this.fxParams & ~(1<<1);
+    }
+  }
 }
