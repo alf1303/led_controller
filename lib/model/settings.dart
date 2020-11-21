@@ -25,6 +25,9 @@ class Settings {
   int fxWidth;
   bool fxReverse;
   bool fxAttack;
+  bool fxSymm;
+  bool fxRnd;
+  bool fxRndColor;
 
   Settings(this.mode, this.automode, this.numEffect, this.speed, this.color, this.dimmer);
 
@@ -54,6 +57,9 @@ class Settings {
       this.fxWidth,
       this.fxReverse,
       this.fxAttack,
+      this.fxSymm,
+      this.fxRnd,
+      this.fxRndColor
       );
 
   Settings.empty();
@@ -83,6 +89,9 @@ class Settings {
     fxWidth = settings.fxWidth;
     fxReverse = settings.fxReverse;
     fxAttack = settings.fxAttack;
+    fxSymm = settings.fxSymm;
+    fxRnd = settings.fxRnd;
+    fxRndColor = settings.fxRndColor;
   }
 
   Settings.fromJson(Map<String, dynamic> json) :
@@ -109,7 +118,10 @@ class Settings {
       fxSpread = json['fxSpread'],
       fxWidth = json['fxWidth'],
       fxReverse = json['fxReverse'] == 1 ? true : false,
-      fxAttack = json['fxAttack'] == 1 ? true : false;
+      fxAttack = json['fxAttack'] == 1 ? true : false,
+      fxSymm = json['fxSymm'] == 1 ? true : false,
+      fxRnd = json['fxRnd'] == 1 ? true : false,
+        fxRndColor = json['fxRndColor'] == 1 ? true : false;
 
   Map<String, dynamic> toJson() => {
     'mode' : mode,
@@ -141,7 +153,10 @@ class Settings {
     'fxSpread' : fxSpread,
     'fxWidth' : fxWidth,
     'fxReverse' : fxReverse,
-    'fxAttack' : fxAttack
+    'fxAttack' : fxAttack,
+    'fxSymm' : fxSymm,
+    'fxRnd' : fxRnd,
+    'fxRndColor' : fxRndColor,
   };
 
   setReverse(bool reverse) {
@@ -161,6 +176,36 @@ class Settings {
     }
     else {
       this.fxParams = this.fxParams & ~(1<<1);
+    }
+  }
+
+  setFxSymm(bool symm) {
+    this.fxSymm = symm;
+    if(symm) {
+      this.fxParams = this.fxParams | (1<<2);
+    }
+    else {
+      this.fxParams = this.fxParams & ~(1<<2);
+    }
+  }
+
+  setFxRnd(bool rnd) {
+    this.fxRnd = rnd;
+    if(rnd) {
+      this.fxParams = this.fxParams | (1<<3);
+    }
+    else {
+      this.fxParams = this.fxParams & ~(1<<3);
+    }
+  }
+
+  setFxRndColor(bool rndColor) {
+    this.fxRndColor = rndColor;
+    if(rndColor) {
+      this.fxParams = this.fxParams | (1<<7);
+    }
+    else {
+      this.fxParams = this.fxParams & ~(1<<7);
     }
   }
 }

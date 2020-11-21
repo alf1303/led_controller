@@ -200,6 +200,7 @@ abstract class UDPCotroller {
             addrHigh = 0;
           }
           if(element.ramSet.reverse) reverse = 1;
+          print("width: ${element.ramSet.fxWidth}");
           data.setRange(0, 30, List.from([
             element.ramSet.mode,
             element.ramSet.automode,
@@ -230,7 +231,7 @@ abstract class UDPCotroller {
             element.ramSet.fxFade,
             element.ramSet.fxParams,
             element.ramSet.fxSpread,
-            element.ramSet.fxWidth
+            element.ramSet.fxWidth,
           ]));
           List<int> temp = header + data;
           //print(temp);

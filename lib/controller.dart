@@ -52,7 +52,7 @@ abstract class Controller {
     if(!await f.exists()) {
       print("palette file notExists");
       //List<Palette> palettes = List();
-      Settings white = new Settings.full(2, 0, 0, 128, Color.fromRGBO(255, 255, 255, 1), 255, 0, 0, false, 120, 0, 120, 8, 0, Colors.blue, 0, 100, 1, 0, 0, 1, 1, false, false);
+      Settings white = new Settings.full(2, 0, 0, 128, Color.fromRGBO(255, 255, 255, 1), 255, 0, 0, false, 120, 0, 120, 8, 0, Colors.blue, 0, 100, 1, 0, 0, 1, 1, false, false, false, false, false);
       Palette pWhite = new Palette.withParams(PaletteType.PALETTE, white);
 //      Settings red = new Settings.full(2, 0, 0, 128, Color.fromRGBO(255, 0, 0, 1), 255, 0, 0, false, 120, 0, 120, 8);
 //      Palette pRed = new Palette.withParams(PaletteType.PALETTE, red);
@@ -282,6 +282,9 @@ abstract class Controller {
       ramSet.fxWidth = d[46];
       ramSet.fxReverse = ramSet.fxParams&1 == 1 ? true : false;
       ramSet.fxAttack = (ramSet.fxParams>>1)&1 == 1 ? true : false;
+      ramSet.fxSymm = (ramSet.fxParams>>2)&1 == 1 ? true : false;
+      ramSet.fxRnd = (ramSet.fxParams>>3)&1 == 1 ? true : false;
+      ramSet.fxRndColor = (ramSet.fxParams>>7)&1 == 1 ? true : false;
       netMode = d[47];
       int nameSize = d[48];
       int ssidSize = d[49];
@@ -316,6 +319,9 @@ abstract class Controller {
     providerModelAttribute.fxWidth = set.fxWidth*1.0;
     providerModelAttribute.fxAttack = set.fxAttack;
     providerModelAttribute.fxReverse = set.fxReverse;
+    providerModelAttribute.fxSymm = set.fxSymm;
+    providerModelAttribute.fxRnd = set.fxRnd;
+    providerModelAttribute.fxRndColor = set.fxRndColor;
     providerModelAttribute.notify();
   }
 

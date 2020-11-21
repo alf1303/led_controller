@@ -22,6 +22,9 @@ class ProviderModelAttribute extends ChangeNotifier{
   double fxSize = 100;
   bool fxReverse = false;
   bool fxAttack = false;
+  bool fxSymm = false;
+  bool fxRnd = false;
+  bool fxRndColor = false;
   //int fxReverse = false;
   bool flag = false;
 
