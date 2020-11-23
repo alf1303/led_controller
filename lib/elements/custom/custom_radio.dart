@@ -8,6 +8,7 @@ class CustomRadio extends StatefulWidget {
   final Color color;
   final double margin;
   final double padding;
+  final bool visible;
   @override
   State createState() {
     return CustomRadioState();
@@ -18,7 +19,8 @@ class CustomRadio extends StatefulWidget {
     @required this.onChanged,
     this.color,
     this.margin,
-    this.padding
+    this.padding,
+    this.visible = true
   });
 }
 
@@ -31,17 +33,20 @@ class CustomRadioState extends State<CustomRadio> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTapFunction,
-      child: Container(
-        margin: EdgeInsets.symmetric(vertical: 6, horizontal: widget.margin == null ? 6 : widget.margin),
-        padding: EdgeInsets.symmetric(vertical: 6, horizontal: widget.padding == null ? 6 : widget.padding),
-        decoration: BoxDecoration(
-            border: Border.all(color: (widget.value) ? widget.color : Colors.grey),
-            color: Colors.transparent,
-            borderRadius: BorderRadius.circular(7)
+    return Visibility(
+      visible: widget.visible,
+      child: GestureDetector(
+        onTap: onTapFunction,
+        child: Container(
+          margin: EdgeInsets.symmetric(vertical: 6, horizontal: widget.margin == null ? 6 : widget.margin),
+          padding: EdgeInsets.symmetric(vertical: 6, horizontal: widget.padding == null ? 6 : widget.padding),
+          decoration: BoxDecoration(
+              border: Border.all(color: (widget.value) ? widget.color : Colors.grey),
+              color: Colors.transparent,
+              borderRadius: BorderRadius.circular(7)
+          ),
+          child: Text(widget.label, style: TextStyle(color: (widget.value) ? widget.color : Colors.grey, fontSize: 10), ),
         ),
-        child: Text(widget.label, style: TextStyle(color: (widget.value) ? widget.color : Colors.grey),),
       ),
     );
   }

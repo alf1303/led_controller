@@ -45,7 +45,7 @@ class CustomGroupRadioState extends State<CustomGroupRadio> {
             color: Colors.transparent,
             borderRadius: BorderRadius.circular(7)
         ),
-        child: Text(widget.label, style: TextStyle(color: (widget.enabled && widget.value == widget.groupValue) ? widget.color : Colors.grey),),
+        child: Center(child: Text(widget.label, style: TextStyle(color: (widget.enabled && widget.value == widget.groupValue) ? widget.color : Colors.grey),)),
       ),
     );
   }

@@ -15,6 +15,7 @@ class Settings {
   int endPixel;
   int segment;
   int playlistSize;
+  bool playlistMode;
   Color fxColor; //*
   int strobe;
   int fxSize;
@@ -47,6 +48,7 @@ class Settings {
       this.endPixel,
       this.segment,
       this.playlistSize,
+      this.playlistMode,
       this.fxColor,
       this.strobe,
       this.fxSize,
@@ -79,6 +81,27 @@ class Settings {
     endPixel = settings.endPixel;
     segment = settings.segment;
     playlistSize = settings.playlistSize;
+    playlistMode = settings.playlistMode;
+    fxColor = settings.fxColor;
+    strobe = settings.strobe;
+    fxSize = settings.fxSize;
+    fxParts = settings.fxParts;
+    fxFade = settings.fxFade;
+    fxParams = settings.fxParams;
+    fxSpread = settings.fxSpread;
+    fxWidth = settings.fxWidth;
+    fxReverse = settings.fxReverse;
+    fxAttack = settings.fxAttack;
+    fxSymm = settings.fxSymm;
+    fxRnd = settings.fxRnd;
+    fxRndColor = settings.fxRndColor;
+  }
+
+  copyForPalette(Settings settings) {
+    numEffect = settings.numEffect;
+    speed = settings.speed;
+    color = Color.fromRGBO(settings.color.red, settings.color.green, settings.color.blue, 1);
+    dimmer = settings.dimmer;
     fxColor = settings.fxColor;
     strobe = settings.strobe;
     fxSize = settings.fxSize;
@@ -109,6 +132,7 @@ class Settings {
       endPixel = json['endPixel'],
       segment = json['segment'],
       playlistSize = json['playlistSize'],
+      playlistMode = json['playlistMode'],
       fxColor = Color.fromRGBO(json['fxRed'], json['fxGreen'], json['fxBlue'], json['fxOpacity']),
       strobe = json['strobe'],
       fxSize = json['fxSize'],
@@ -141,6 +165,7 @@ class Settings {
     'endPixel' : endPixel,
     'segment' : segment,
     'playlistSize' : playlistSize,
+    'playlistMode' : playlistMode,
     'fxRed' : fxColor.red,
     'fxGreen' : fxColor.green,
     'fxBlue' : fxColor.blue,
@@ -206,6 +231,16 @@ class Settings {
     }
     else {
       this.fxParams = this.fxParams & ~(1<<7);
+    }
+  }
+
+  setPlayListMode(bool playlistMode) {
+    this.playlistMode = playlistMode;
+    if(playlistMode) {
+      this.fxParams = this.fxParams | (1<<6);
+    }
+    else {
+      this.fxParams = this.fxParams & ~(1<<6);
     }
   }
 }

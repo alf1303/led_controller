@@ -25,6 +25,7 @@ class ProviderModelAttribute extends ChangeNotifier{
   bool fxSymm = false;
   bool fxRnd = false;
   bool fxRndColor = false;
+  bool playlistMode = false;
   //int fxReverse = false;
   bool flag = false;
 

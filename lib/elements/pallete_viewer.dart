@@ -111,6 +111,7 @@ void _storePosition(TapDownDetails details) {
     final paletteProvider = Provider.of<PaletteProvider>(context, listen: true);
     bool isPalette = widget._palette.paletteType == PaletteType.PALETTE;
     Color colorPal = widget._palette.getColor();
+    String label = widget._palette.getLabel();
     //print(colorPal);
     return Padding(
       padding: const EdgeInsets.all(4.0),
@@ -137,6 +138,15 @@ void _storePosition(TapDownDetails details) {
                     shape: RoundedRectangleBorder(side: BorderSide(color: Colors.transparent, width: 0), borderRadius: BorderRadius.all(Radius.circular(isPalette ? 20 : 5))),
                     color: Colors.transparent,
                     child: InkWell(
+                      child: Center(child: Column(
+                        children: <Widget>[
+                          SizedBox(height: 6,),
+                          Text(label, style: smallText,),
+                          Visibility(
+                            visible: widget._palette.playlistItem,
+                              child: Icon(Icons.play_circle_outline, size: 16,))
+                        ],
+                      )),
                       splashColor: mainBackgroundColor,
                       onTap: () {
                         _controller.animateTo(1);
@@ -152,7 +162,7 @@ void _storePosition(TapDownDetails details) {
                     ),
                   ),
                 ),
-              )
+              ),
             ],
           ),
         ),
@@ -192,15 +202,40 @@ class MyPaletteEntryState extends State<MyPaletteEntry> {
     Navigator.pop(context);
   }
 
+  void add() {
+    Controller.addPaletteToPlaylist(widget._palette);
+    widget.valueChanged(true);
+    Navigator.pop(context);
+  }
+
+  void remove() {
+    Controller.removePaletteFromPlaylist(widget._palette);
+    widget.valueChanged(true);
+    Navigator.pop(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         RaisedButton(materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,shape: buttonShape, onPressed: save, color: buttonColor.withOpacity(0.7), child: Text("Save"),),
         SizedBox(height: 2,),
-        RaisedButton(materialTapTargetSize: MaterialTapTargetSize.shrinkWrap, shape: buttonShape, onPressed: clear, color: buttonColor.withOpacity(0.6), child: Text("Clear", style: TextStyle(color: Colors.white),),)
+        RaisedButton(materialTapTargetSize: MaterialTapTargetSize.shrinkWrap, shape: buttonShape, onPressed: clear, color: buttonColor.withOpacity(0.6), child: Text("Clear", style: TextStyle(color: Colors.white),),),
+        SizedBox(height: 2,),
+        Visibility(
+            child:
+            RaisedButton(materialTapTargetSize: MaterialTapTargetSize.shrinkWrap, shape: buttonShape, onPressed: add, color: buttonColor.withOpacity(0.6), child: Text("Add to PL", style: TextStyle(color: Colors.white),),),
+        visible: widget._palette.canAdd(),
+        ),
+        SizedBox(height: 2,),
+        Visibility(
+          child:
+          RaisedButton(materialTapTargetSize: MaterialTapTargetSize.shrinkWrap, shape: buttonShape, onPressed: remove, color: buttonColor.withOpacity(0.6), child: Text("Rem from PL", style: TextStyle(color: Colors.white),),),
+          visible: widget._palette.canRemove(),
+        ),
       ],
     );
   }

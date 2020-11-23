@@ -6,6 +6,7 @@ import 'package:wifi_ip/wifi_ip.dart';
 import 'package:udp/udp.dart';
 
 import 'controller.dart';
+import 'model/palette.dart';
 
 abstract class UDPCotroller {
   static final int _PORT_OUT = 6454;
@@ -241,6 +242,44 @@ abstract class UDPCotroller {
     }
   }
 
+  static void sendPlayList() async{
+    setLocalIp();
+    var sender = await UDP.bind(Endpoint.unicast(_local_ip, port: Port(_PORT_OUT)));
+    List<Palette> list = Controller.paletteProvider.playlist;
+    int packetLength = list.length*16 + 2;
+    Uint8List data = Uint8List(packetLength);
+    data[0] = list.length;
+    data[1] = Controller.paletteProvider.playlistPeriod;
+    int i = 2;
+    list.forEach((el) {
+      data[i++] = el.settings[0].settings.dimmer;
+      data[i++] = el.settings[0].settings.color.red;
+      data[i++] = el.settings[0].settings.color.green;
+      data[i++] = el.settings[0].settings.color.blue;
+      data[i++] = el.settings[0].settings.fxColor.red;
+      data[i++] = el.settings[0].settings.fxColor.green;
+      data[i++] = el.settings[0].settings.fxColor.blue;
+      data[i++] = el.settings[0].settings.strobe;
+      data[i++] = el.settings[0].settings.numEffect;
+      data[i++] = el.settings[0].settings.speed;
+      data[i++] = el.settings[0].settings.fxSize;
+      data[i++] = el.settings[0].settings.fxParts;
+      data[i++] = el.settings[0].settings.fxFade;
+      data[i++] = el.settings[0].settings.fxParams;
+      data[i++] = el.settings[0].settings.fxSpread;
+      data[i++] = el.settings[0].settings.fxWidth;
+    });
+    if(Controller.providerModel.list != null) {
+      Controller.providerModel.list.forEach((element) async {
+        if (element.selected) {
+          Uint8List header = formHeader(element.uni, "S", "L");
+          List<int> temp = header + data;
+          int datalength = await sender.send(temp, Endpoint.unicast(InternetAddress(element.ipAddress), port: Port(_PORT_OUT)));
+        }
+      });
+    }
+  }
+
   static void testSend() async{
     setLocalIp();
     var sender = await UDP.bind(Endpoint.unicast(_local_ip, port: Port(_PORT_OUT)));
@@ -273,6 +312,8 @@ abstract class UDPCotroller {
     String resIp = ipStart + uni.toString();
     return InternetAddress(resIp);
   }
+
+
 
 
 

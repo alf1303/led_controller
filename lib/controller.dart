@@ -52,7 +52,7 @@ abstract class Controller {
     if(!await f.exists()) {
       print("palette file notExists");
       //List<Palette> palettes = List();
-      Settings white = new Settings.full(2, 0, 0, 128, Color.fromRGBO(255, 255, 255, 1), 255, 0, 0, false, 120, 0, 120, 8, 0, Colors.blue, 0, 100, 1, 0, 0, 1, 1, false, false, false, false, false);
+      Settings white = new Settings.full(2, 0, 0, 128, Color.fromRGBO(255, 255, 255, 1), 255, 0, 0, false, 120, 0, 120, 8, 0, false, Colors.blue, 0, 100, 1, 0, 0, 1, 1, false, false, false, false, false);
       Palette pWhite = new Palette.withParams(PaletteType.PALETTE, white);
 //      Settings red = new Settings.full(2, 0, 0, 128, Color.fromRGBO(255, 0, 0, 1), 255, 0, 0, false, 120, 0, 120, 8);
 //      Palette pRed = new Palette.withParams(PaletteType.PALETTE, red);
@@ -248,6 +248,7 @@ abstract class Controller {
 
   static EspModel createEspFromData(Uint8List d) {
     String name = "", ssid = "", password = "";
+    bool playlistMode = false;
     int netMode;
     Color colorFs = Color.fromRGBO(d[18], d[19], d[20], 1);
     Color colorRam = Color.fromRGBO(d[21], d[22], d[23], 1);
@@ -285,11 +286,13 @@ abstract class Controller {
       ramSet.fxSymm = (ramSet.fxParams>>2)&1 == 1 ? true : false;
       ramSet.fxRnd = (ramSet.fxParams>>3)&1 == 1 ? true : false;
       ramSet.fxRndColor = (ramSet.fxParams>>7)&1 == 1 ? true : false;
+      ramSet.playlistMode = (ramSet.fxParams>>6)&1 == 1 ? true : false;
       netMode = d[47];
       int nameSize = d[48];
       int ssidSize = d[49];
       int passSize = d[50];
       int playListSize = d[51];
+      ramSet.playlistSize = playListSize;
       //print("***createEspFromData*** data.length: ${d.length}");
       name = String.fromCharCodes(d, 51, 51+nameSize);
       ssid = String.fromCharCodes(d, 51+nameSize, 51+nameSize+ssidSize);
@@ -322,6 +325,7 @@ abstract class Controller {
     providerModelAttribute.fxSymm = set.fxSymm;
     providerModelAttribute.fxRnd = set.fxRnd;
     providerModelAttribute.fxRndColor = set.fxRndColor;
+    providerModelAttribute.playlistMode = set.playlistMode;
     providerModelAttribute.notify();
   }
 
@@ -357,7 +361,7 @@ abstract class Controller {
     if(providerModel.countSelected() == 1) {
       palette.settings.clear();
       Settings set = Settings.empty();
-      set.copy(providerModel.getFirstChecked().ramSet);
+      set.copyForPalette(providerModel.getFirstChecked().ramSet);
       palette.settings.add(new PaletteEntry(21, set));
       palette.paletteType = PaletteType.PALETTE;
     }
@@ -365,7 +369,7 @@ abstract class Controller {
       palette.settings.clear();
       providerModel.list.forEach((element) {
         Settings set = Settings.empty();
-        set.copy(element.ramSet);
+        set.copyForPalette(element.ramSet);
           palette.settings.add(new PaletteEntry(element.uni, set));
       });
       palette.paletteType = PaletteType.PROGRAM;
@@ -378,7 +382,7 @@ abstract class Controller {
     if(palette.paletteType == PaletteType.PALETTE) {
       providerModel.list.forEach((element) {
         if(element.selected && palette.isNotEmpty()) {
-          element.ramSet.copy(palette.settings[0].settings);
+          element.ramSet.copyForPalette(palette.settings[0].settings);
         print("num: ${element.ramSet.numEffect}");
         }
       });
@@ -386,7 +390,7 @@ abstract class Controller {
     else {
       if(palette.isNotEmpty() && providerModel.list.isNotEmpty) {
         palette.settings.forEach((el) {
-          providerModel.list.firstWhere((element) => element.uni == el.uni).ramSet.copy(el.settings);
+          providerModel.list.firstWhere((element) => element.uni == el.uni).ramSet.copyForPalette(el.settings);
         });
       }
     }
@@ -398,6 +402,20 @@ abstract class Controller {
     palette.settings.clear();
     paletteProvider.notify();
     await savePalettesToFS();
+  }
+
+  static addPaletteToPlaylist(Palette palette) {
+    paletteProvider.addToPlaylist(palette);
+    paletteProvider.notify();
+  }
+
+  static removePaletteFromPlaylist(Palette palette) {
+    paletteProvider.removeFromPlaylist(palette);
+    paletteProvider.notify();
+  }
+
+  static sendPlaylist() {
+    UDPCotroller.sendPlayList();
   }
 
 

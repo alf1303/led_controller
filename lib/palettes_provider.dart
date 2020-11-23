@@ -9,6 +9,8 @@ class PaletteProvider extends ChangeNotifier{
   }
   PaletteProvider._internal();
   List<Palette> list = List();
+  List<Palette> playlist = List();
+  int playlistPeriod = 1;
 
   void notify() {
     notifyListeners();
@@ -16,5 +18,17 @@ class PaletteProvider extends ChangeNotifier{
 
   void createEmptyPalettes() {
     list = List.generate(PALETTES_COUNT, (index) => new Palette());
+  }
+
+  void addToPlaylist(Palette palette) {
+    playlist.add(palette);
+    palette.playlistItem = true;
+  }
+
+  void removeFromPlaylist(Palette palette) {
+    if(playlist.isNotEmpty) {
+      playlist.remove(palette);
+      palette.playlistItem = false;
+    }
   }
 }

@@ -11,6 +11,7 @@ import 'package:ledcontroller/styles.dart';
 class Palette {
   List<PaletteEntry> settings =  List();
   PaletteType paletteType;
+  bool playlistItem = false;
 
 
   Palette() {
@@ -28,11 +29,42 @@ class Palette {
       return emptyPaletteColor;
     else{
       if(paletteType == PaletteType.PALETTE) {
-        return settings[0].settings.color;
+        if(settings[0].settings.numEffect == 0) {
+          return settings[0].settings.color;
+        }
+        else {
+          return settings[0].settings.fxColor;
+        }
       }
       else
         return null;
     }
+  }
+  String getLabel() {
+    if(settings.isEmpty)
+      return "";
+    else{
+      if(settings[0].settings.numEffect == 0) {
+        return "";
+      }
+      else {
+        return "FX";
+      }
+    }
+  }
+
+  bool canAdd() {
+    if(!playlistItem && settings.isNotEmpty && paletteType == PaletteType.PALETTE) {
+      return true;
+    }
+    return false;
+  }
+
+  bool canRemove() {
+    if(playlistItem && paletteType == PaletteType.PALETTE) {
+      return true;
+    }
+    return false;
   }
 
   bool isEmpty() {
