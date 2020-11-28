@@ -60,6 +60,7 @@ class MainPage extends StatelessWidget{
                   elevation: 10,
                   onPressed: () async{
                     await Controller.scan();
+                    await Controller.setMode();
                   }),
               SettingsWidget(),
               Text("LEDControl", style: headerText,),

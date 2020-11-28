@@ -132,7 +132,7 @@ class SettingsWidget extends StatelessWidget{
                                         validator: (value) {
                                           if(value.isEmpty) return "Empty";
                                           else
-                                          if(int.parse(value) > 1024) return "< 1025";
+                                          if(int.parse(value) > 500) return "< 1025";
                                           return null;
                                         },
                                       ),
@@ -609,17 +609,17 @@ class _ValueSetterViewState extends State<ValueSetterView> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisSize: MainAxisSize.min,
                             children: <Widget>[
-                              //Text("Playlist items: ${Controller.paletteProvider.playlist.length}"),
+                              Text("Playlist items: ${Controller.paletteProvider.playlist.length}"),
                               Row(
                                 children: <Widget>[
-                                  Text("Period (minutes):"),
+                                  Text("Period (seconds):"),
                                   Expanded(
                                     child: TextFormField(
                                       decoration: inputDecoration,
                                       controller: _periodController,
                                       keyboardType: TextInputType.number,
                                       validator: (value) {
-                                        if(value.isEmpty || int.parse(value) < 1 || int.parse(value) > 99) return "1-99 minutes";
+                                        if(value.isEmpty || int.parse(value) < 1 || int.parse(value) > 3600) return "1-3600 seconds";
                                         return null;
                                       },
                                     ),
@@ -711,7 +711,7 @@ class _ValueSetterViewState extends State<ValueSetterView> {
                                 StatefulBuilder(builder: (context, setStat) {
                                   return MyCustomSliderNoCard("Speed", _fxSpeed, 0, 100, secondaryBackgroundColor, linesColor, linesColor, 5, (value) {setStat(() {_fxSpeed = value;}); }, onFxSpeedChangeEnd);
                                 }),
-                                FxSliderWidget("Width", _fxWidth, onFxWidthChangeEnd, (_fxNum == FxNames.Cyclon.index || _fxNum == FxNames.Fade)),
+                                FxSliderWidget("Width", _fxWidth, onFxWidthChangeEnd, (_fxNum == FxNames.Cyclon.index || _fxNum == FxNames.Fade.index)),
                                 FxSliderWidget("Parts", _fxParts, onFxPartsChangeEnd, (_fxNum != FxNames.OFF.index && _fxNum != FxNames.Cyclon.index)),
                                 FxSliderWidget("Spread", _fxSpread, onFxSpreadChangeEnd, (_fxNum == FxNames.Sinus.index)),
                                 StatefulBuilder(builder: (context, setStat) {

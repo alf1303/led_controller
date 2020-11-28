@@ -201,7 +201,8 @@ abstract class UDPCotroller {
             addrHigh = 0;
           }
           if(element.ramSet.reverse) reverse = 1;
-          print("width: ${element.ramSet.fxWidth}");
+          //print("width: ${element.ramSet.fxWidth}");
+          //print("mode: ${element.ramSet.mode}");
           data.setRange(0, 30, List.from([
             element.ramSet.mode,
             element.ramSet.automode,
@@ -246,11 +247,13 @@ abstract class UDPCotroller {
     setLocalIp();
     var sender = await UDP.bind(Endpoint.unicast(_local_ip, port: Port(_PORT_OUT)));
     List<Palette> list = Controller.paletteProvider.playlist;
-    int packetLength = list.length*16 + 2;
+    int packetLength = list.length*16 + 3;
     Uint8List data = Uint8List(packetLength);
+    print("length: ${list.length} period: ${Controller.paletteProvider.playlistPeriod}");
     data[0] = list.length;
     data[1] = Controller.paletteProvider.playlistPeriod;
-    int i = 2;
+    data[2] = Controller.paletteProvider.playlistPeriod>>8;
+    int i = 3;
     list.forEach((el) {
       data[i++] = el.settings[0].settings.dimmer;
       data[i++] = el.settings[0].settings.color.red;

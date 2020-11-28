@@ -81,12 +81,7 @@ abstract class Controller {
     providerModel.notify();
     //providerModel.list.forEach((element) { element.isAlive = false;});
     await UDPCotroller.scanRequest();
-    providerModel.list.forEach((element) {
-      element.ramSet.mode = 2;
-      element.ramSet.automode = 0;
-    });
-    //providerModel.list.removeWhere((element) => !element.isAlive);
-    setSend(255);
+    //setSend(255);
     return await Future.delayed(Duration(seconds: 1), () {return false;});
   }
 
@@ -416,6 +411,21 @@ abstract class Controller {
 
   static sendPlaylist() {
     UDPCotroller.sendPlayList();
+  }
+
+  static setMode() async{
+    providerModel.list.forEach((element) {
+      element.ramSet.mode = 2;
+      element.ramSet.automode = 0;
+      element.selected = true;
+    });
+    //providerModel.list.removeWhere((element) => !element.isAlive);
+    await setSend(8);
+    providerModel.list.forEach((element) {
+      if(element.selected) {
+        element.selected = false;
+      }
+    });
   }
 
 
