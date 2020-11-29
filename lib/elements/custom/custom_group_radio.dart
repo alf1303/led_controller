@@ -10,6 +10,7 @@ class CustomGroupRadio extends StatefulWidget {
   final bool enabled;
   final double margin;
   final double padding;
+  final double fontSize;
   @override
   State createState() {
     return CustomGroupRadioState();
@@ -22,7 +23,8 @@ class CustomGroupRadio extends StatefulWidget {
     @required this.enabled,
     this.color,
     this.margin,
-    this.padding
+    this.padding,
+    this.fontSize
   });
 }
 
@@ -45,7 +47,7 @@ class CustomGroupRadioState extends State<CustomGroupRadio> {
             color: Colors.transparent,
             borderRadius: BorderRadius.circular(7)
         ),
-        child: Center(child: Text(widget.label, style: TextStyle(color: (widget.enabled && widget.value == widget.groupValue) ? widget.color : Colors.grey),)),
+        child: Center(child: Text(widget.label, style: TextStyle(fontSize: widget.fontSize == null ? 10 : widget.fontSize, color: (widget.enabled && widget.value == widget.groupValue) ? widget.color : Colors.grey),)),
       ),
     );
   }

@@ -489,6 +489,7 @@ class _ValueSetterViewState extends State<ValueSetterView> {
     final double colPickerScale = 1.4;
     final double height = MediaQuery.of(context).size.height;
     final double width = MediaQuery.of(context).size.width;
+    final double fontSize = height > width ? (width/25)/1.6 : (height/25)/1.6;
     final _attrModel = Provider.of<ProviderModelAttribute>(context, listen: true);
     if(_attrModel.flag) {
       _dim = _attrModel.dim;
@@ -586,12 +587,12 @@ class _ValueSetterViewState extends State<ValueSetterView> {
         Center(child: Padding(
           padding: const EdgeInsets.only(top: 8.0),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               CustomRadio(label: _playlistMode ? "Stop Playlist" : "Start Playlist", value: _playlistMode, onChanged: onPlaylistModeChange, color: mainBackgroundColor,),
               Text("FX Settings", style: headerTextSmall,),
               RaisedButton(
-                  child: Text("Playlist", style: smallText,),
+                  child: Text("Playlist", style: smallText.copyWith(fontSize: fontSize),),
                   shape: roundedButtonShape,
                   onPressed: () {
                     showDialog(context: context,
@@ -668,7 +669,7 @@ class _ValueSetterViewState extends State<ValueSetterView> {
                               boxShadow: [boxShadow1],
                                 color: _fxColor, border: Border.all(color: linesColor), borderRadius: BorderRadius.circular(12)),
                           ),
-                          Text("   FX\ncolor", style: smallText,)
+                          Text("   FX\ncolor", style: smallText.copyWith(fontSize: fontSize),)
                         ],
                       ),
                       onTap: () {
@@ -687,11 +688,11 @@ class _ValueSetterViewState extends State<ValueSetterView> {
                   physics: ClampingScrollPhysics(),
                   childAspectRatio: 1.5,
                   children: <Widget>[
-                    CustomGroupRadio(label: "OFF", value: 0, groupValue: _fxNum, onChanged: onFxNumChanged, enabled: true, color: mainBackgroundColor,),
-                    CustomGroupRadio(label: "Sinus", value: 1, groupValue: _fxNum, onChanged: onFxNumChanged, enabled: true, color: mainBackgroundColor, padding: 0,),
-                    CustomGroupRadio(label: "Cyclon", value: 2, groupValue: _fxNum, onChanged: onFxNumChanged, enabled: true, color: mainBackgroundColor, padding: 0,),
-                    CustomGroupRadio(label: "Fade", value: 3, groupValue: _fxNum, onChanged: onFxNumChanged, enabled: true, color: mainBackgroundColor),
-                    CustomGroupRadio(label: "RGB", value: 4, groupValue: _fxNum, onChanged: onFxNumChanged, enabled: true, color: mainBackgroundColor),
+                    CustomGroupRadio(label: "OFF", value: 0, groupValue: _fxNum, onChanged: onFxNumChanged, enabled: true, color: mainBackgroundColor, fontSize: fontSize,),
+                    CustomGroupRadio(label: "Sinus", value: 1, groupValue: _fxNum, onChanged: onFxNumChanged, enabled: true, color: mainBackgroundColor, padding: 0, fontSize: fontSize,),
+                    CustomGroupRadio(label: "Cyclon", value: 2, groupValue: _fxNum, onChanged: onFxNumChanged, enabled: true, color: mainBackgroundColor, padding: 0, fontSize: fontSize),
+                    CustomGroupRadio(label: "Fade", value: 3, groupValue: _fxNum, onChanged: onFxNumChanged, enabled: true, color: mainBackgroundColor, fontSize: fontSize,),
+                    CustomGroupRadio(label: "RGB", value: 4, groupValue: _fxNum, onChanged: onFxNumChanged, enabled: true, color: mainBackgroundColor, fontSize: fontSize),
                   ],),
                 ),
 
@@ -751,7 +752,7 @@ class _ValueSetterViewState extends State<ValueSetterView> {
                             boxShadow: [boxShadow1],
                             color: Colors.grey, border: Border.all(color: linesColor), borderRadius: BorderRadius.circular(12)),
                       ),
-                      Text("    FX \nSettings", style: smallText,),
+                      Text("    FX \nSettings", style: smallText.copyWith(fontSize: fontSize),),
 
                     ],
                   ),

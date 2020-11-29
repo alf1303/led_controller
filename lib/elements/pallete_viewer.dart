@@ -108,6 +108,9 @@ void _storePosition(TapDownDetails details) {
   @override
   Widget build(BuildContext context) {
   //print("palettesCount: ${paletteProvider.list.length}");
+    final double height = MediaQuery.of(context).size.height;
+    final double width = MediaQuery.of(context).size.width;
+    final double iconSize = height > width ? (width/25) : (height/25);
     final paletteProvider = Provider.of<PaletteProvider>(context, listen: true);
     bool isPalette = widget._palette.paletteType == PaletteType.PALETTE;
     Color colorPal = widget._palette.getColor();
@@ -141,10 +144,10 @@ void _storePosition(TapDownDetails details) {
                       child: Center(child: Column(
                         children: <Widget>[
                           SizedBox(height: 6,),
-                          Text(label, style: smallText,),
+                          Text(label, style: smallText.copyWith(fontSize: iconSize/1.6),),
                           Visibility(
                             visible: widget._palette.playlistItem,
-                              child: Icon(Icons.play_circle_outline, size: 16,))
+                              child: Icon(Icons.play_circle_outline, size: iconSize,))
                         ],
                       )),
                       splashColor: mainBackgroundColor,
