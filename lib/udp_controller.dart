@@ -31,6 +31,7 @@ abstract class UDPCotroller {
     if(_local_ip != _prevIP) {
       Controller.providerModel.list.clear();
       Controller.providerModel.notify();
+      print("**setLocalIP** ip Changed: localIP: $_local_ip, prevIP: $_prevIP}");
       unBindAll();
     }
     //print("**setLocalIP** localIP: $_local_ip}");
@@ -38,10 +39,12 @@ abstract class UDPCotroller {
   }
 
   static void unBindAll() {
+    print("Start unbinding");
     sender.close();
     receiver.close();
     receiverUpdate.close();
     resetBindFlags();
+    print("Unbunded");
   }
 
   static void resetBindFlags() {
@@ -50,28 +53,36 @@ abstract class UDPCotroller {
     receiverUpdateBinded = false;
   }
 
-  static Future<UDP> senderBind() async{
+  static Future<void> senderBind() async{
     if (!senderBinded) {
       sender = await UDP.bind(Endpoint.unicast(_local_ip, port: Port(_PORT_OUT)));
       senderBinded = true;
+      print("senderBinded");
+    } else{
+      print("sender already binded");
     }
-    return sender;
   }
 
   static Future<UDP> receiverBind() async{
+    UDP udpreceiver;
     if (!receiverBinded) {
-      receiver = await UDP.bind(Endpoint.unicast(_local_ip, port: Port(_PORT_IN)));
+      udpreceiver = await UDP.bind(Endpoint.unicast(_local_ip, port: Port(_PORT_IN)));
       receiverBinded = true;
+      print("receiverBinded");
+    } else{
+      print("receiver already binded");
     }
-    return receiver;
+    return udpreceiver;
   }
 
-  static Future<UDP> receiverUpdateBind() async{
+  static Future<void> receiverUpdateBind() async{
     if (!receiverUpdateBinded) {
       receiverUpdate = await UDP.bind(Endpoint.unicast(_local_ip, port: Port(_PORT_IN_UPD)));
       receiverUpdateBinded = true;
+      print("receiverUpdateBinded");
+    } else{
+      print("receiverUpdate already binded");
     }
-    return receiverUpdate;
   }
 
 
@@ -87,17 +98,19 @@ abstract class UDPCotroller {
     }
 
     await senderBind();
-    await receiverBind();
-
+    UDP udpreceiver = await receiverBind();
     await toScanList.forEach((key, value) async{
       Uint8List data = formHeader(key, "G", "S");
       var dataLength = await sender.send(data, Endpoint.unicast(value, port: Port(_PORT_OUT)));
-      await receiver.listen((datagram) {
+      //print("datalength: $dataLength");
+      await udpreceiver.listen((datagram) {
+        print("recDatagrLength: ${datagram.address.address}");
         Controller.fillEspView(datagram);
         print("**ScanRequest** ${datagram.address}");
       }, timeout: Duration(milliseconds: 1000));
     });
-
+    udpreceiver.close();
+    receiverBinded = false;
     udpServerUpdate();
   }
 
@@ -107,7 +120,7 @@ abstract class UDPCotroller {
 
     await receiverUpdateBind();
 
-    receiver.listen((datagram) {
+    receiverUpdate.listen((datagram) {
       Controller.updateEspView2(datagram);
     });
   }
