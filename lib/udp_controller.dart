@@ -14,6 +14,9 @@ abstract class UDPCotroller {
   static final int _PORT_IN_UPD = 6457;
   static InternetAddress _local_ip;
   static InternetAddress _prevIP;
+  static UDP sender, receiver, receiverUpdate;
+  static bool senderBinded = false, receiverBinded = false, receiverUpdateBinded = false;
+  static bool ipChanged = false;
 
   static setLocalIp() async {
     WifiIpInfo info;
@@ -28,10 +31,50 @@ abstract class UDPCotroller {
     if(_local_ip != _prevIP) {
       Controller.providerModel.list.clear();
       Controller.providerModel.notify();
+      unBindAll();
     }
     //print("**setLocalIP** localIP: $_local_ip}");
     //print("**setLoclaIP** prevIP: $_prevIP");
   }
+
+  static void unBindAll() {
+    sender.close();
+    receiver.close();
+    receiverUpdate.close();
+    resetBindFlags();
+  }
+
+  static void resetBindFlags() {
+    senderBinded = false;
+    receiverBinded = false;
+    receiverUpdateBinded = false;
+  }
+
+  static Future<UDP> senderBind() async{
+    if (!senderBinded) {
+      sender = await UDP.bind(Endpoint.unicast(_local_ip, port: Port(_PORT_OUT)));
+      senderBinded = true;
+    }
+    return sender;
+  }
+
+  static Future<UDP> receiverBind() async{
+    if (!receiverBinded) {
+      receiver = await UDP.bind(Endpoint.unicast(_local_ip, port: Port(_PORT_IN)));
+      receiverBinded = true;
+    }
+    return receiver;
+  }
+
+  static Future<UDP> receiverUpdateBind() async{
+    if (!receiverUpdateBinded) {
+      receiverUpdate = await UDP.bind(Endpoint.unicast(_local_ip, port: Port(_PORT_IN_UPD)));
+      receiverUpdateBinded = true;
+    }
+    return receiverUpdate;
+  }
+
+
 
   static Future<void> scanRequest() async{
     // if(_local_ip == null) {
@@ -42,8 +85,9 @@ abstract class UDPCotroller {
     for(int i = 1; i <= 254; i++) {
       toScanList.putIfAbsent(i, () => _getDestinationIp(i));
     }
-    var sender = await UDP.bind(Endpoint.unicast(_local_ip, port: Port(_PORT_OUT)));
-    var receiver = await UDP.bind(Endpoint.unicast(_local_ip, port: Port(_PORT_IN)));
+
+    await senderBind();
+    await receiverBind();
 
     await toScanList.forEach((key, value) async{
       Uint8List data = formHeader(key, "G", "S");
@@ -60,7 +104,9 @@ abstract class UDPCotroller {
   static Future<void> udpServerUpdate() async{
     //print("udpUpdate");
     setLocalIp();
-    var receiver = await UDP.bind(Endpoint.unicast(_local_ip, port: Port(_PORT_IN_UPD)));
+
+    await receiverUpdateBind();
+
     receiver.listen((datagram) {
       Controller.updateEspView2(datagram);
     });
@@ -76,7 +122,7 @@ abstract class UDPCotroller {
     ////if(_local_ip == null) {
     setLocalIp();
     //}
-    var sender = await UDP.bind(Endpoint.unicast(_local_ip, port: Port(_PORT_OUT)));
+    await senderBind();
     if (Controller.providerModel.list != null) {
       Controller.providerModel.list.forEach((element) async{
         if (element.selected) {
@@ -91,7 +137,7 @@ abstract class UDPCotroller {
     //if(_local_ip == null) {
     setLocalIp();
     //}
-    var sender = await UDP.bind(Endpoint.unicast(_local_ip, port: Port(_PORT_OUT)));
+    await senderBind();
     if (list != null) {
       list.forEach((element) async{
         Uint8List data = formHeader(element.uni, "S", "h");
@@ -104,7 +150,7 @@ abstract class UDPCotroller {
     //if(_local_ip == null) {
     setLocalIp();
     //}
-    var sender = await UDP.bind(Endpoint.unicast(_local_ip, port: Port(_PORT_OUT)));
+    await senderBind();
     if (Controller.providerModel.list != null) {
       Controller.providerModel.list.forEach((element) async{
         if (element.selected) {
@@ -119,7 +165,7 @@ abstract class UDPCotroller {
     //if(_local_ip == null) {
     setLocalIp();
     //}
-    var sender = await UDP.bind(Endpoint.unicast(_local_ip, port: Port(_PORT_OUT)));
+    await senderBind();
     if (Controller.providerModel.list != null) {
       Controller.providerModel.list.forEach((element) async{
         if (element.selected) {
@@ -136,7 +182,7 @@ abstract class UDPCotroller {
 
   static void setName(String text) async{
     setLocalIp();
-    var sender = await UDP.bind(Endpoint.unicast(_local_ip, port: Port(_PORT_OUT)));
+    await senderBind();
     Controller.providerModel.list.forEach((element) {
       if(element.selected) {
         Uint8List header = formHeader(element.uni, "S", "N");
@@ -150,7 +196,7 @@ abstract class UDPCotroller {
 
   static Future<void> setPixelCount(int count) async{
     setLocalIp();
-    var sender = await UDP.bind(Endpoint.unicast(_local_ip, port: Port(_PORT_OUT)));
+    await senderBind();
     Controller.providerModel.list.forEach((element) {
       if(element.selected) {
         Uint8List header = formHeader(element.uni, "S", "P");
@@ -165,7 +211,7 @@ abstract class UDPCotroller {
 
   static setNetworkSettings(String ssid, String password, bool netmode) async{
     setLocalIp();
-    var sender = await UDP.bind(Endpoint.unicast(_local_ip, port: Port(_PORT_OUT)));
+    await senderBind();
     Controller.providerModel.list.forEach((element) {
       if(element.selected) {
         Uint8List header = formHeader(element.uni, "S", "W");
@@ -181,7 +227,7 @@ abstract class UDPCotroller {
 
   static void setSend(int save) async{
     setLocalIp();
-    var sender = await UDP.bind(Endpoint.unicast(_local_ip, port: Port(_PORT_OUT)));
+    await senderBind();
     if(Controller.providerModel.list != null) {
       Controller.providerModel.list.forEach((element) async{
         if(element.selected) {
@@ -245,7 +291,7 @@ abstract class UDPCotroller {
 
   static void sendPlayList() async{
     setLocalIp();
-    var sender = await UDP.bind(Endpoint.unicast(_local_ip, port: Port(_PORT_OUT)));
+    await senderBind();
     List<Palette> list = Controller.paletteProvider.playlist;
     int packetLength = list.length*16 + 3;
     Uint8List data = Uint8List(packetLength);
@@ -285,7 +331,7 @@ abstract class UDPCotroller {
 
   static void testSend() async{
     setLocalIp();
-    var sender = await UDP.bind(Endpoint.unicast(_local_ip, port: Port(_PORT_OUT)));
+    await senderBind();
     Uint8List header = formHeader(31, "S", "S");
     Uint8List data = Uint8List(17);
     Uint8List data2 = Uint8List(12);

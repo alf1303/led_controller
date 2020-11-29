@@ -160,6 +160,7 @@ abstract class Controller {
     providerModel.list.forEach((element) {
       element.selected = true;
     });
+    providerModel.checkSelected();
     providerModel.notify();
   }
 
@@ -167,6 +168,7 @@ abstract class Controller {
     providerModel.list.forEach((element) {
       element.selected = false;
     });
+    providerModel.checkSelected();
     providerModel.notify();
   }
 
