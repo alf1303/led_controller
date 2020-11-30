@@ -729,13 +729,13 @@ class _ValueSetterViewState extends State<ValueSetterView> {
                                       Row(
                                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                                         children: <Widget>[
-                                          CustomRadio(label: "Attack", value: _fxAttack, onChanged: onAttack, color: mainBackgroundColor, margin: 0, visible: (_fxNum == FxNames.Sinus.index),),
-                                          CustomRadio(label: "Symm", value: _fxSymm, onChanged: onSymm, color: mainBackgroundColor,margin: 0, visible: (_fxNum == FxNames.Sinus.index || _fxNum == FxNames.Fade.index),),
-                                          CustomRadio(label: "Reverse", value: _fxReverse, onChanged: onReverse, color: mainBackgroundColor, margin: 0, visible: (_fxNum != FxNames.OFF.index && _fxNum != FxNames.Cyclon.index),),
-                                          CustomRadio(label: "Random", value: _fxRnd, onChanged: onRandom, color: mainBackgroundColor, margin: 0, visible: (_fxNum == FxNames.Fade.index),),
+                                          CustomRadio(label: "Attack", value: _fxAttack, onChanged: onAttack, color: mainBackgroundColor, margin: 0, visible: (_fxNum == FxNames.Sinus.index), fontSize: fontSize,),
+                                          CustomRadio(label: "Symm", value: _fxSymm, onChanged: onSymm, color: mainBackgroundColor,margin: 0, visible: (_fxNum == FxNames.Sinus.index || _fxNum == FxNames.Fade.index), fontSize: fontSize,),
+                                          CustomRadio(label: "Reverse", value: _fxReverse, onChanged: onReverse, color: mainBackgroundColor, margin: 0, visible: (_fxNum != FxNames.OFF.index && _fxNum != FxNames.Cyclon.index), fontSize: fontSize,),
+                                          CustomRadio(label: "Random", value: _fxRnd, onChanged: onRandom, color: mainBackgroundColor, margin: 0, visible: (_fxNum == FxNames.Fade.index), fontSize: fontSize,),
                                         ],
                                       ),
-                                      CustomRadio(label: "Random Color", value: _fxRndColor, onChanged: onRandomCol, color: mainBackgroundColor, visible: (_fxNum == FxNames.Fade.index),),
+                                      CustomRadio(label: "Random Color", value: _fxRndColor, onChanged: onRandomCol, color: mainBackgroundColor, visible: (_fxNum == FxNames.Fade.index), fontSize: fontSize,),
                                     ],
                                   );
                                 })
@@ -1074,15 +1074,19 @@ class MyCustomSliderNoCard extends StatelessWidget {
 }
 
 class FxSliderWidget extends StatefulWidget{
-  final String _label;
-  final double _fxParametr;
+  final String label;
+  final double fxParametr;
   final ValueChanged<double> onChanged;
   final bool visible;
 
   onParametrChanged(double value){
     onChanged(value);
   }
-  const FxSliderWidget(this._label, this._fxParametr, this.onChanged, this.visible);
+  const FxSliderWidget(
+      this.label,
+      this.fxParametr,
+      this.onChanged,
+      this.visible);
 
   @override
   _FxSliderWidgetState createState() => _FxSliderWidgetState();
@@ -1091,7 +1095,7 @@ class _FxSliderWidgetState extends State<FxSliderWidget> {
 
   @override
   Widget build(BuildContext context) {
-    double _param = widget._fxParametr;
+    double _param = widget.fxParametr;
     return  Visibility(
       visible: widget.visible,
       child: StatefulBuilder(
@@ -1106,7 +1110,7 @@ class _FxSliderWidgetState extends State<FxSliderWidget> {
                       widget.onParametrChanged(_param);
                     });
                   }),
-              Expanded(child: MyCustomSliderNoCard(widget._label, _param, 1, 100, secondaryBackgroundColor, linesColor, mainBackgroundColor, 5, (value) {setStat(() {_param = value;}); }, widget.onParametrChanged)),
+              Expanded(child: MyCustomSliderNoCard(widget.label, _param, 1, 100, secondaryBackgroundColor, linesColor, mainBackgroundColor, 5, (value) {setStat(() {_param = value;}); }, widget.onParametrChanged)),
               IconButton(
                   icon: Icon(Icons.arrow_forward_ios, color: mainBackgroundColor,),
                   onPressed: () {

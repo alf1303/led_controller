@@ -12,7 +12,7 @@ class HelpWidget extends StatelessWidget{
     double hh = height > width ? height/13 : width/7;
     return AlertDialog(
       shape: alertShape,
-      backgroundColor: thirdBackgroundColor.withOpacity(0.5),
+      backgroundColor: thirdBackgroundColor.withOpacity(0.7),
       content: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Column(
