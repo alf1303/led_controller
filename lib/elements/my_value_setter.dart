@@ -261,7 +261,7 @@ class _ValueSetterViewState extends State<ValueSetterView> {
   double _red = 0;
   double _green = 0;
   double _blue = 0;
-  double _fxSpeed = 0;
+  double _fxSpeed = 1;
   double _fxParts = 1;
   double _fxSpread = 1;
   double _fxWidth = 1;
@@ -713,7 +713,8 @@ class _ValueSetterViewState extends State<ValueSetterView> {
                               mainAxisSize: MainAxisSize.min,
                               children: <Widget>[
                                 StatefulBuilder(builder: (context, setStat) {
-                                  return MyCustomSliderNoCard("Speed", _fxSpeed, 0, 100, secondaryBackgroundColor, linesColor, linesColor, 5, (value) {setStat(() {_fxSpeed = value;}); }, onFxSpeedChangeEnd);
+                                  //return MyCustomSliderNoCard("Speed", _fxSpeed, 0, 100, secondaryBackgroundColor, linesColor, linesColor, 5, (value) {setStat(() {_fxSpeed = value;}); }, onFxSpeedChangeEnd);
+                                  return FxSliderWidget("Speed", _fxSpeed, onFxSpeedChangeEnd, true);
                                 }),
                                 FxSliderWidget("Width", _fxWidth, onFxWidthChangeEnd, (_fxNum == FxNames.Cyclon.index || _fxNum == FxNames.Fade.index)),
                                 FxSliderWidget("Parts", _fxParts, onFxPartsChangeEnd, (_fxNum != FxNames.OFF.index && _fxNum != FxNames.Cyclon.index)),

@@ -14,7 +14,7 @@ class ProviderModelAttribute extends ChangeNotifier{
   int automode = 0;
   int fxNum = 0;
   Color fxColor = Colors.grey;
-  double fxSpeed = 0.0;
+  double fxSpeed = 1.0;
   double fxParts = 1;
   double fxSpread = 1;
   double fxWidth = 1;
