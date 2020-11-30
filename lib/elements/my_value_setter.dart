@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:expandable/expandable.dart';
+import 'package:invert_colors/invert_colors.dart';
 import 'package:ledcontroller/elements/custom/custom_group_radio.dart';
 import 'package:ledcontroller/elements/pallete_viewer.dart';
 import 'package:ledcontroller/fx_names.dart';
@@ -560,6 +561,7 @@ class _ValueSetterViewState extends State<ValueSetterView> {
           ],
         ),
                                   //PALLETES VIEWER
+        Text("Palettes:", style: headerTextSmall,),
         Padding(
           padding: const EdgeInsets.only(bottom: 8.0, left: 5, right: 5),
           child: Container(
@@ -589,7 +591,7 @@ class _ValueSetterViewState extends State<ValueSetterView> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              CustomRadio(label: _playlistMode ? "Stop Playlist" : "Start Playlist", value: _playlistMode, onChanged: onPlaylistModeChange, color: mainBackgroundColor,),
+              CustomRadio(label: _playlistMode ? "Stop Playlist" : "Start Playlist", value: _playlistMode, onChanged: onPlaylistModeChange, color: mainBackgroundColor, fontSize: fontSize,),
               Text("FX Settings", style: headerTextSmall,),
               RaisedButton(
                   child: Text("Playlist", style: smallText.copyWith(fontSize: fontSize),),
@@ -669,7 +671,8 @@ class _ValueSetterViewState extends State<ValueSetterView> {
                               boxShadow: [boxShadow1],
                                 color: _fxColor, border: Border.all(color: linesColor), borderRadius: BorderRadius.circular(12)),
                           ),
-                          Text("   FX\ncolor", style: smallText.copyWith(fontSize: fontSize),)
+                          
+                          InvertColors(child: Text("   FX\ncolor", style: smallText.copyWith(fontSize: fontSize, color: _fxColor),))
                         ],
                       ),
                       onTap: () {
