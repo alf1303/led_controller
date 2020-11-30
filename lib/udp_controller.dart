@@ -260,7 +260,6 @@ abstract class UDPCotroller {
             addrHigh = 0;
           }
           if(element.ramSet.reverse) reverse = 1;
-          //print("width: ${element.ramSet.fxWidth}");
           //print("mode: ${element.ramSet.mode}");
           data.setRange(0, 30, List.from([
             element.ramSet.mode,

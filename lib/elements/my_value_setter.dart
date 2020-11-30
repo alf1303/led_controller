@@ -356,7 +356,7 @@ class _ValueSetterViewState extends State<ValueSetterView> {
   }
 
   onFxColorChanged(value) {
-    print("***FXColor changed");
+    //print("***FXColor changed");
     setState(() {
       _fxColor = value;
     });
@@ -367,6 +367,8 @@ class _ValueSetterViewState extends State<ValueSetterView> {
   }
 
   onFxSpeedChangeEnd(value) {
+    if(value > 99) _fxSpeed = 99;
+      else _fxSpeed = value;
     if(Controller.providerModel.list != null) {
       processAttributes();
       Controller.setSend(130);
@@ -713,6 +715,7 @@ class _ValueSetterViewState extends State<ValueSetterView> {
                               mainAxisSize: MainAxisSize.min,
                               children: <Widget>[
                                 StatefulBuilder(builder: (context, setStat) {
+                                  print("fxSpeed: $_fxSpeed");
                                   //return MyCustomSliderNoCard("Speed", _fxSpeed, 0, 100, secondaryBackgroundColor, linesColor, linesColor, 5, (value) {setStat(() {_fxSpeed = value;}); }, onFxSpeedChangeEnd);
                                   return FxSliderWidget("Speed", _fxSpeed, onFxSpeedChangeEnd, true);
                                 }),
