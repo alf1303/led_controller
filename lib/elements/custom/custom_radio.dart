@@ -9,6 +9,7 @@ class CustomRadio extends StatefulWidget {
   final double margin;
   final double padding;
   final bool visible;
+  final double fontSize;
   @override
   State createState() {
     return CustomRadioState();
@@ -20,7 +21,8 @@ class CustomRadio extends StatefulWidget {
     this.color,
     this.margin,
     this.padding,
-    this.visible = true
+    this.visible = true,
+    this.fontSize
   });
 }
 
@@ -45,7 +47,7 @@ class CustomRadioState extends State<CustomRadio> {
               color: Colors.transparent,
               borderRadius: BorderRadius.circular(7)
           ),
-          child: Text(widget.label, style: TextStyle(color: (widget.value) ? widget.color : Colors.grey, fontSize: 10), ),
+          child: Text(widget.label, style: TextStyle(color: (widget.value) ? widget.color : Colors.grey, fontSize: widget.fontSize == null ? 10 : widget.fontSize), ),
         ),
       ),
     );
