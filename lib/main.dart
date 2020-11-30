@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 
 import 'controller.dart';
 import 'elements/fixtures_view.dart';
+import 'elements/help_widget.dart';
 import 'elements/my_bottom_bar.dart';
 
 void main() async{
@@ -52,20 +53,40 @@ class MainPage extends StatelessWidget{
       children: <Widget>[
         Container(
           decoration: mainDecoration,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              RaisedButton(
-                  child: Text("Scan", style: mainText,),
-                  elevation: 10,
-                  onPressed: () async{
-                    await Controller.scan();
-                    await Controller.setMode();
-                  }),
-              SettingsWidget(),
-              Text("LEDControl", style: headerText,),
-            ],
-          ),
+          child: SizedBox(
+            width: MediaQuery.of(context).size.width,
+            height: 40,
+            child: CustomScrollView(
+              scrollDirection: Axis.horizontal,
+              shrinkWrap: true,
+              slivers: [
+                SliverFillRemaining(
+                  hasScrollBody: false,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      RaisedButton(
+                          child: Text("Scan", style: mainText,),
+                          elevation: 10,
+                          onPressed: () async{
+                            await Controller.scan();
+                            await Controller.setMode();
+                          }),
+                      SettingsWidget(),
+                      Text("LEDControl", style: headerText,),
+                      IconButton(icon: Icon(Icons.help_outline, color: thirdBackgroundColor), onPressed: () {
+                        showDialog(
+                            context: context,
+                        builder: (context) {
+                           return HelpWidget();
+                        });
+                      })
+                    ],
+                  ),
+                )
+              ],
+            ),
+          )
         ),
         Expanded(
           child: SingleChildScrollView(
