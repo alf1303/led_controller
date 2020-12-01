@@ -18,6 +18,9 @@ class EspModel {
 
   EspModel(this.uni, this.ipAddress, this.version, this.fsSet, this.ramSet);
 
+
+  EspModel.empt();
+
   void copyFrom(EspModel model) {
     this.uni = model.uni;
     this.ipAddress = model.ipAddress;

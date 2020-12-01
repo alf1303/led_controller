@@ -1,7 +1,9 @@
 import 'dart:io';
+import 'package:flutter/material.dart';
 import 'dart:typed_data';
 import 'package:flutter/services.dart';
 import 'package:ledcontroller/model/esp_model.dart';
+import 'package:ledcontroller/model/settings.dart';
 import 'package:wifi_ip/wifi_ip.dart';
 import 'package:udp/udp.dart';
 
@@ -17,6 +19,7 @@ abstract class UDPCotroller {
   static UDP sender, receiver, receiverUpdate;
   static bool senderBinded = false, receiverBinded = false, receiverUpdateBinded = false;
   static bool ipChanged = false;
+  static List<EspModel> scanList = List();
 
   static setLocalIp() async {
     WifiIpInfo info;
@@ -40,9 +43,15 @@ abstract class UDPCotroller {
 
   static void unBindAll() {
     print("Start unbinding");
-    sender.close();
-    receiver.close();
-    receiverUpdate.close();
+    if (sender != null) {
+      sender.close();
+    }
+    if (receiver != null) {
+      receiver.close();
+    }
+    if (receiverUpdate != null) {
+      receiverUpdate.close();
+    }
     resetBindFlags();
     print("Unbunded");
   }
@@ -78,6 +87,7 @@ abstract class UDPCotroller {
   static Future<void> receiverUpdateBind() async{
     if (!receiverUpdateBinded) {
       receiverUpdate = await UDP.bind(Endpoint.unicast(_local_ip, port: Port(_PORT_IN_UPD)));
+      //receiverUpdate = await UDP.bind(Endpoint.broadcast(port: Port(_PORT_IN_UPD)));
       receiverUpdateBinded = true;
       print("receiverUpdateBinded");
     } else{
@@ -85,32 +95,36 @@ abstract class UDPCotroller {
     }
   }
 
-
+  static void initScanList() {
+    for(int i = 1; i <= 254; i++) {
+      Settings ramSet = Settings(2, 0, 0, 5, Colors.blue, 99);
+      EspModel model = EspModel(i, "", "", ramSet, ramSet);
+      scanList.add(model);
+    }
+  }
 
   static Future<void> scanRequest() async{
     // if(_local_ip == null) {
     setLocalIp();
-    //}
-    Map<int, InternetAddress> toScanList = new Map<int, InternetAddress>();
-//List<int> scanned = new List<int>();
-    for(int i = 1; i <= 254; i++) {
-      toScanList.putIfAbsent(i, () => _getDestinationIp(i));
-    }
-
+    initScanList();
     await senderBind();
-    UDP udpreceiver = await receiverBind();
-    await toScanList.forEach((key, value) async{
-      Uint8List data = formHeader(key, "G", "S");
-      var dataLength = await sender.send(data, Endpoint.unicast(value, port: Port(_PORT_OUT)));
-      //print("datalength: $dataLength");
-      await udpreceiver.listen((datagram) {
-        print("recDatagrLength: ${datagram.address.address}");
-        Controller.fillEspView(datagram);
-        print("**ScanRequest** ${datagram.address}");
-      }, timeout: Duration(milliseconds: 1000));
+    scanList.forEach((element) async{
+      Uint8List header = formHeader(element.uni, "S", "S");
+      Uint8List data = Uint8List(30);
+      data.setRange(0, 9, List.from([
+      element.ramSet.mode,
+      element.ramSet.automode,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        8,
+      ]));
+      List<int> temp = header + data;
+      int datalength = await sender.send(temp, Endpoint.unicast(_getDestinationIp(element.uni), port: Port(_PORT_OUT)));
     });
-    udpreceiver.close();
-    receiverBinded = false;
     udpServerUpdate();
   }
 

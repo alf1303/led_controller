@@ -4,6 +4,7 @@ import 'package:ledcontroller/palettes_provider.dart';
 import 'package:ledcontroller/provider_model.dart';
 import 'package:ledcontroller/provider_model_attribute.dart';
 import 'package:ledcontroller/styles.dart';
+import 'package:ledcontroller/udp_controller.dart';
 import 'package:provider/provider.dart';
 
 import 'controller.dart';
@@ -44,6 +45,9 @@ class Main extends StatelessWidget {
 }
 
 class MainPage extends StatelessWidget{
+  Future<void> futur;
+  bool _isLoading = false;
+
   @override
   Widget build(BuildContext context) {
     double _winHeight = MediaQuery.of(context).size.height;
@@ -65,13 +69,7 @@ class MainPage extends StatelessWidget{
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
-                      RaisedButton(
-                          child: Text("Scan", style: mainText,),
-                          elevation: 10,
-                          onPressed: () async{
-                            await Controller.scan();
-                            await Controller.setMode();
-                          }),
+                      ScanWidget(),
                       SettingsWidget(),
                       Text("LEDControl", style: headerText,),
                       IconButton(icon: Icon(Icons.help_outline, color: thirdBackgroundColor), onPressed: () {
@@ -120,3 +118,56 @@ class MyAppBar extends StatelessWidget{
     return Text("LedController", style: headerText);
   }
 }
+
+class ScanWidget extends StatefulWidget{
+  @override
+  _ScanWidgetState createState() => _ScanWidgetState();
+}
+
+class _ScanWidgetState extends State<ScanWidget> {
+  Future<void> futur;
+
+  bool _isLoading = false;
+
+  void onScanPressed() async{
+    _isLoading = true;
+    futur = Controller.scan();
+    setState(() {
+
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+        future: futur,
+        builder: (context, snapshot) {
+          Widget child;
+          if(snapshot.connectionState == ConnectionState.none) child = (RaisedButton(
+              shape: RoundedRectangleBorder(side: BorderSide(color: linesColor), borderRadius: BorderRadius.circular(6)),
+              child: Text("Scan"),
+              onPressed: onScanPressed
+          ));
+          if(snapshot.connectionState == ConnectionState.waiting) child = child = (RaisedButton(
+              color: mainBackgroundColor,
+              splashColor: linesColor,
+              child: Container(
+                  padding: EdgeInsets.all(2),
+                  child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(linesColor),)),
+              onPressed: null
+          ));
+//        if(snapshot.connectionState == ConnectionState.active) child = child = (RaisedButton(
+//            child: Text("Scan"),
+//            onPressed: onScanPressed
+//        ));
+          if(snapshot.connectionState == ConnectionState.done) child = (RaisedButton(
+              shape: RoundedRectangleBorder(side: BorderSide(color: linesColor), borderRadius: BorderRadius.circular(6)),
+              child: Text("Scan"),
+              onPressed: onScanPressed
+          ));
+          return child;
+        });
+  }
+}
+
+

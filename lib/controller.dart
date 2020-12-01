@@ -75,14 +75,14 @@ abstract class Controller {
     await loadPalettesFromFS(f);
   }
 
-  static Future<bool> scan() async{
+  static Future<void> scan() async{
     providerModel.list.clear();
     providerModel.selected = false;
     providerModel.notify();
     //providerModel.list.forEach((element) { element.isAlive = false;});
     await UDPCotroller.scanRequest();
     //setSend(255);
-    return await Future.delayed(Duration(seconds: 1), () {return false;});
+    return await Future.delayed(Duration(seconds: 2), () {return false;});
   }
 
   static void setHighlite() {
@@ -187,7 +187,7 @@ abstract class Controller {
       espModel.uni = uni;
       EspModel findModel;
       if(providerModel.list.isNotEmpty) {
-        findModel = providerModel.list.firstWhere((element) => element.uni == uni, orElse: null);
+        findModel = providerModel.list.firstWhere((element) => element.uni == uni, orElse: ()=>null);
       }
       if(findModel == null) {
         providerModel.list.add(espModel);
@@ -198,7 +198,14 @@ abstract class Controller {
   }
 
   static void updateEspView2(Datagram datagr) {
-   // print("updateEspView");
+    if(datagr != null)
+    {
+      //print("updateEspView2, uni: ${datagr.data[2]}");
+    //print("${providerModel.list.length}");
+       }
+    else {
+      //print("updateEspView2, null");
+    }
     if(datagr != null) {
       Uint8List d = datagr.data;
       int uni = d[2];
@@ -210,7 +217,7 @@ abstract class Controller {
       espModel.version = version;
       EspModel findModel = null;
       if(providerModel.list.isNotEmpty) {
-        findModel = providerModel.list.firstWhere((element) => element.uni == uni, orElse: null);
+        findModel = providerModel.list.firstWhere((element) => element.uni == uni, orElse: (){return null;});
       }
       if(findModel == null) {
         providerModel.list.add(espModel);
@@ -224,6 +231,7 @@ abstract class Controller {
   }
 
   static void updateEspView(Datagram datagr) {
+    print("AAAAAAAAAAALAAARM updateEspView");
     if(datagr != null) {
       Uint8List d = datagr.data;
       int uni = d[2];
