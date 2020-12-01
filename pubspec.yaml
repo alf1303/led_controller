@@ -39,7 +39,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_launcher_icogit ns:
+  flutter_launcher_icons:
 
 flutter_icons:
   image_path: "assets/launcher/icon.png"
