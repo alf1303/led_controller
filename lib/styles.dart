@@ -48,9 +48,18 @@ InputDecoration inputDecoration = InputDecoration(
 );
 
 
+LinearGradient tabGradient = LinearGradient(
+colors: [
+mainBackgroundColor,
+secondaryBackgroundColor
+],
+begin: Alignment.topCenter,
+end: Alignment.bottomCenter
+);
+
 //BUTTON THEME
 ButtonTheme mainButtonTheme = ButtonTheme(
-  buttonColor: buttonColor,
+  buttonColor: mainBackgroundColor.withOpacity(0.5),
   splashColor: splashColor,
   shape: buttonShape,
 );

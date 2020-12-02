@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:ledcontroller/elements/my_value_setter.dart';
 import 'package:ledcontroller/palettes_provider.dart';
 import 'package:ledcontroller/provider_model.dart';
 import 'package:ledcontroller/provider_model_attribute.dart';
@@ -11,6 +10,8 @@ import 'controller.dart';
 import 'elements/fixtures_view.dart';
 import 'elements/help_widget.dart';
 import 'elements/my_bottom_bar.dart';
+import 'elements/my_value_setter.dart';
+import 'elements/settings_widget.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,13 +35,48 @@ class Main extends StatelessWidget {
             ChangeNotifierProvider<ProviderModelAttribute>(create: (_) => ProviderModelAttribute(),),
             ChangeNotifierProvider<PaletteProvider>(create: (_) => PaletteProvider(),)
           ],
-          child: Scaffold(
-            body: MainPage(),
-            bottomNavigationBar: MyBottomBar(),
+          child: DefaultTabController(
+            length: 3,
+            child: Scaffold(
+              appBar: AppBar(
+                flexibleSpace: Container(decoration: secondaryDecoration,),
+                  title: MyAppBar(),
+                  bottom: TabBar(
+                    labelColor: mainBackgroundColor,
+                    indicatorSize: TabBarIndicatorSize.tab,
+                    indicatorPadding: EdgeInsets.all(0),
+                    indicator: BoxDecoration(
+                        color: thirdBackgroundColor,
+                        border: Border.all(color: thirdBackgroundColor),
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(10),
+                            topRight: Radius.circular(10)
+                        )),
+                    tabs: [
+                      Tab(child: Text("Fixtures List", style: mainText,)),
+                      Tab(child: Text("Color Editor", style: mainText,)),
+                      Tab(child: Text("PLAYBACK", style: mainText,)),
+                    ],),
+              ),
+              body: TabMainPage(),
+              //bottomNavigationBar: MyBottomBar(),
+            ),
           ),
         ),
       ),
     );
+  }
+}
+
+class TabMainPage extends StatelessWidget{
+  @override
+  Widget build(BuildContext context) {
+    return TabBarView(
+        children: [
+          FixturesView(),
+          MyValueSetter(),
+          Text("Playback")
+        ]);
   }
 }
 
@@ -115,7 +151,33 @@ class MainPage extends StatelessWidget{
 class MyAppBar extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
-    return Text("LedController", style: headerText);
+    return  SizedBox(
+      width: MediaQuery.of(context).size.width,
+      height: 40,
+      child: CustomScrollView(
+        scrollDirection: Axis.horizontal,
+        shrinkWrap: true,
+        slivers: [
+          SliverFillRemaining(
+            hasScrollBody: false,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                Text("LEDController", style: headerText,),
+                SettingsWidget(),
+                IconButton(icon: Icon(Icons.help_outline, color: Colors.black), onPressed: () {
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return HelpWidget();
+                      });
+                })
+              ],
+            ),
+          )
+        ],
+      ),
+    );
   }
 }
 
