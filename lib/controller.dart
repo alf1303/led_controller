@@ -56,6 +56,14 @@ abstract class Controller {
       //List<Palette> palettes = List();
       Settings white = new Settings.full(2, 0, 0, 128, Color.fromRGBO(255, 255, 255, 1), 255, 0, 0, false, 120, 0, 120, 8, 0, false, Colors.blue, 0, 100, 1, 0, 0, 1, 1, false, false, false, false, false);
       Palette pWhite = new Palette.withParams(PaletteType.PALETTE, white);
+      pWhite.name = "White";
+      Settings red = new Settings.full(2, 0, 0, 128, Color.fromRGBO(255, 0, 0, 1), 255, 0, 0, false, 120, 0, 120, 8, 0, false, Colors.blue, 0, 100, 1, 0, 0, 1, 1, false, false, false, false, false);
+      Palette pRed = new Palette.withParams(PaletteType.PALETTE, red);
+      pRed.name = "Red";
+      Settings green = new Settings.full(2, 0, 0, 128, Color.fromRGBO(0, 255, 0, 1), 255, 0, 0, false, 120, 0, 120, 8, 0, false, Colors.blue, 0, 100, 1, 0, 0, 1, 1, false, false, false, false, false);
+      Palette pGreen = new Palette.withParams(PaletteType.PALETTE, green);
+      pGreen.name = "Green";
+
 //      Settings red = new Settings.full(2, 0, 0, 128, Color.fromRGBO(255, 0, 0, 1), 255, 0, 0, false, 120, 0, 120, 8);
 //      Palette pRed = new Palette.withParams(PaletteType.PALETTE, red);
 //      Settings green = new Settings.full(2, 0, 0, 128, Color.fromRGBO(0, 255, 0, 1), 255, 0, 0, false, 120, 0, 120, 8);
@@ -64,15 +72,14 @@ abstract class Controller {
 //      Palette pBlue = new Palette.withParams(PaletteType.PALETTE, blue);
 //      Settings black = new Settings.full(2, 0, 0, 128, Color.fromRGBO(0, 0, 0, 1), 255, 0, 0, false, 120, 0, 120, 8);
 //      Palette pBlack = new Palette.withParams(PaletteType.PALETTE, black);
-      List<Palette> palettes = [pWhite];
-      for(int i = 0; i < paletteProvider.PALETTES_COUNT - 5; i++) {
-        palettes.add(new Palette());
-      }
+      List<Palette> palettes = [pWhite, pRed, pGreen];
       var sink = f.openWrite();
-      palettes.forEach((element) {
-        sink.write('${jsonEncode(element)}\n');
+      palettes.forEach((element) async{
+        print(element.name);
+        await sink.write('${jsonEncode(element)}\n');
       });
-      sink.close();
+      await sink.close();
+      print(f.length());
     }
     await loadPalettesFromFS(f);
   }
@@ -346,8 +353,10 @@ abstract class Controller {
     inputStream.transform(utf8.decoder).
     transform(new LineSplitter()).
     listen((String line) {
+      Palette pal = Palette.fromJson(jsonDecode(line));
+      print(pal.name);
       paletteProvider.list[ii++] = (Palette.fromJson(jsonDecode(line)));
-      if(ii == 14) {
+      if(ii == 27) {
         paletteProvider.notify();
         //providerModel.notify();
       }

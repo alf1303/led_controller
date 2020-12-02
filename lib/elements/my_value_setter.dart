@@ -386,32 +386,63 @@ class _ValueSetterViewState extends State<ValueSetterView> {
                 borderRadius: expandedHeaderRadius
               ),
                 child: FText("Palettes:", headerTextSmall)),
-            expanded: Container(
-              decoration: BoxDecoration(
-                  color: mainBackgroundColor,
-                  borderRadius: expandedBodyRadius
-              ),
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 8.0, left: 5, right: 5),
-                child: Container(
-                  child: PaletteViewer(),
+            expanded: Column(
+              children: [
+                Container(
                   decoration: BoxDecoration(
-                      border: Border.all(color: mainBackgroundColor, width: 1),
-                      borderRadius: BorderRadius.all(Radius.circular(3)),
-                      color: Colors.transparent,
-                      boxShadow: [
-                        BoxShadow(
-                          color: mainBackgroundColor.withOpacity(0.3),
-                          spreadRadius: -3,
-                          blurRadius: 5,
-                          //offset: Offset(1, 2)
-                        )
-                      ]
+                      color: mainBackgroundColor,
+                      borderRadius: expandedBodyRadius
                   ),
-                  height: height > width ? height/11 : width/11,
-                  width: width,
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 8.0, left: 5, right: 5),
+                    child: Container(
+                      child: PaletteViewer(true),
+                      decoration: BoxDecoration(
+                          border: Border.all(color: mainBackgroundColor, width: 1),
+                          borderRadius: BorderRadius.all(Radius.circular(3)),
+                          color: Colors.transparent,
+                          boxShadow: [
+                            BoxShadow(
+                              color: mainBackgroundColor.withOpacity(0.3),
+                              spreadRadius: -3,
+                              blurRadius: 5,
+                              //offset: Offset(1, 2)
+                            )
+                          ]
+                      ),
+                      height: height > width ? height/11 : width/11,
+                      width: width,
+                    ),
+                  ),
                 ),
-              ),
+                Container(
+                  decoration: BoxDecoration(
+                      color: mainBackgroundColor,
+                      borderRadius: expandedBodyRadius
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 8.0, left: 5, right: 5),
+                    child: Container(
+                      child: PaletteViewer(false),
+                      decoration: BoxDecoration(
+                          border: Border.all(color: mainBackgroundColor, width: 1),
+                          borderRadius: BorderRadius.all(Radius.circular(3)),
+                          color: Colors.transparent,
+                          boxShadow: [
+                            BoxShadow(
+                              color: mainBackgroundColor.withOpacity(0.3),
+                              spreadRadius: -3,
+                              blurRadius: 5,
+                              //offset: Offset(1, 2)
+                            )
+                          ]
+                      ),
+                      height: height > width ? height/11 : width/11,
+                      width: width,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
           Container(height: 2, color: mainBackgroundColor),

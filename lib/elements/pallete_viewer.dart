@@ -9,10 +9,14 @@ import 'package:provider/provider.dart';
 import '../palettes_provider.dart';
 
 class PaletteViewer extends StatelessWidget {
+  final bool isPalette;
+  const PaletteViewer(this.isPalette);
 
   @override
   Widget build(BuildContext context) {
     final paletteProvider = Provider.of<PaletteProvider>(context, listen: true);
+    List<Palette> list = isPalette ? paletteProvider.getPalettes() : paletteProvider.getProgramms();
+    print("length: ${list.length}");
     return Scrollbar(
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
@@ -22,7 +26,7 @@ class PaletteViewer extends StatelessWidget {
             shrinkWrap: true,
             mainAxisSpacing: 3,
             childAspectRatio: 1,
-            children: List.generate(paletteProvider.list.length, (index) => ViewPaletteItem(paletteProvider.list[index])),
+            children: List.generate(list.length, (index) => ViewPaletteItem(list[index])),
             crossAxisCount: 1),
       ),
     );
@@ -127,13 +131,13 @@ void _storePosition(TapDownDetails details) {
               Expanded(
                 child: Container(
                   decoration: isPalette ? BoxDecoration(border: Border.all(color: Colors.transparent, width: 0), color: colorPal, shape: BoxShape.circle, boxShadow: [
-                    BoxShadow(color: mainBackgroundColor, spreadRadius: 2, blurRadius: 4)]) :
+                    BoxShadow(color: Colors.grey, spreadRadius: 2, blurRadius: (colorPal == null || colorPal == Colors.grey.withOpacity(0.7)) ? 0 : 4)]) :
                     BoxDecoration(border: Border.all(color: Colors.transparent, width: 0), borderRadius: BorderRadius.circular(8), shape: BoxShape.rectangle, gradient: colorPal != emptyPaletteColor ? LinearGradient(
                         colors: [Colors.cyanAccent, Colors.amber, Colors.pink,],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight) : LinearGradient(colors: [Colors.grey.withOpacity(0.7), Colors.grey.withOpacity(0.7)]),
                       boxShadow: [
-                        BoxShadow(color: mainBackgroundColor, spreadRadius: 2, blurRadius: 4)
+                        BoxShadow(color: Colors.grey, spreadRadius: 2, blurRadius: (colorPal == null || colorPal == Colors.grey.withOpacity(0.7)) ? 0 : 4)
                       ]
                     ),
                   child: Material(

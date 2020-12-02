@@ -11,11 +11,16 @@ import 'package:ledcontroller/styles.dart';
 class Palette {
   List<PaletteEntry> settings =  List();
   PaletteType paletteType;
+  String name;
   bool playlistItem = false;
 
 
-  Palette() {
+  Palette.palette() {
     paletteType = PaletteType.PALETTE;
+  }
+
+  Palette.program() {
+    paletteType = PaletteType.PROGRAM;
   }
 
   Palette.withParams(PaletteType paletteType, Settings settings) {
@@ -80,11 +85,13 @@ class Palette {
     settings = tempSettings.map((e) => PaletteEntry.fromJson(e)).toList();
     //settings = new List<PaletteEntry>.from(json['settings']);
     paletteType = PaletteType.values.firstWhere((element) => element.toString() == json['paletteType']);
+    name = json['name'];
   }
 
   Map<String, dynamic> toJson() => {
     'settings' : jsonEncode(settings),
     'paletteType' : paletteType.toString(),
+    'name' : name,
   };
 
 }
