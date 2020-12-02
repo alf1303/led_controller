@@ -224,19 +224,19 @@ class MyPaletteEntryState extends State<MyPaletteEntry> {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        RaisedButton(materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,shape: buttonShape, onPressed: save, color: buttonColor.withOpacity(0.7), child: Text("Save"),),
+        RaisedButton(materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,shape: buttonShape, onPressed: save, color: buttonColor.withOpacity(0.9), child: Text("Save"),),
         SizedBox(height: 2,),
-        RaisedButton(materialTapTargetSize: MaterialTapTargetSize.shrinkWrap, shape: buttonShape, onPressed: clear, color: buttonColor.withOpacity(0.6), child: Text("Clear", style: TextStyle(color: Colors.white),),),
+        RaisedButton(materialTapTargetSize: MaterialTapTargetSize.shrinkWrap, shape: buttonShape, onPressed: clear, color: buttonColor.withOpacity(0.9), child: Text("Clear", style: TextStyle(color: Colors.white),),),
         SizedBox(height: 2,),
         Visibility(
             child:
-            RaisedButton(materialTapTargetSize: MaterialTapTargetSize.shrinkWrap, shape: buttonShape, onPressed: add, color: buttonColor.withOpacity(0.6), child: Text("Add to PL", style: TextStyle(color: Colors.white),),),
+            RaisedButton(materialTapTargetSize: MaterialTapTargetSize.shrinkWrap, shape: buttonShape, onPressed: add, color: buttonColor.withOpacity(0.9), child: Text("Add to PL", style: TextStyle(color: Colors.white),),),
         visible: widget._palette.canAdd(),
         ),
         SizedBox(height: 2,),
         Visibility(
           child:
-          RaisedButton(materialTapTargetSize: MaterialTapTargetSize.shrinkWrap, shape: buttonShape, onPressed: remove, color: buttonColor.withOpacity(0.6), child: Text("Rem from PL", style: TextStyle(color: Colors.white),),),
+          RaisedButton(materialTapTargetSize: MaterialTapTargetSize.shrinkWrap, shape: buttonShape, onPressed: remove, color: buttonColor.withOpacity(0.9), child: Text("Rem from PL", style: TextStyle(color: Colors.white),),),
           visible: widget._palette.canRemove(),
         ),
       ],

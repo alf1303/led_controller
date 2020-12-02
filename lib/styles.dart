@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 
 //COLORS
-const Color mainBackgroundColor = Color.fromARGB(255, 252, 215, 251);
+//const Color mainBackgroundColor = Color.fromARGB(255, 252, 215, 251);
+const Color mainBackgroundColor = Color.fromARGB(255, 252, 235, 255);
 Color secondaryBackgroundColor = Colors.white.withOpacity(0.4);
 const Color thirdBackgroundColor = Color.fromARGB(255, 212, 255, 233);
 const Color buttonColor = Color.fromARGB(255, 150, 240, 220);
+//const Color buttonColor = Colors.white;
 const Color linesColor = Colors.white;
 const Color textBlack = Colors.black;
 const Color dividerColor = Colors.black12;
@@ -23,11 +25,11 @@ BoxShadow boxShadow1 = BoxShadow(
 TextStyle headerText = TextStyle(fontSize: 25, letterSpacing: 2, fontWeight: FontWeight.bold, color: Colors.black.withOpacity(1),
     shadows: [Shadow(color: Colors.pinkAccent, blurRadius: 5,)]
 );
-TextStyle headerTextSmall = TextStyle(fontSize: 16, letterSpacing: 2, fontWeight: FontWeight.bold, color: Colors.black.withOpacity(1),
+TextStyle headerTextSmall = TextStyle(fontSize: 20, letterSpacing: 2, fontWeight: FontWeight.bold, color: Colors.black.withOpacity(1),
     shadows: [Shadow(color: Colors.pinkAccent, blurRadius: 5,)]
 );
 const TextStyle mainText = TextStyle(color: textBlack);
-const TextStyle smallText = TextStyle(fontSize: 10, color: textBlack);
+const TextStyle smallText = TextStyle(fontSize: 20, color: textBlack);
 const TextStyle mainWhiteText = TextStyle(color: Colors.white);
 
 //SHAPES AND BORDERS
@@ -59,7 +61,7 @@ end: Alignment.bottomCenter
 
 //BUTTON THEME
 ButtonTheme mainButtonTheme = ButtonTheme(
-  buttonColor: mainBackgroundColor.withOpacity(0.5),
+  buttonColor: buttonColor,
   splashColor: splashColor,
   shape: buttonShape,
 );
@@ -110,5 +112,8 @@ BoxDecoration roundedDecoration = BoxDecoration( //GRADIENT
   ),
   borderRadius: BorderRadius.circular(20)
 );
+
+const BorderRadius expandedHeaderRadius = BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15));
+const BorderRadius expandedBodyRadius = BorderRadius.only(topLeft: Radius.circular(15), bottomRight: Radius.circular(15), bottomLeft: Radius.circular(15));
 
 

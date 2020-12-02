@@ -27,6 +27,7 @@ class Main extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(
         buttonTheme: mainButtonTheme.data,
+        cardColor: secondaryBackgroundColor.withOpacity(0.4)
       ),
       home: SafeArea(
         child: MultiProvider(

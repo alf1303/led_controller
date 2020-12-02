@@ -79,12 +79,12 @@ class _EspViewState extends State<EspView> {
             colors: [
               (widget._espModel.selected) ?
               Colors.white : mainBackgroundColor.withOpacity(0.1),
-              secondaryBackgroundColor.withOpacity(1)
+              widget._espModel.selected ? mainBackgroundColor.withOpacity(1) : thirdBackgroundColor.withOpacity(1)
             ],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter
         ),
-        border: Border.all(color: (Controller.highlite && widget._espModel.selected) ? Colors.yellow : widget._espModel.selected ? Colors.white : Colors.grey, width: widget._espModel.selected ? 3 : 2),
+        border: Border.all(color: (Controller.highlite && widget._espModel.selected) ? Colors.yellow : widget._espModel.selected ? Colors.white : Colors.grey, width: (Controller.highlite && widget._espModel.selected) ? 4 : widget._espModel.selected ? 3 : 2),
         borderRadius: BorderRadius.circular(6),
         boxShadow: [
           BoxShadow(

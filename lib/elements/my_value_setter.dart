@@ -15,6 +15,7 @@ import 'package:flutter_circle_color_picker/flutter_circle_color_picker.dart';
 import '../controller.dart';
 import '../provider_model.dart';
 import 'custom/custom_radio.dart';
+import 'custom/fitted_text.dart';
 import 'my_bottom_bar.dart';
 
 class MyValueSetter extends StatelessWidget {
@@ -29,7 +30,7 @@ class MyValueSetter extends StatelessWidget {
      child: Column(
        children: <Widget>[
          MyBottomBar(true),
-         ValueSetterView(),
+         Expanded(child: SingleChildScrollView(child: ValueSetterView())),
        ],
      ),
    );
@@ -272,12 +273,16 @@ class _ValueSetterViewState extends State<ValueSetterView> {
     setState(() {  });
   }
 
+  bool _colorSetterExpanded = true;
+  bool _palettesExpanded = true;
+  bool _fxExpanded = true;
+
   @override
   Widget build(BuildContext context) {
     final double colPickerScale = 1.4;
     final double height = MediaQuery.of(context).size.height;
     final double width = MediaQuery.of(context).size.width;
-    final double fontSize = height > width ? (width/25)/1.6 : (height/25)/1.6;
+    final double fontSize = height > width ? (width/25) : (height/25);
     final _attrModel = Provider.of<ProviderModelAttribute>(context, listen: true);
     if(_attrModel.flag) {
       _dim = _attrModel.dim;
@@ -298,266 +303,322 @@ class _ValueSetterViewState extends State<ValueSetterView> {
       _fxRndColor = _attrModel.fxRndColor;
       Controller.resetAttributeProviderFlag();
     }
-    return Column(
-      children: <Widget>[
-        Row(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Expanded(
-              flex: 6,
-              child: Column(
+
+    return ExpandableTheme(
+      data: ExpandableThemeData(
+        headerAlignment: ExpandablePanelHeaderAlignment.bottom,
+        iconSize: 30,
+        iconPadding: EdgeInsets.all(0),
+        iconPlacement: ExpandablePanelIconPlacement.left,
+        iconRotationAngle: -1.5,
+        //expandIcon: IconData(555)
+      ),
+      child: Column(
+        children: <Widget>[
+          //COLOR SETTER
+          ExpandablePanel(
+            header: Container(
+                decoration: BoxDecoration(
+                    color: mainBackgroundColor,
+                    //border: Border.all(),
+                    borderRadius: expandedHeaderRadius
+                ),
+                child: FText("Color Setter", headerTextSmall)),
+            expanded: Container(
+              color: mainBackgroundColor,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  MyCustomSlider("", _dim, 0, 255, secondaryBackgroundColor, linesColor, linesColor, 5, onDimmerChanged, onDimmerChangeEnd),
-                  MyCustomSlider("", _red, 0, 255, secondaryBackgroundColor, linesColor, Colors.red, 5, onRedChanged, onRedChangeEnd),
-                  MyCustomSlider("", _green, 0, 255, secondaryBackgroundColor, linesColor, Colors.green, 5, onGreenChanged, onGreenChangeEnd),
-                  MyCustomSlider("", _blue, 0, 255, secondaryBackgroundColor, linesColor, Colors.blue, 5, onBlueChanged, onBlueChangeEnd),
-                ],
-              ),
-            ),
-                                  //COLOR VIEWER
-            Expanded(
-              child: Column(
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8, right: 8.0),
-                    child: Container(
-                      height: 120,
-                      decoration: BoxDecoration(
-                        color: Color.fromRGBO(_red.round(), _green.round(), _blue.round(), 1),
-                          border: Border.all(color: Colors.grey),
-                          borderRadius: BorderRadius.all(Radius.circular(5)),
-                          boxShadow: [
-                            boxShadow1
-                          ]
-                      ),
+                  Expanded(
+                    flex: 6,
+                    child: Column(
+                      children: <Widget>[
+                        MyCustomSlider("", _dim, 0, 255, secondaryBackgroundColor, linesColor, linesColor, 5, onDimmerChanged, onDimmerChangeEnd),
+                        MyCustomSlider("", _red, 0, 255, secondaryBackgroundColor, linesColor, Colors.red, 5, onRedChanged, onRedChangeEnd),
+                        MyCustomSlider("", _green, 0, 255, secondaryBackgroundColor, linesColor, Colors.green, 5, onGreenChanged, onGreenChangeEnd),
+                        MyCustomSlider("", _blue, 0, 255, secondaryBackgroundColor, linesColor, Colors.blue, 5, onBlueChanged, onBlueChangeEnd),
+                      ],
                     ),
                   ),
-                  RaisedButton(
-                    child: Icon(Icons.clear, size: 24,),
-                    shape: roundedButtonShape,
-                    onPressed: _zeroVals
-                  ),
-                  RaisedButton(
-                      child: Icon(Icons.save, size: 24,),
-                      shape: roundedButtonShape,
-                      onPressed: onSavePressed
+                  //COLOR VIEWER
+                  Expanded(
+                    child: Column(
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.only(left: 8, right: 8.0),
+                          child: Container(
+                            height: 120,
+                            decoration: BoxDecoration(
+                                color: Color.fromRGBO(_red.round(), _green.round(), _blue.round(), 1),
+                                border: Border.all(color: Colors.grey),
+                                borderRadius: BorderRadius.all(Radius.circular(5)),
+                                boxShadow: [
+                                  boxShadow1
+                                ]
+                            ),
+                          ),
+                        ),
+                        RaisedButton(
+                          color: buttonColor,
+                            child: Icon(Icons.clear, size: 24,),
+                            shape: roundedButtonShape,
+                            onPressed: _zeroVals
+                        ),
+                        RaisedButton(
+                            child: Icon(Icons.save, size: 24,),
+                            shape: roundedButtonShape,
+                            onPressed: onSavePressed
+                        )
+                      ],
+                    ),
                   )
                 ],
               ),
-            )
-          ],
-        ),
-                                  //PALLETES VIEWER
-        Text("Palettes:", style: headerTextSmall,),
-        Padding(
-          padding: const EdgeInsets.only(bottom: 8.0, left: 5, right: 5),
-          child: Container(
-            child: PaletteViewer(),
-            decoration: BoxDecoration(
-              border: Border.all(color: mainBackgroundColor, width: 1),
-              borderRadius: BorderRadius.all(Radius.circular(3)),
-              color: Colors.transparent,
-              boxShadow: [
-                BoxShadow(
-                  color: mainBackgroundColor.withOpacity(0.3),
-                  spreadRadius: -3,
-                  blurRadius: 5,
-                  //offset: Offset(1, 2)
-                )
-              ]
             ),
-            height: height > width ? height/11 : width/11,
-            width: width,
           ),
-        ),
-        Container(height: 2, color: Colors.white),
+          Container(height: 2, color: mainBackgroundColor),
+                                    //PALLETES VIEWER
+          ExpandablePanel(
+            header: Container(
+              decoration: BoxDecoration(
+                color: mainBackgroundColor,
+                //border: Border.all(),
+                borderRadius: expandedHeaderRadius
+              ),
+                child: FText("Palettes:", headerTextSmall)),
+            expanded: Container(
+              decoration: BoxDecoration(
+                  color: mainBackgroundColor,
+                  borderRadius: expandedBodyRadius
+              ),
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 8.0, left: 5, right: 5),
+                child: Container(
+                  child: PaletteViewer(),
+                  decoration: BoxDecoration(
+                      border: Border.all(color: mainBackgroundColor, width: 1),
+                      borderRadius: BorderRadius.all(Radius.circular(3)),
+                      color: Colors.transparent,
+                      boxShadow: [
+                        BoxShadow(
+                          color: mainBackgroundColor.withOpacity(0.3),
+                          spreadRadius: -3,
+                          blurRadius: 5,
+                          //offset: Offset(1, 2)
+                        )
+                      ]
+                  ),
+                  height: height > width ? height/11 : width/11,
+                  width: width,
+                ),
+              ),
+            ),
+          ),
+          Container(height: 2, color: mainBackgroundColor),
+          SizedBox(height: 8,),
 
-                      /////////FX SETTER
-        Center(child: Padding(
-          padding: const EdgeInsets.only(top: 8.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              CustomRadio(label: _playlistMode ? "Stop Playlist" : "Start Playlist", value: _playlistMode, onChanged: onPlaylistModeChange, color: mainBackgroundColor, fontSize: fontSize,),
-              Text("FX Settings", style: headerTextSmall,),
-              RaisedButton(
-                  child: Text("Playlist", style: smallText.copyWith(fontSize: fontSize),),
-                  shape: roundedButtonShape,
-                  onPressed: () {
-                    showDialog(context: context,
-                    builder: (context) {
-                      final _formKey = GlobalKey<FormState>();
-                      TextEditingController _periodController = TextEditingController();
-                      _periodController.text = Controller.paletteProvider.playlistPeriod.toString();
-                      return AlertDialog(
-                        contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-                        shape: alertShape,
-                        backgroundColor: thirdBackgroundColor.withOpacity(0.8),
-                        content: Form(
-                          key: _formKey,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              Text("Playlist items: ${Controller.paletteProvider.playlist.length}"),
-                              Row(
-                                children: <Widget>[
-                                  Text("Period (seconds):"),
-                                  Expanded(
-                                    child: Container(
-                                      color: mainBackgroundColor.withOpacity(0.8),
-                                      child: TextFormField(
-                                        decoration: inputDecoration,
-                                        controller: _periodController,
-                                        keyboardType: TextInputType.number,
-                                        validator: (value) {
-                                          if(value.isEmpty || int.parse(value) < 1 || int.parse(value) > 3600) return "1-3600 seconds";
-                                          return null;
-                                        },
-                                      ),
+                        /////////FX SETTER
+          ExpandablePanel(
+            header: Container(
+                decoration: BoxDecoration(
+                    color: mainBackgroundColor,
+                    //border: Border.all(),
+                    borderRadius: expandedHeaderRadius
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    CustomRadio(label: _playlistMode ? "Stop Playlist" : "Start Playlist", value: _playlistMode, onChanged: onPlaylistModeChange, color: mainBackgroundColor, fontSize: fontSize,),
+                    FText("FX Setter", headerTextSmall),
+                    RaisedButton(
+                        child: Text("Playlist", style: smallText.copyWith(fontSize: fontSize),),
+                        shape: roundedButtonShape,
+                        onPressed: () {
+                          showDialog(context: context,
+                              builder: (context) {
+                                final _formKey = GlobalKey<FormState>();
+                                TextEditingController _periodController = TextEditingController();
+                                _periodController.text = Controller.paletteProvider.playlistPeriod.toString();
+                                return AlertDialog(
+                                  contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                                  shape: alertShape,
+                                  backgroundColor: thirdBackgroundColor.withOpacity(0.8),
+                                  content: Form(
+                                    key: _formKey,
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: <Widget>[
+                                        Text("Playlist items: ${Controller.paletteProvider.playlist.length}"),
+                                        Row(
+                                          children: <Widget>[
+                                            Text("Period (seconds):"),
+                                            Expanded(
+                                              child: Container(
+                                                color: mainBackgroundColor.withOpacity(0.8),
+                                                child: TextFormField(
+                                                  decoration: inputDecoration,
+                                                  controller: _periodController,
+                                                  keyboardType: TextInputType.number,
+                                                  validator: (value) {
+                                                    if(value.isEmpty || int.parse(value) < 1 || int.parse(value) > 3600) return "1-3600 seconds";
+                                                    return null;
+                                                  },
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                ],
+                                  actions: <Widget>[
+                                    RaisedButton(
+                                        shape: roundedButtonShape,
+                                        child: Text("Save"),
+                                        onPressed: () {
+                                          if(_formKey.currentState.validate()) {
+                                            Controller.paletteProvider.playlistPeriod = int.parse(_periodController.text);
+                                            Controller.sendPlaylist();
+                                            Navigator.of(context).pop();
+                                          }
+                                        })
+                                  ],
+                                );
+                              }
+                          );
+                        }
+                    ),
+                  ],
+                )),
+            expanded: Container(
+              decoration: BoxDecoration(
+                color: mainBackgroundColor,
+                borderRadius: expandedBodyRadius
+              ),
+              child: Column(
+                children: [
+                  Column(
+                    children: <Widget>[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: <Widget>[
+                          /////////////////////////////////////////////////    FX COLOR
+                          Column(
+                            children: <Widget>[
+                              GestureDetector(
+                                child: Stack(
+                                  alignment: Alignment.center,
+                                  children: <Widget>[
+                                    Container(
+                                      height: height > width ? width/6 : height/6,
+                                      width: height > width ? width/6 : height/6,
+                                      decoration: BoxDecoration(
+                                          boxShadow: [boxShadow1],
+                                          color: _fxColor, border: Border.all(color: linesColor), borderRadius: BorderRadius.circular(12)),
+                                    ),
+
+                                    InvertColors(child: Text("   FX\ncolor", style: smallText.copyWith(fontSize: fontSize, color: _fxColor),))
+                                  ],
+                                ),
+                                onTap: () {
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return MyColorPicker(width*0.8, _fxColor, _fxSize, onFxColorChanged, onFxSizeChanged);
+                                      });
+                                },
                               ),
                             ],
                           ),
-                        ),
-                        actions: <Widget>[
-                          RaisedButton(
-                            shape: roundedButtonShape,
-                              child: Text("Save"),
-                              onPressed: () {
-                                if(_formKey.currentState.validate()) {
-                                  Controller.paletteProvider.playlistPeriod = int.parse(_periodController.text);
-                                  Controller.sendPlaylist();
-                                  Navigator.of(context).pop();
-                                }
-                              })
-                        ],
-                      );
-                    }
-                    );
-                  }
-              ),
-            ],
-          ),
-        )),
-        Column(
-          children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                /////////////////////////////////////////////////    FX COLOR
-                Column(
-                  children: <Widget>[
-                    GestureDetector(
-                      child: Stack(
-                        alignment: Alignment.center,
-                        children: <Widget>[
-                          Container(
-                            height: height > width ? width/6 : height/6,
-                            width: height > width ? width/6 : height/6,
-                            decoration: BoxDecoration(
-                              boxShadow: [boxShadow1],
-                                color: _fxColor, border: Border.all(color: linesColor), borderRadius: BorderRadius.circular(12)),
-                          ),
-                          
-                          InvertColors(child: Text("   FX\ncolor", style: smallText.copyWith(fontSize: fontSize, color: _fxColor),))
-                        ],
-                      ),
-                      onTap: () {
-                        showDialog(
-                            context: context,
-                            builder: (context) {
-                              return MyColorPicker(width*0.8, _fxColor, _fxSize, onFxColorChanged, onFxSizeChanged);
-                            });
-                      },
-                    ),
-                  ],
-                ),
-                Expanded(
-                  child: GridView.count(crossAxisCount: 3,
-                  shrinkWrap: true,
-                  physics: ClampingScrollPhysics(),
-                  childAspectRatio: 1.5,
-                  children: <Widget>[
-                    CustomGroupRadio(label: "OFF", value: 0, groupValue: _fxNum, onChanged: onFxNumChanged, enabled: true, color: mainBackgroundColor, fontSize: fontSize,),
-                    CustomGroupRadio(label: "Sinus", value: 1, groupValue: _fxNum, onChanged: onFxNumChanged, enabled: true, color: mainBackgroundColor, padding: 0, fontSize: fontSize,),
-                    CustomGroupRadio(label: "Cyclon", value: 2, groupValue: _fxNum, onChanged: onFxNumChanged, enabled: true, color: mainBackgroundColor, padding: 0, fontSize: fontSize),
-                    CustomGroupRadio(label: "Fade", value: 3, groupValue: _fxNum, onChanged: onFxNumChanged, enabled: true, color: mainBackgroundColor, fontSize: fontSize,),
-                    CustomGroupRadio(label: "RGB", value: 4, groupValue: _fxNum, onChanged: onFxNumChanged, enabled: true, color: mainBackgroundColor, fontSize: fontSize),
-                  ],),
-                ),
-
-                //////////////////////////////////////////   FX SETTINGS
-                GestureDetector(
-                  onTap: () {
-                    showDialog(
-                        context: context,
-                    builder: (context) {
-                          return AlertDialog(
-                            contentPadding: EdgeInsets.symmetric(horizontal: 0, vertical: 15),
-                            shape: alertShape,
-                            backgroundColor: thirdBackgroundColor.withOpacity(0.8),
-                            content: Column(
-                              mainAxisSize: MainAxisSize.min,
+                          Expanded(
+                            child: GridView.count(crossAxisCount: 3,
+                              shrinkWrap: true,
+                              physics: ClampingScrollPhysics(),
+                              childAspectRatio: 1.5,
                               children: <Widget>[
-                                StatefulBuilder(builder: (context, setStat) {
-                                  print("fxSpeed: $_fxSpeed");
-                                  //return MyCustomSliderNoCard("Speed", _fxSpeed, 0, 100, secondaryBackgroundColor, linesColor, linesColor, 5, (value) {setStat(() {_fxSpeed = value;}); }, onFxSpeedChangeEnd);
-                                  return FxSliderWidget("Speed", _fxSpeed, onFxSpeedChangeEnd, true);
-                                }),
-                                FxSliderWidget("Width", _fxWidth, onFxWidthChangeEnd, (_fxNum == FxNames.Cyclon.index || _fxNum == FxNames.Fade.index)),
-                                FxSliderWidget("Parts", _fxParts, onFxPartsChangeEnd, (_fxNum != FxNames.OFF.index && _fxNum != FxNames.Cyclon.index)),
-                                FxSliderWidget("Spread", _fxSpread, onFxSpreadChangeEnd, (_fxNum == FxNames.Sinus.index)),
-                                StatefulBuilder(builder: (context, setStat) {
-                                  onAttack(value) {onFxAttackChange(value); setStat(() {});}
-                                  onSymm(value) {onFxSymmChange(value); setStat(() {});}
-                                  onReverse(value) {onFxReverseChange(value); setStat(() {});}
-                                  onRandom(value) {onFxRndChange(value); setStat(() {});}
-                                  onRandomCol(value) {onFxRndColorChange(value); setStat(() {});}
-                                  return Column(
-                                    children: <Widget>[
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                CustomGroupRadio(label: "OFF", value: 0, groupValue: _fxNum, onChanged: onFxNumChanged, enabled: true, color: mainBackgroundColor, fontSize: fontSize,),
+                                CustomGroupRadio(label: "Sinus", value: 1, groupValue: _fxNum, onChanged: onFxNumChanged, enabled: true, color: mainBackgroundColor, padding: 0, fontSize: fontSize,),
+                                CustomGroupRadio(label: "Cyclon", value: 2, groupValue: _fxNum, onChanged: onFxNumChanged, enabled: true, color: mainBackgroundColor, padding: 0, fontSize: fontSize),
+                                CustomGroupRadio(label: "Fade", value: 3, groupValue: _fxNum, onChanged: onFxNumChanged, enabled: true, color: mainBackgroundColor, fontSize: fontSize,),
+                                CustomGroupRadio(label: "RGB", value: 4, groupValue: _fxNum, onChanged: onFxNumChanged, enabled: true, color: mainBackgroundColor, fontSize: fontSize),
+                              ],),
+                          ),
+
+                          //////////////////////////////////////////   FX SETTINGS
+                          GestureDetector(
+                            onTap: () {
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      contentPadding: EdgeInsets.symmetric(horizontal: 0, vertical: 15),
+                                      shape: alertShape,
+                                      backgroundColor: thirdBackgroundColor.withOpacity(0.8),
+                                      content: Column(
+                                        mainAxisSize: MainAxisSize.min,
                                         children: <Widget>[
-                                          CustomRadio(label: "Attack", value: _fxAttack, onChanged: onAttack, color: mainBackgroundColor, margin: 0, visible: (_fxNum == FxNames.Sinus.index), fontSize: fontSize,),
-                                          CustomRadio(label: "Symm", value: _fxSymm, onChanged: onSymm, color: mainBackgroundColor,margin: 0, visible: (_fxNum == FxNames.Sinus.index || _fxNum == FxNames.Fade.index), fontSize: fontSize,),
-                                          CustomRadio(label: "Reverse", value: _fxReverse, onChanged: onReverse, color: mainBackgroundColor, margin: 0, visible: (_fxNum != FxNames.OFF.index && _fxNum != FxNames.Cyclon.index), fontSize: fontSize,),
-                                          CustomRadio(label: "Random", value: _fxRnd, onChanged: onRandom, color: mainBackgroundColor, margin: 0, visible: (_fxNum == FxNames.Fade.index), fontSize: fontSize,),
+                                          StatefulBuilder(builder: (context, setStat) {
+                                            print("fxSpeed: $_fxSpeed");
+                                            //return MyCustomSliderNoCard("Speed", _fxSpeed, 0, 100, secondaryBackgroundColor, linesColor, linesColor, 5, (value) {setStat(() {_fxSpeed = value;}); }, onFxSpeedChangeEnd);
+                                            return FxSliderWidget("Speed", _fxSpeed, onFxSpeedChangeEnd, true);
+                                          }),
+                                          FxSliderWidget("Width", _fxWidth, onFxWidthChangeEnd, (_fxNum == FxNames.Cyclon.index || _fxNum == FxNames.Fade.index)),
+                                          FxSliderWidget("Parts", _fxParts, onFxPartsChangeEnd, (_fxNum != FxNames.OFF.index && _fxNum != FxNames.Cyclon.index)),
+                                          FxSliderWidget("Spread", _fxSpread, onFxSpreadChangeEnd, (_fxNum == FxNames.Sinus.index)),
+                                          StatefulBuilder(builder: (context, setStat) {
+                                            onAttack(value) {onFxAttackChange(value); setStat(() {});}
+                                            onSymm(value) {onFxSymmChange(value); setStat(() {});}
+                                            onReverse(value) {onFxReverseChange(value); setStat(() {});}
+                                            onRandom(value) {onFxRndChange(value); setStat(() {});}
+                                            onRandomCol(value) {onFxRndColorChange(value); setStat(() {});}
+                                            return Column(
+                                              children: <Widget>[
+                                                Row(
+                                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                  children: <Widget>[
+                                                    CustomRadio(label: "Attack", value: _fxAttack, onChanged: onAttack, color: mainBackgroundColor, margin: 0, visible: (_fxNum == FxNames.Sinus.index), fontSize: fontSize,),
+                                                    CustomRadio(label: "Symm", value: _fxSymm, onChanged: onSymm, color: mainBackgroundColor,margin: 0, visible: (_fxNum == FxNames.Sinus.index || _fxNum == FxNames.Fade.index), fontSize: fontSize,),
+                                                    CustomRadio(label: "Reverse", value: _fxReverse, onChanged: onReverse, color: mainBackgroundColor, margin: 0, visible: (_fxNum != FxNames.OFF.index && _fxNum != FxNames.Cyclon.index), fontSize: fontSize,),
+                                                    CustomRadio(label: "Random", value: _fxRnd, onChanged: onRandom, color: mainBackgroundColor, margin: 0, visible: (_fxNum == FxNames.Fade.index), fontSize: fontSize,),
+                                                  ],
+                                                ),
+                                                CustomRadio(label: "Random Color", value: _fxRndColor, onChanged: onRandomCol, color: mainBackgroundColor, visible: (_fxNum == FxNames.Fade.index), fontSize: fontSize,),
+                                              ],
+                                            );
+                                          })
+                                          //MyColorPicker(width*0.8)
                                         ],
                                       ),
-                                      CustomRadio(label: "Random Color", value: _fxRndColor, onChanged: onRandomCol, color: mainBackgroundColor, visible: (_fxNum == FxNames.Fade.index), fontSize: fontSize,),
-                                    ],
-                                  );
-                                })
-                                //MyColorPicker(width*0.8)
+                                    );
+                                  });
+                            },
+                            child: Stack(
+                              alignment: Alignment.center,
+                              children: <Widget>[
+                                Container(
+                                  height: height > width ? width/6 : height/6,
+                                  width: height > width ? width/6 : height/6,
+                                  decoration: BoxDecoration(
+                                      boxShadow: [boxShadow1],
+                                      color: Colors.grey, border: Border.all(color: linesColor), borderRadius: BorderRadius.circular(12)),
+                                ),
+                                Text("    FX \nSettings", style: smallText.copyWith(fontSize: fontSize),),
+
                               ],
                             ),
-                          );
-                    });
-                  },
-                  child: Stack(
-                    alignment: Alignment.center,
-                    children: <Widget>[
-                      Container(
-                        height: height > width ? width/6 : height/6,
-                        width: height > width ? width/6 : height/6,
-                        decoration: BoxDecoration(
-                            boxShadow: [boxShadow1],
-                            color: Colors.grey, border: Border.all(color: linesColor), borderRadius: BorderRadius.circular(12)),
+                          )
+                        ],
                       ),
-                      Text("    FX \nSettings", style: smallText.copyWith(fontSize: fontSize),),
-
                     ],
                   ),
-                )
-              ],
+                ],
+              ),
             ),
-          ],
-        ),
-        SizedBox(height: 8,)
-      ],
+          ),
+          Container(height: 2, color: mainBackgroundColor),
+        ],
+      ),
     );
   }
 }
