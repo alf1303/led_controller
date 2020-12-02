@@ -1,18 +1,24 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:invert_colors/invert_colors.dart';
 import 'package:ledcontroller/controller.dart';
 import 'package:ledcontroller/model/palette.dart';
 import 'package:ledcontroller/model/palette_types.dart';
 import 'package:ledcontroller/styles.dart';
 import 'package:provider/provider.dart';
 import '../palettes_provider.dart';
+import 'custom/fitted_text.dart';
 
 class PaletteViewer extends StatelessWidget {
+  final bool isPalette;
+  const PaletteViewer(this.isPalette);
 
   @override
   Widget build(BuildContext context) {
     final paletteProvider = Provider.of<PaletteProvider>(context, listen: true);
+    List<Palette> list = isPalette ? paletteProvider.getPalettes() : paletteProvider.getProgramms();
+    //print(list.length);
     return Scrollbar(
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
@@ -21,8 +27,8 @@ class PaletteViewer extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             shrinkWrap: true,
             mainAxisSpacing: 3,
-            childAspectRatio: 1,
-            children: List.generate(paletteProvider.list.length, (index) => ViewPaletteItem(paletteProvider.list[index])),
+            childAspectRatio: 1.3,
+            children: List.generate(list.length, (index) => ViewPaletteItem(list[index])),
             crossAxisCount: 1),
       ),
     );
@@ -125,15 +131,16 @@ void _storePosition(TapDownDetails details) {
             children: <Widget>[
               //Text(isPalette ? "Palette" : "Program"),
               Expanded(
+                flex: 7,
                 child: Container(
-                  decoration: isPalette ? BoxDecoration(border: Border.all(color: Colors.transparent, width: 0), color: colorPal, shape: BoxShape.circle, boxShadow: [
-                    BoxShadow(color: mainBackgroundColor, spreadRadius: 2, blurRadius: 4)]) :
-                    BoxDecoration(border: Border.all(color: Colors.transparent, width: 0), borderRadius: BorderRadius.circular(8), shape: BoxShape.rectangle, gradient: colorPal != emptyPaletteColor ? LinearGradient(
+                  decoration: isPalette ? BoxDecoration(border: Border.all(color: Colors.yellowAccent, width: widget._palette.selected ? 4 : 0), color: colorPal, shape: BoxShape.circle, boxShadow: [
+                    BoxShadow(color: Colors.grey, spreadRadius: 2, blurRadius: (colorPal == null || colorPal == Colors.grey.withOpacity(0.7)) ? 0 : 4)]) :
+                    BoxDecoration(border: Border.all(color: Colors.yellowAccent, width: widget._palette.selected ? 4 : 0), borderRadius: BorderRadius.circular(8), shape: BoxShape.rectangle, gradient: colorPal != emptyPaletteColor ? LinearGradient(
                         colors: [Colors.cyanAccent, Colors.amber, Colors.pink,],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight) : LinearGradient(colors: [Colors.grey.withOpacity(0.7), Colors.grey.withOpacity(0.7)]),
                       boxShadow: [
-                        BoxShadow(color: mainBackgroundColor, spreadRadius: 2, blurRadius: 4)
+                        BoxShadow(color: Colors.grey, spreadRadius: 2, blurRadius: (colorPal == null || colorPal == Colors.grey.withOpacity(0.7)) ? 0 : 4)
                       ]
                     ),
                   child: Material(
@@ -144,10 +151,10 @@ void _storePosition(TapDownDetails details) {
                       child: Center(child: Column(
                         children: <Widget>[
                           SizedBox(height: 6,),
-                          Text(label, style: smallText.copyWith(fontSize: iconSize/1.6),),
+                          InvertColors(child: Text(label, style: smallText.copyWith(fontSize: iconSize/1.6, color: widget._palette.settings.isNotEmpty ? widget._palette.settings[0].settings.fxColor : Colors.white),)),
                           Visibility(
                             visible: widget._palette.playlistItem,
-                              child: Icon(Icons.play_circle_outline, size: iconSize,))
+                              child: InvertColors(child: Icon(Icons.play_circle_outline, size: iconSize, color: widget._palette.settings.isNotEmpty ? widget._palette.settings[0].settings.color : Colors.white,)))
                         ],
                       )),
                       splashColor: mainBackgroundColor,
@@ -155,6 +162,10 @@ void _storePosition(TapDownDetails details) {
                         _controller.animateTo(1);
                         Controller.loadPalette(widget._palette);
                         Controller.setSendWithoutUpdate(128);
+                        isPalette ? paletteProvider.deselectPalettes() : paletteProvider.deselectPrograms();
+                        setState(() {
+                          widget._palette.selected = true;
+                        });
                       },
                       onLongPress: () {
                         _controller.animateTo(1);
@@ -166,6 +177,10 @@ void _storePosition(TapDownDetails details) {
                   ),
                 ),
               ),
+              SizedBox(height: 1,),
+              Expanded(
+                  flex: 2,
+                  child: SizedBox(height: 12,child: Text(widget._palette.name, style: smallText.copyWith(fontSize: 12))))
             ],
           ),
         ),
@@ -216,6 +231,43 @@ class MyPaletteEntryState extends State<MyPaletteEntry> {
     widget.valueChanged(true);
     Navigator.pop(context);
   }
+  
+  void rename() {
+    final _formKey67 = GlobalKey<FormState>();
+    showDialog(context: context,
+    builder: (context) {
+      TextEditingController _nameController = TextEditingController();
+      _nameController.text = widget._palette.name;
+      return AlertDialog(
+        shape: alertShape,
+        backgroundColor: thirdBackgroundColor.withOpacity(0.8),
+        content: Form(
+          key: _formKey67,
+          child: Row(
+            children: [
+              Expanded(
+                child: TextFormField(
+                  decoration: inputDecoration,
+                  controller: _nameController,
+                  validator: (value) {
+                    if(value.length > 10) return "<10";
+                    return null;
+                  },
+                ),
+              ),
+              IconButton(icon: Icon(Icons.save, size: 40,), onPressed: () {
+                if(_formKey67.currentState.validate()) {
+                  widget._palette.name = _nameController.text;
+                  Navigator.pop(context);
+                }
+              })
+            ],
+          ),
+        ),
+      );
+    }).then((value) => Navigator.pop(context));
+    //Navigator.pop(context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -224,19 +276,21 @@ class MyPaletteEntryState extends State<MyPaletteEntry> {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        RaisedButton(materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,shape: buttonShape, onPressed: save, color: buttonColor.withOpacity(0.7), child: Text("Save"),),
+        RaisedButton(materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,shape: buttonShape, onPressed: save, color: buttonColor.withOpacity(0.9), child: Text("Save"),),
         SizedBox(height: 2,),
-        RaisedButton(materialTapTargetSize: MaterialTapTargetSize.shrinkWrap, shape: buttonShape, onPressed: clear, color: buttonColor.withOpacity(0.6), child: Text("Clear", style: TextStyle(color: Colors.white),),),
+        RaisedButton(materialTapTargetSize: MaterialTapTargetSize.shrinkWrap, shape: buttonShape, onPressed: clear, color: buttonColor.withOpacity(0.9), child: Text("Clear"),),
+        SizedBox(height: 2,),
+        RaisedButton(materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,shape: buttonShape, onPressed: rename, color: buttonColor.withOpacity(0.9), child: Text("Rename"),),
         SizedBox(height: 2,),
         Visibility(
             child:
-            RaisedButton(materialTapTargetSize: MaterialTapTargetSize.shrinkWrap, shape: buttonShape, onPressed: add, color: buttonColor.withOpacity(0.6), child: Text("Add to PL", style: TextStyle(color: Colors.white),),),
+            RaisedButton(materialTapTargetSize: MaterialTapTargetSize.shrinkWrap, shape: buttonShape, onPressed: add, color: buttonColor.withOpacity(0.9), child: Text("Playlist +"),),
         visible: widget._palette.canAdd(),
         ),
         SizedBox(height: 2,),
         Visibility(
           child:
-          RaisedButton(materialTapTargetSize: MaterialTapTargetSize.shrinkWrap, shape: buttonShape, onPressed: remove, color: buttonColor.withOpacity(0.6), child: Text("Rem from PL", style: TextStyle(color: Colors.white),),),
+          RaisedButton(materialTapTargetSize: MaterialTapTargetSize.shrinkWrap, shape: buttonShape, onPressed: remove, color: buttonColor.withOpacity(0.9), child: Text("Playlist -", style: TextStyle(color: Colors.red),),),
           visible: widget._palette.canRemove(),
         ),
       ],

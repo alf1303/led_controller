@@ -8,11 +8,14 @@ import 'package:provider/provider.dart';
 import '../controller.dart';
 
 class MyBottomBar extends StatelessWidget {
+  final bool isEditor;
+  const MyBottomBar(this.isEditor);
   @override
   Widget build(BuildContext context) {
     final providerModel = Provider.of<ProviderModel>(context, listen: true);
     return Container(
-      decoration: bottomDecoration,
+      padding: EdgeInsets.symmetric(vertical: isEditor ? 5 : 0),
+      //decoration: bottomDecoration,
       child: SizedBox(
         width: MediaQuery.of(context).size.width,
         height: 40,
@@ -24,78 +27,86 @@ class MyBottomBar extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  RaisedButton(
-                      child: Text("Reset", style: mainText,),
-                      onPressed: !providerModel.selected ? null : () {
-                        Controller.setReset();
-                      }),
-                  RaisedButton(
-                      child: Text("Area", style: mainText,),
-                      onPressed: !Controller.providerModel.selected ? null : () {
-                        showDialog(
-                            context: context,
-                          builder: (context) {
-                            Settings set = providerModel.getFirstChecked().ramSet;
-                            RangeValues val = RangeValues(set.startPixel.roundToDouble(), set.endPixel.roundToDouble());
-                              return Row(
-                                children: <Widget>[
-                                  Material(
-                                    color:Colors.transparent,
-                                    child: Container(
-                                      color: Colors.transparent,
-                                      height: 50,
-                                      width: MediaQuery.of(context).size.width,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: StatefulBuilder(
-                                            builder: (context, setState) {
-                                              return Row(
-                                                children: <Widget>[
-                                                  Container(
-                                                    //color:Colors.red,
-                                                    child: Padding(
-                                                      padding: const EdgeInsets.all(8.0),
-                                                      child: Text("${val.start.round()}"),
+                  Visibility(
+                    visible: !isEditor,
+                    child: RaisedButton(
+                        elevation: 10,
+                        child: Text("Reset", style: mainText,),
+                        onPressed: !providerModel.selected ? null : () {
+                          Controller.setReset();
+                        }),
+                  ),
+                  Visibility(
+                    visible: !isEditor,
+                    child: RaisedButton(
+                      elevation: 10,
+                        child: Text("Area", style: mainText,),
+                        onPressed: !Controller.providerModel.selected ? null : () {
+                          showDialog(
+                              context: context,
+                            builder: (context) {
+                              Settings set = providerModel.getFirstChecked().ramSet;
+                              RangeValues val = RangeValues(set.startPixel.roundToDouble(), set.endPixel.roundToDouble());
+                                return Row(
+                                  children: <Widget>[
+                                    Material(
+                                      color:Colors.transparent,
+                                      child: Container(
+                                        color: Colors.transparent,
+                                        height: 50,
+                                        width: MediaQuery.of(context).size.width,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: StatefulBuilder(
+                                              builder: (context, setState) {
+                                                return Row(
+                                                  children: <Widget>[
+                                                    Container(
+                                                      //color:Colors.red,
+                                                      child: Padding(
+                                                        padding: const EdgeInsets.all(8.0),
+                                                        child: Text("${val.start.round()}"),
+                                                      ),
+                                                      decoration: roundedDecoration,
                                                     ),
-                                                    decoration: roundedDecoration,
-                                                  ),
-                                                  Expanded(
-                                                    child: RangeSlider(
-                                                        values: val,
-                                                        min: 0,
-                                                        max: set.pixelCount.roundToDouble(),
-                                                        divisions: set.pixelCount,
+                                                    Expanded(
+                                                      child: RangeSlider(
+                                                          values: val,
+                                                          min: 0,
+                                                          max: set.pixelCount.roundToDouble(),
+                                                          divisions: set.pixelCount,
 //                                                        labels: RangeLabels(
 //                                                          val.start.toString(),
 //                                                          val.end.toString()
 //                                                        ),
-                                                        onChanged: (values) {
-                                                          val = values;
-                                                          setState(() {});
-                                                        },
-                                                    onChangeEnd: (values) {
-                                                          Controller.setArea(set.pixelCount, values);
-                                                    },
+                                                          onChanged: (values) {
+                                                            val = values;
+                                                            setState(() {});
+                                                          },
+                                                      onChangeEnd: (values) {
+                                                            Controller.setArea(set.pixelCount, values);
+                                                      },
+                                                      ),
                                                     ),
-                                                  ),
-                                                  Container(
-                                                      decoration: roundedDecoration,
-                                                      child: Padding(
-                                                        padding: const EdgeInsets.all(8.0),
-                                                        child: Text("${val.end.round()}"),
-                                                      )),
-                                                ],
-                                              );
-                                            }
-                                        )
+                                                    Container(
+                                                        decoration: roundedDecoration,
+                                                        child: Padding(
+                                                          padding: const EdgeInsets.all(8.0),
+                                                          child: Text("${val.end.round()}"),
+                                                        )),
+                                                  ],
+                                                );
+                                              }
+                                          )
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ],
-                              );
-                          }
-                        );
-                      }),
+                                  ],
+                                );
+                            }
+                          );
+                        }),
+                  ),
                   StatefulBuilder(builder: (context, setState) {
                     onChanged(bool value) {
                       Controller.highlite = value;
@@ -110,15 +121,22 @@ class MyBottomBar extends StatelessWidget {
                     return IndicatorRaisedButton(label: "HL", value: Controller.highlite, onPressed: onChanged,);
                   }),
                   RaisedButton(
+                    elevation: 10,
                       child: Icon(Icons.select_all),
                       onPressed: () {
                         Controller.selectAll();
                       }),
                   RaisedButton(
+                    elevation: 10,
                       child: Icon(Icons.clear),
                       onPressed: () {
                         Controller.deselectAll();
                       }),
+                  Visibility(
+                    visible: false,
+                    child: RaisedButton(
+                        ),
+                  ),
                 ],
               ),
             )
@@ -140,7 +158,7 @@ const IndicatorRaisedButton({
   @override
   Widget build(BuildContext context) {
     return ButtonTheme(
-      buttonColor: buttonColor,
+      buttonColor: mainBackgroundColor.withOpacity(0.5),
         splashColor: splashColor,
         minWidth: 36,
       child: RaisedButton(
@@ -151,7 +169,7 @@ const IndicatorRaisedButton({
                 Text(label == null ? "" : label, style: mainText,),
                 Container(
                   decoration: BoxDecoration(
-                      color: value ? Colors.white : Colors.black,
+                      color: value ? Colors.yellowAccent : Colors.black,
                     boxShadow: [
                       BoxShadow(color: Colors.white,
                       blurRadius: value ? 3 : 0,

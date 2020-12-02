@@ -252,12 +252,13 @@ abstract class UDPCotroller {
     });
   }
 
-  static void setSend(int save) async{
+  static void setSend(int save, [bool program]) async{
+    if(program == null) program = false;
     setLocalIp();
     await senderBind();
     if(Controller.providerModel.list != null) {
       Controller.providerModel.list.forEach((element) async{
-        if(element.selected) {
+        if(element.selected || program) {
           Uint8List header = formHeader(element.uni, "S", "S");
           Uint8List data = Uint8List(30);
           //print(save);

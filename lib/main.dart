@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:ledcontroller/elements/my_value_setter.dart';
 import 'package:ledcontroller/palettes_provider.dart';
 import 'package:ledcontroller/provider_model.dart';
 import 'package:ledcontroller/provider_model_attribute.dart';
@@ -8,9 +7,13 @@ import 'package:ledcontroller/udp_controller.dart';
 import 'package:provider/provider.dart';
 
 import 'controller.dart';
+import 'elements/custom/fitted_text.dart';
 import 'elements/fixtures_view.dart';
 import 'elements/help_widget.dart';
 import 'elements/my_bottom_bar.dart';
+import 'elements/my_value_setter.dart';
+import 'elements/playback_view.dart';
+import 'elements/settings_widget.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,9 +26,11 @@ void main() async{
 class Main extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    Controller.scan();
     return MaterialApp(
       theme: ThemeData(
         buttonTheme: mainButtonTheme.data,
+        cardColor: secondaryBackgroundColor.withOpacity(0.4)
       ),
       home: SafeArea(
         child: MultiProvider(
@@ -34,13 +39,61 @@ class Main extends StatelessWidget {
             ChangeNotifierProvider<ProviderModelAttribute>(create: (_) => ProviderModelAttribute(),),
             ChangeNotifierProvider<PaletteProvider>(create: (_) => PaletteProvider(),)
           ],
-          child: Scaffold(
-            body: MainPage(),
-            bottomNavigationBar: MyBottomBar(),
+          child: DefaultTabController(
+            length: 3,
+            child: Scaffold(
+              appBar: AppBar(
+                flexibleSpace: Container(decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      thirdBackgroundColor,
+                      mainBackgroundColor,
+                    ],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter
+                  )
+                ),),
+                  title: MyAppBar(),
+                  bottom: TabBar(
+                    labelColor: mainBackgroundColor,
+                    indicatorSize: TabBarIndicatorSize.tab,
+                    indicatorPadding: EdgeInsets.all(0),
+                    indicator: BoxDecoration(
+                        color: thirdBackgroundColor,
+                        border: Border(top: BorderSide(color: Colors.grey, width: 1),
+                          left: BorderSide(color: Colors.grey, width: 1),
+                          right: BorderSide(color: Colors.grey, width: 1),
+                          bottom: BorderSide(color: Colors.grey, width: 1),),
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(10),
+                            topRight: Radius.circular(10)
+                        )),
+                    tabs: [
+                      Tab(child: FText("Fixtures List", headerTextSmall,)),
+                      Tab(child: FText("Color Editor", headerTextSmall,)),
+                      Tab(child: FText("PLAYBACK", headerTextSmall,)),
+                    ],),
+              ),
+              body: TabMainPage(),
+              //bottomNavigationBar: MyBottomBar(),
+            ),
           ),
         ),
       ),
     );
+  }
+}
+
+class TabMainPage extends StatelessWidget{
+  @override
+  Widget build(BuildContext context) {
+    return TabBarView(
+        children: [
+          FixturesView(),
+          MyValueSetter(),
+          PlaybackView()
+          //Text("")
+        ]);
   }
 }
 
@@ -72,7 +125,7 @@ class MainPage extends StatelessWidget{
                       ScanWidget(),
                       SettingsWidget(),
                       Text("LEDControl", style: headerText,),
-                      IconButton(icon: Icon(Icons.help_outline, color: thirdBackgroundColor), onPressed: () {
+                      IconButton(icon: Icon(Icons.help_outline, color: Colors.black), onPressed: () {
                         showDialog(
                             context: context,
                         builder: (context) {
@@ -115,7 +168,34 @@ class MainPage extends StatelessWidget{
 class MyAppBar extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
-    return Text("LedController", style: headerText);
+    return  SizedBox(
+      width: MediaQuery.of(context).size.width,
+      height: 40,
+      child: CustomScrollView(
+        scrollDirection: Axis.horizontal,
+        shrinkWrap: true,
+        slivers: [
+          SliverFillRemaining(
+            hasScrollBody: false,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                ScanWidget(),
+                Text("LEDController", style: headerText,),
+                SettingsWidget(),
+                IconButton(icon: Icon(Icons.help_outline, color: Colors.black), onPressed: () {
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return HelpWidget();
+                      });
+                })
+              ],
+            ),
+          )
+        ],
+      ),
+    );
   }
 }
 
@@ -126,14 +206,11 @@ class ScanWidget extends StatefulWidget{
 
 class _ScanWidgetState extends State<ScanWidget> {
   Future<void> futur;
-
   bool _isLoading = false;
-
   void onScanPressed() async{
     _isLoading = true;
     futur = Controller.scan();
     setState(() {
-
     });
   }
 
@@ -144,11 +221,13 @@ class _ScanWidgetState extends State<ScanWidget> {
         builder: (context, snapshot) {
           Widget child;
           if(snapshot.connectionState == ConnectionState.none) child = (RaisedButton(
-              shape: RoundedRectangleBorder(side: BorderSide(color: linesColor), borderRadius: BorderRadius.circular(6)),
+              shape: buttonShape,
+              elevation: 10,
               child: Text("Scan"),
               onPressed: onScanPressed
           ));
           if(snapshot.connectionState == ConnectionState.waiting) child = child = (RaisedButton(
+            elevation: 10,
               color: mainBackgroundColor,
               splashColor: linesColor,
               child: Container(
