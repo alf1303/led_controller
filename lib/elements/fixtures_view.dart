@@ -1,3 +1,4 @@
+import 'package:expandable/expandable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ledcontroller/model/esp_model.dart';
@@ -22,8 +23,8 @@ class FixturesView extends StatelessWidget {
               childAspectRatio: 0.9,
               shrinkWrap: true,
               physics: ClampingScrollPhysics(),
-              mainAxisSpacing: 5,
-              crossAxisSpacing: 5,
+              mainAxisSpacing: 10,
+              crossAxisSpacing: 10,
               //crossAxisCount: (MediaQuery.of(context).size.width/75).floor(),
                 crossAxisCount: width > height ? 10 : 5 ,
             children: List.generate(model.list.length, (index) {
@@ -67,13 +68,14 @@ class _EspViewState extends State<EspView> {
     final BoxDecoration espViewDecoration = BoxDecoration(
         gradient: LinearGradient(
             colors: [
-              (Controller.highlite && widget._espModel.selected) ? Colors.white : widget._espModel.selected ? mainBackgroundColor : mainBackgroundColor.withOpacity(0.6),
-              secondaryBackgroundColor.withOpacity(0.8)
+              (widget._espModel.selected) ?
+              Colors.white : mainBackgroundColor.withOpacity(0.1),
+              secondaryBackgroundColor.withOpacity(1)
             ],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter
         ),
-        border: Border.all(color: widget._espModel.selected ? Colors.white : Colors.black, width: widget._espModel.selected ? 2 : 1),
+        border: Border.all(color: (Controller.highlite && widget._espModel.selected) ? Colors.yellow : widget._espModel.selected ? Colors.white : Colors.grey, width: widget._espModel.selected ? 3 : 2),
         borderRadius: BorderRadius.circular(6),
         boxShadow: [
           BoxShadow(
@@ -86,7 +88,8 @@ class _EspViewState extends State<EspView> {
     );
     return GestureDetector(
       onTap: _onTapFunction,
-      child: Container(
+      child: AnimatedContainer(
+        duration: Duration(milliseconds: 200),
         decoration: espViewDecoration,
         child: Padding(
           padding: const EdgeInsets.all(3.0),
@@ -156,8 +159,8 @@ class DimmerWidget  extends StatelessWidget{
       boxShadow: [
         BoxShadow(
           color: Colors.grey,
-          spreadRadius: 3,
-          blurRadius: 5
+          spreadRadius: 1,
+          blurRadius: 2
         )
       ]
     ),

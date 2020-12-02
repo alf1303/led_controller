@@ -29,11 +29,13 @@ abstract class Controller {
     for (int i = 21; i <= 40; i++) {
       Settings fsSet = Settings(random.nextInt(4), random.nextInt(3), i, i+100, Color.fromRGBO(random.nextInt(255), random.nextInt(255), 0, 1), random.nextInt(255));
       Settings ramSet = Settings(random.nextInt(4), random.nextInt(3), i, i+100, Color.fromRGBO(random.nextInt(255), random.nextInt(255), 0, 1), random.nextInt(255));
+      ramSet.fxParts = ramSet.fxWidth = ramSet.fxSpread = ramSet.fxSize = 1;
       ramSet.address = 223;
       ramSet.reverse = false;
       ramSet.startPixel = 0;
       ramSet.endPixel = 112;
       ramSet.pixelCount = 120;
+      ramSet.fxColor = Colors.cyanAccent;
       EspModel esp = new EspModel(i, "192.168.0.$i", "v_0.5.9", fsSet, ramSet);
       providerModel.list.add(esp);
     }

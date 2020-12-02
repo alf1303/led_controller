@@ -27,13 +27,21 @@ class MyValueSetter extends StatelessWidget {
      decoration: secondaryDecoration,
      child: Column(
        children: <Widget>[
-         ExpandablePanel(
-           key: new Key("sad"),
-                          //HEADER
-           header: Container(
-               child: Center(child: Text("Led Settings", style: headerTextSmall,))),
-                        //VALUE SETTER
-           expanded: ValueSetterView(),
+         ExpandableTheme(
+           data: const ExpandableThemeData(
+             iconColor: Colors.black,
+             iconSize: 40,
+             iconPadding: EdgeInsets.all(0),
+           ),
+           child: ExpandablePanel(
+
+             key: new Key("sad"),
+                            //HEADER
+             header: Container(
+                 child: Center(child: Text("Led Settings", style: headerTextSmall,))),
+                          //VALUE SETTER
+             expanded: ValueSetterView(),
+           ),
          ),
        ],
      ),
@@ -70,7 +78,7 @@ class SettingsWidget extends StatelessWidget{
                 String _inputPassword = _passwordController.text;
                 String _inputPixel = _pixelController.text;
                 return AlertDialog(
-                  backgroundColor: thirdBackgroundColor.withOpacity(0.5),
+                  backgroundColor: thirdBackgroundColor.withOpacity(0.3),
                   title: Text("Settings", style: mainWhiteText,),
                   shape: alertShape,
                   content: SingleChildScrollView(
@@ -87,7 +95,7 @@ class SettingsWidget extends StatelessWidget{
                                 children: <Widget>[
                                   Expanded(
                                     child: Container(
-                                      color: Colors.white.withOpacity(0.5),
+                                      color: mainBackgroundColor.withOpacity(0.8),
                                       child: TextFormField(
                                         onChanged: (value) {
                                           if(value != _inptName) {
@@ -111,7 +119,7 @@ class SettingsWidget extends StatelessWidget{
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 8.0),
-                            child: SizedBox(height: 2, child: Container(color: Colors.white),),
+                            //child: SizedBox(height: 2, child: Container(color: Colors.white),),
                           ),
                           Column(
                             children: <Widget>[
@@ -120,7 +128,7 @@ class SettingsWidget extends StatelessWidget{
                                 children: <Widget>[
                                   Expanded(
                                     child: Container(
-                                      color: Colors.white.withOpacity(0.5),
+                                      color: mainBackgroundColor.withOpacity(0.8),
                                       child: TextFormField(
                                         onChanged: (value) {
                                           if(value != _inputPixel) {
@@ -145,7 +153,7 @@ class SettingsWidget extends StatelessWidget{
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 8.0),
-                            child: SizedBox(height: 2, child: Container(color: Colors.white),),
+                            //child: SizedBox(height: 2, child: Container(color: Colors.white),),
                           ),
                           StatefulBuilder(
                               builder: (context, setState) {
@@ -157,6 +165,10 @@ class SettingsWidget extends StatelessWidget{
                                       children: <Widget>[
                                         Text("Standalone", style: mainWhiteText,),
                                         Switch(
+                                          inactiveTrackColor: secondaryBackgroundColor,
+                                            activeTrackColor: secondaryBackgroundColor,
+                                            activeColor: Colors.white,
+                                            inactiveThumbColor: Colors.white,
                                             value: netMode,
                                             onChanged: (value) {
                                               setState(() {
@@ -175,7 +187,7 @@ class SettingsWidget extends StatelessWidget{
                                         Text("SSID:", style: mainWhiteText,),
                                         Expanded(
                                           child: Container(
-                                            color: Colors.white.withOpacity(0.5),
+                                            color: mainBackgroundColor.withOpacity(0.8),
                                             child: TextFormField(
                                               onChanged: (value) {
                                                 if(value != _inputSsid) _networkChanged = true;
@@ -188,12 +200,13 @@ class SettingsWidget extends StatelessWidget{
                                         ),
                                       ],
                                     ),
+                                    SizedBox(height: 3,),
                                     Row(
                                       children: <Widget>[
                                         Text("PASSWORD:", style: mainWhiteText,),
                                         Expanded(
                                           child: Container(
-                                            color: Colors.white.withOpacity(0.5),
+                                            color: mainBackgroundColor.withOpacity(0.8),
                                             child: TextFormField(
                                               onChanged: (value) {
                                                 if(value != _inputPassword) _networkChanged = true;
@@ -215,6 +228,7 @@ class SettingsWidget extends StatelessWidget{
                   ),
                   actions: <Widget>[
                     RaisedButton(
+                      color: thirdBackgroundColor.withOpacity(0.9),
                         child: Text("Send", style: mainText,),
                         onPressed: () async{
                           if(_formKey.currentState.validate()) {
@@ -239,6 +253,7 @@ class SettingsWidget extends StatelessWidget{
                           }
                         }),
                     RaisedButton(
+                        color: thirdBackgroundColor.withOpacity(0.9),
                         child: Text("Close", style: mainText,),
                         onPressed: () async{
                           Navigator.of(context).pop();
@@ -619,14 +634,17 @@ class _ValueSetterViewState extends State<ValueSetterView> {
                                 children: <Widget>[
                                   Text("Period (seconds):"),
                                   Expanded(
-                                    child: TextFormField(
-                                      decoration: inputDecoration,
-                                      controller: _periodController,
-                                      keyboardType: TextInputType.number,
-                                      validator: (value) {
-                                        if(value.isEmpty || int.parse(value) < 1 || int.parse(value) > 3600) return "1-3600 seconds";
-                                        return null;
-                                      },
+                                    child: Container(
+                                      color: mainBackgroundColor.withOpacity(0.8),
+                                      child: TextFormField(
+                                        decoration: inputDecoration,
+                                        controller: _periodController,
+                                        keyboardType: TextInputType.number,
+                                        validator: (value) {
+                                          if(value.isEmpty || int.parse(value) < 1 || int.parse(value) > 3600) return "1-3600 seconds";
+                                          return null;
+                                        },
+                                      ),
                                     ),
                                   ),
                                 ],

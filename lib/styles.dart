@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
 //COLORS
-const Color mainBackgroundColor = Colors.purpleAccent;
+const Color mainBackgroundColor = Color.fromARGB(255, 252, 215, 251);
 Color secondaryBackgroundColor = Colors.white.withOpacity(0.4);
-const Color thirdBackgroundColor = Colors.cyanAccent;
-const Color buttonColor = Colors.lightBlueAccent;
-const Color linesColor = Colors.white70;
+const Color thirdBackgroundColor = Color.fromARGB(255, 212, 255, 233);
+const Color buttonColor = Color.fromARGB(255, 150, 240, 220);
+const Color linesColor = Colors.white;
 const Color textBlack = Colors.black;
 const Color dividerColor = Colors.black12;
-const Color splashColor = Colors.purpleAccent;
+const Color splashColor = mainBackgroundColor;
 Color emptyPaletteColor = Colors.grey.withOpacity(0.7);
 
 //SHADOWS

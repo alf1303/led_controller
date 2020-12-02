@@ -25,11 +25,13 @@ class MyBottomBar extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   RaisedButton(
+                      elevation: 10,
                       child: Text("Reset", style: mainText,),
                       onPressed: !providerModel.selected ? null : () {
                         Controller.setReset();
                       }),
                   RaisedButton(
+                    elevation: 10,
                       child: Text("Area", style: mainText,),
                       onPressed: !Controller.providerModel.selected ? null : () {
                         showDialog(
@@ -110,11 +112,13 @@ class MyBottomBar extends StatelessWidget {
                     return IndicatorRaisedButton(label: "HL", value: Controller.highlite, onPressed: onChanged,);
                   }),
                   RaisedButton(
+                    elevation: 10,
                       child: Icon(Icons.select_all),
                       onPressed: () {
                         Controller.selectAll();
                       }),
                   RaisedButton(
+                    elevation: 10,
                       child: Icon(Icons.clear),
                       onPressed: () {
                         Controller.deselectAll();
@@ -151,7 +155,7 @@ const IndicatorRaisedButton({
                 Text(label == null ? "" : label, style: mainText,),
                 Container(
                   decoration: BoxDecoration(
-                      color: value ? Colors.white : Colors.black,
+                      color: value ? Colors.yellowAccent : Colors.black,
                     boxShadow: [
                       BoxShadow(color: Colors.white,
                       blurRadius: value ? 3 : 0,

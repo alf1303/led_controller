@@ -14,7 +14,7 @@ import 'elements/my_bottom_bar.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
-  //await Controller.fakeInit();
+  await Controller.fakeInit();
   await Controller.initPalettes();
   await Controller.initWiFi();
   runApp(Main());
@@ -72,7 +72,7 @@ class MainPage extends StatelessWidget{
                       ScanWidget(),
                       SettingsWidget(),
                       Text("LEDControl", style: headerText,),
-                      IconButton(icon: Icon(Icons.help_outline, color: thirdBackgroundColor), onPressed: () {
+                      IconButton(icon: Icon(Icons.help_outline, color: Colors.black), onPressed: () {
                         showDialog(
                             context: context,
                         builder: (context) {
@@ -126,14 +126,11 @@ class ScanWidget extends StatefulWidget{
 
 class _ScanWidgetState extends State<ScanWidget> {
   Future<void> futur;
-
   bool _isLoading = false;
-
   void onScanPressed() async{
     _isLoading = true;
     futur = Controller.scan();
     setState(() {
-
     });
   }
 
@@ -144,7 +141,8 @@ class _ScanWidgetState extends State<ScanWidget> {
         builder: (context, snapshot) {
           Widget child;
           if(snapshot.connectionState == ConnectionState.none) child = (RaisedButton(
-              shape: RoundedRectangleBorder(side: BorderSide(color: linesColor), borderRadius: BorderRadius.circular(6)),
+              shape: buttonShape,
+              elevation: 10,
               child: Text("Scan"),
               onPressed: onScanPressed
           ));
