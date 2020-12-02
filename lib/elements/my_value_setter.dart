@@ -282,7 +282,7 @@ class _ValueSetterViewState extends State<ValueSetterView> {
     final double colPickerScale = 1.4;
     final double height = MediaQuery.of(context).size.height;
     final double width = MediaQuery.of(context).size.width;
-    final double fontSize = height > width ? (width/25) : (height/25);
+    final double fontSize = height > width ? (width/25)/1.1 : (height/25)/1.1;
     final _attrModel = Provider.of<ProviderModelAttribute>(context, listen: true);
     if(_attrModel.flag) {
       _dim = _attrModel.dim;
@@ -324,7 +324,7 @@ class _ValueSetterViewState extends State<ValueSetterView> {
                     borderRadius: expandedHeaderRadius
                 ),
                 child: FText("Color Setter", headerTextSmall)),
-            expanded: Container(
+            collapsed: Container(
               color: mainBackgroundColor,
               child: Row(
                 mainAxisSize: MainAxisSize.min,
@@ -376,8 +376,10 @@ class _ValueSetterViewState extends State<ValueSetterView> {
               ),
             ),
           ),
-          Container(height: 2, color: mainBackgroundColor),
-                                    //PALLETES VIEWER
+          Container(height: 2 , color: mainBackgroundColor),
+          SizedBox(height: 6,),
+
+          //PALLETES VIEWER
           ExpandablePanel(
             header: Container(
               decoration: BoxDecoration(
@@ -386,7 +388,7 @@ class _ValueSetterViewState extends State<ValueSetterView> {
                 borderRadius: expandedHeaderRadius
               ),
                 child: FText("Palettes:", headerTextSmall)),
-            expanded: Column(
+            collapsed: Column(
               children: [
                 Container(
                   decoration: BoxDecoration(
@@ -410,11 +412,12 @@ class _ValueSetterViewState extends State<ValueSetterView> {
                             )
                           ]
                       ),
-                      height: height > width ? height/11 : width/11,
+                      height: height > width ? height/9 : width/9,
                       width: width,
                     ),
                   ),
                 ),
+                //FText("Programs:", headerTextSmall),
                 Container(
                   decoration: BoxDecoration(
                       color: mainBackgroundColor,
@@ -437,7 +440,7 @@ class _ValueSetterViewState extends State<ValueSetterView> {
                             )
                           ]
                       ),
-                      height: height > width ? height/11 : width/11,
+                      height: height > width ? height/9 : width/9,
                       width: width,
                     ),
                   ),
@@ -456,73 +459,84 @@ class _ValueSetterViewState extends State<ValueSetterView> {
                     //border: Border.all(),
                     borderRadius: expandedHeaderRadius
                 ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    CustomRadio(label: _playlistMode ? "Stop Playlist" : "Start Playlist", value: _playlistMode, onChanged: onPlaylistModeChange, color: mainBackgroundColor, fontSize: fontSize,),
-                    FText("FX Setter", headerTextSmall),
-                    RaisedButton(
-                        child: Text("Playlist", style: smallText.copyWith(fontSize: fontSize),),
-                        shape: roundedButtonShape,
-                        onPressed: () {
-                          showDialog(context: context,
-                              builder: (context) {
-                                final _formKey = GlobalKey<FormState>();
-                                TextEditingController _periodController = TextEditingController();
-                                _periodController.text = Controller.paletteProvider.playlistPeriod.toString();
-                                return AlertDialog(
-                                  contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-                                  shape: alertShape,
-                                  backgroundColor: thirdBackgroundColor.withOpacity(0.8),
-                                  content: Form(
-                                    key: _formKey,
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: <Widget>[
-                                        Text("Playlist items: ${Controller.paletteProvider.playlist.length}"),
-                                        Row(
-                                          children: <Widget>[
-                                            Text("Period (seconds):"),
-                                            Expanded(
-                                              child: Container(
-                                                color: mainBackgroundColor.withOpacity(0.8),
-                                                child: TextFormField(
-                                                  decoration: inputDecoration,
-                                                  controller: _periodController,
-                                                  keyboardType: TextInputType.number,
-                                                  validator: (value) {
-                                                    if(value.isEmpty || int.parse(value) < 1 || int.parse(value) > 3600) return "1-3600 seconds";
-                                                    return null;
-                                                  },
+                child: SizedBox(
+                  height:50 ,
+                  child: CustomScrollView(
+                    scrollDirection: Axis.horizontal,
+                    slivers: [
+                      SliverFillRemaining(
+                        hasScrollBody: false,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            CustomRadio(label: _playlistMode ? "Stop Playlist" : "Start Playlist", value: _playlistMode, onChanged: onPlaylistModeChange, color: radioColor, fontSize: fontSize,),
+                            FText("FX Setter", headerTextSmall),
+                            RaisedButton(
+                                child: Text("Playlist", style: smallText.copyWith(fontSize: fontSize),),
+                                shape: roundedButtonShape,
+                                onPressed: () {
+                                  showDialog(context: context,
+                                      builder: (context) {
+                                        final _formKey = GlobalKey<FormState>();
+                                        TextEditingController _periodController = TextEditingController();
+                                        _periodController.text = Controller.paletteProvider.playlistPeriod.toString();
+                                        return AlertDialog(
+                                          contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                                          shape: alertShape,
+                                          backgroundColor: thirdBackgroundColor.withOpacity(0.8),
+                                          content: Form(
+                                            key: _formKey,
+                                            child: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: <Widget>[
+                                                Text("Playlist items: ${Controller.paletteProvider.playlist.length}"),
+                                                Row(
+                                                  children: <Widget>[
+                                                    Text("Period (seconds):"),
+                                                    Expanded(
+                                                      child: Container(
+                                                        color: mainBackgroundColor.withOpacity(0.8),
+                                                        child: TextFormField(
+                                                          decoration: inputDecoration,
+                                                          controller: _periodController,
+                                                          keyboardType: TextInputType.number,
+                                                          validator: (value) {
+                                                            if(value.isEmpty || int.parse(value) < 1 || int.parse(value) > 3600) return "1-3600 seconds";
+                                                            return null;
+                                                          },
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
                                                 ),
-                                              ),
+                                              ],
                                             ),
+                                          ),
+                                          actions: <Widget>[
+                                            RaisedButton(
+                                                shape: roundedButtonShape,
+                                                child: Text("Save"),
+                                                onPressed: () {
+                                                  if(_formKey.currentState.validate()) {
+                                                    Controller.paletteProvider.playlistPeriod = int.parse(_periodController.text);
+                                                    Controller.sendPlaylist();
+                                                    Navigator.of(context).pop();
+                                                  }
+                                                })
                                           ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  actions: <Widget>[
-                                    RaisedButton(
-                                        shape: roundedButtonShape,
-                                        child: Text("Save"),
-                                        onPressed: () {
-                                          if(_formKey.currentState.validate()) {
-                                            Controller.paletteProvider.playlistPeriod = int.parse(_periodController.text);
-                                            Controller.sendPlaylist();
-                                            Navigator.of(context).pop();
-                                          }
-                                        })
-                                  ],
-                                );
-                              }
-                          );
-                        }
-                    ),
-                  ],
+                                        );
+                                      }
+                                  );
+                                }
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 )),
-            expanded: Container(
+            collapsed: Container(
               decoration: BoxDecoration(
                 color: mainBackgroundColor,
                 borderRadius: expandedBodyRadius
@@ -568,11 +582,11 @@ class _ValueSetterViewState extends State<ValueSetterView> {
                               physics: ClampingScrollPhysics(),
                               childAspectRatio: 1.5,
                               children: <Widget>[
-                                CustomGroupRadio(label: "OFF", value: 0, groupValue: _fxNum, onChanged: onFxNumChanged, enabled: true, color: mainBackgroundColor, fontSize: fontSize,),
-                                CustomGroupRadio(label: "Sinus", value: 1, groupValue: _fxNum, onChanged: onFxNumChanged, enabled: true, color: mainBackgroundColor, padding: 0, fontSize: fontSize,),
-                                CustomGroupRadio(label: "Cyclon", value: 2, groupValue: _fxNum, onChanged: onFxNumChanged, enabled: true, color: mainBackgroundColor, padding: 0, fontSize: fontSize),
-                                CustomGroupRadio(label: "Fade", value: 3, groupValue: _fxNum, onChanged: onFxNumChanged, enabled: true, color: mainBackgroundColor, fontSize: fontSize,),
-                                CustomGroupRadio(label: "RGB", value: 4, groupValue: _fxNum, onChanged: onFxNumChanged, enabled: true, color: mainBackgroundColor, fontSize: fontSize),
+                                CustomGroupRadio(label: "OFF", value: 0, groupValue: _fxNum, onChanged: onFxNumChanged, enabled: true, color: radioColor, fontSize: fontSize,),
+                                CustomGroupRadio(label: "Sinus", value: 1, groupValue: _fxNum, onChanged: onFxNumChanged, enabled: true, color: radioColor, padding: 0, fontSize: fontSize,),
+                                CustomGroupRadio(label: "Cyclon", value: 2, groupValue: _fxNum, onChanged: onFxNumChanged, enabled: true, color: radioColor, padding: 0, fontSize: fontSize),
+                                CustomGroupRadio(label: "Fade", value: 3, groupValue: _fxNum, onChanged: onFxNumChanged, enabled: true, color: radioColor, fontSize: fontSize,),
+                                CustomGroupRadio(label: "RGB", value: 4, groupValue: _fxNum, onChanged: onFxNumChanged, enabled: true, color: radioColor, fontSize: fontSize),
                               ],),
                           ),
 
@@ -590,7 +604,7 @@ class _ValueSetterViewState extends State<ValueSetterView> {
                                         mainAxisSize: MainAxisSize.min,
                                         children: <Widget>[
                                           StatefulBuilder(builder: (context, setStat) {
-                                            print("fxSpeed: $_fxSpeed");
+                                            //print("fxSpeed: $_fxSpeed");
                                             //return MyCustomSliderNoCard("Speed", _fxSpeed, 0, 100, secondaryBackgroundColor, linesColor, linesColor, 5, (value) {setStat(() {_fxSpeed = value;}); }, onFxSpeedChangeEnd);
                                             return FxSliderWidget("Speed", _fxSpeed, onFxSpeedChangeEnd, true);
                                           }),
@@ -608,13 +622,13 @@ class _ValueSetterViewState extends State<ValueSetterView> {
                                                 Row(
                                                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                                                   children: <Widget>[
-                                                    CustomRadio(label: "Attack", value: _fxAttack, onChanged: onAttack, color: mainBackgroundColor, margin: 0, visible: (_fxNum == FxNames.Sinus.index), fontSize: fontSize,),
-                                                    CustomRadio(label: "Symm", value: _fxSymm, onChanged: onSymm, color: mainBackgroundColor,margin: 0, visible: (_fxNum == FxNames.Sinus.index || _fxNum == FxNames.Fade.index), fontSize: fontSize,),
-                                                    CustomRadio(label: "Reverse", value: _fxReverse, onChanged: onReverse, color: mainBackgroundColor, margin: 0, visible: (_fxNum != FxNames.OFF.index && _fxNum != FxNames.Cyclon.index), fontSize: fontSize,),
-                                                    CustomRadio(label: "Random", value: _fxRnd, onChanged: onRandom, color: mainBackgroundColor, margin: 0, visible: (_fxNum == FxNames.Fade.index), fontSize: fontSize,),
+                                                    CustomRadio(label: "Attack", value: _fxAttack, onChanged: onAttack, color: radioColor, margin: 0, visible: (_fxNum == FxNames.Sinus.index), fontSize: fontSize,),
+                                                    CustomRadio(label: "Symm", value: _fxSymm, onChanged: onSymm, color: radioColor, margin: 0, visible: (_fxNum == FxNames.Sinus.index || _fxNum == FxNames.Fade.index), fontSize: fontSize,),
+                                                    CustomRadio(label: "Reverse", value: _fxReverse, onChanged: onReverse, color: radioColor, margin: 0, visible: (_fxNum != FxNames.OFF.index && _fxNum != FxNames.Cyclon.index), fontSize: fontSize,),
+                                                    CustomRadio(label: "Random", value: _fxRnd, onChanged: onRandom, color: radioColor, margin: 0, visible: (_fxNum == FxNames.Fade.index), fontSize: fontSize,),
                                                   ],
                                                 ),
-                                                CustomRadio(label: "Random Color", value: _fxRndColor, onChanged: onRandomCol, color: mainBackgroundColor, visible: (_fxNum == FxNames.Fade.index), fontSize: fontSize,),
+                                                CustomRadio(label: "Random Color", value: _fxRndColor, onChanged: onRandomCol, color: radioColor, visible: (_fxNum == FxNames.Fade.index), fontSize: fontSize,),
                                               ],
                                             );
                                           })
@@ -635,7 +649,6 @@ class _ValueSetterViewState extends State<ValueSetterView> {
                                       color: Colors.grey, border: Border.all(color: linesColor), borderRadius: BorderRadius.circular(12)),
                                 ),
                                 Text("    FX \nSettings", style: smallText.copyWith(fontSize: fontSize),),
-
                               ],
                             ),
                           )
@@ -933,10 +946,11 @@ class MyCustomSliderNoCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+   // print("$_label, $value");
     return Stack(
       alignment: Alignment.topCenter,
       children: <Widget>[
-        Text("$_label: ${value.round()}", style: smallText,),
+        Text("$_label: ${value.round()}", style: smallText.copyWith(fontSize: 14),),
         SliderTheme(
           data: SliderTheme.of(context).copyWith(
           ),
@@ -987,16 +1001,16 @@ class _FxSliderWidgetState extends State<FxSliderWidget> {
           return Row(
             children: <Widget>[
               IconButton(
-                  icon: Icon(Icons.arrow_back_ios, color: mainBackgroundColor,),
+                  icon: Icon(Icons.arrow_back_ios, color: linesColor2,),
                   onPressed: () {
                     setStat(() {
                       _param <= 1 ? 1 : _param--;
                       widget.onParametrChanged(_param);
                     });
                   }),
-              Expanded(child: MyCustomSliderNoCard(widget.label, _param, 1, 100, secondaryBackgroundColor, linesColor, mainBackgroundColor, 5, (value) {setStat(() {_param = value;}); }, widget.onParametrChanged)),
+              Expanded(child: MyCustomSliderNoCard(widget.label, _param, 1, 100, secondaryBackgroundColor, linesColor2, linesColor2, 5, (value) {setStat(() {_param = value;}); }, widget.onParametrChanged)),
               IconButton(
-                  icon: Icon(Icons.arrow_forward_ios, color: mainBackgroundColor,),
+                  icon: Icon(Icons.arrow_forward_ios, color: linesColor2,),
                   onPressed: () {
                     setStat(() {
                       _param >= 100 ? 100 : _param++;

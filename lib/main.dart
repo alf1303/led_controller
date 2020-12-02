@@ -7,15 +7,17 @@ import 'package:ledcontroller/udp_controller.dart';
 import 'package:provider/provider.dart';
 
 import 'controller.dart';
+import 'elements/custom/fitted_text.dart';
 import 'elements/fixtures_view.dart';
 import 'elements/help_widget.dart';
 import 'elements/my_bottom_bar.dart';
 import 'elements/my_value_setter.dart';
+import 'elements/playback_view.dart';
 import 'elements/settings_widget.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
-  await Controller.fakeInit();
+  //await Controller.fakeInit();
   await Controller.initPalettes();
   await Controller.initWiFi();
   runApp(Main());
@@ -24,6 +26,7 @@ void main() async{
 class Main extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    Controller.scan();
     return MaterialApp(
       theme: ThemeData(
         buttonTheme: mainButtonTheme.data,
@@ -40,7 +43,16 @@ class Main extends StatelessWidget {
             length: 3,
             child: Scaffold(
               appBar: AppBar(
-                flexibleSpace: Container(decoration: secondaryDecoration,),
+                flexibleSpace: Container(decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      thirdBackgroundColor,
+                      mainBackgroundColor,
+                    ],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter
+                  )
+                ),),
                   title: MyAppBar(),
                   bottom: TabBar(
                     labelColor: mainBackgroundColor,
@@ -48,15 +60,18 @@ class Main extends StatelessWidget {
                     indicatorPadding: EdgeInsets.all(0),
                     indicator: BoxDecoration(
                         color: thirdBackgroundColor,
-                        border: Border.all(color: thirdBackgroundColor),
+                        border: Border(top: BorderSide(color: Colors.grey, width: 1),
+                          left: BorderSide(color: Colors.grey, width: 1),
+                          right: BorderSide(color: Colors.grey, width: 1),
+                          bottom: BorderSide(color: Colors.grey, width: 1),),
                         borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(10),
                             topRight: Radius.circular(10)
                         )),
                     tabs: [
-                      Tab(child: Text("Fixtures List", style: mainText,)),
-                      Tab(child: Text("Color Editor", style: mainText,)),
-                      Tab(child: Text("PLAYBACK", style: mainText,)),
+                      Tab(child: FText("Fixtures List", headerTextSmall,)),
+                      Tab(child: FText("Color Editor", headerTextSmall,)),
+                      Tab(child: FText("PLAYBACK", headerTextSmall,)),
                     ],),
               ),
               body: TabMainPage(),
@@ -76,7 +91,8 @@ class TabMainPage extends StatelessWidget{
         children: [
           FixturesView(),
           MyValueSetter(),
-          Text("Playback")
+          PlaybackView()
+          //Text("")
         ]);
   }
 }
@@ -164,6 +180,7 @@ class MyAppBar extends StatelessWidget{
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
+                ScanWidget(),
                 Text("LEDController", style: headerText,),
                 SettingsWidget(),
                 IconButton(icon: Icon(Icons.help_outline, color: Colors.black), onPressed: () {
@@ -210,6 +227,7 @@ class _ScanWidgetState extends State<ScanWidget> {
               onPressed: onScanPressed
           ));
           if(snapshot.connectionState == ConnectionState.waiting) child = child = (RaisedButton(
+            elevation: 10,
               color: mainBackgroundColor,
               splashColor: linesColor,
               child: Container(

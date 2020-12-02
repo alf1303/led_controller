@@ -36,6 +36,13 @@ abstract class Controller {
       ramSet.endPixel = 112;
       ramSet.pixelCount = 120;
       ramSet.fxColor = Colors.cyanAccent;
+      ramSet.fxParams = 0;
+      ramSet.numEffect = 0;
+      ramSet.fxReverse = false;
+      ramSet.fxAttack = false;
+      ramSet.fxSymm = false;
+      ramSet.fxRnd = false;
+      ramSet.fxRndColor = false;
       EspModel esp = new EspModel(i, "192.168.0.$i", "v_0.5.9", fsSet, ramSet);
       providerModel.list.add(esp);
     }
@@ -54,32 +61,47 @@ abstract class Controller {
     if(!await f.exists()) {
       print("palette file notExists");
       //List<Palette> palettes = List();
-      Settings white = new Settings.full(2, 0, 0, 128, Color.fromRGBO(255, 255, 255, 1), 255, 0, 0, false, 120, 0, 120, 8, 0, false, Colors.blue, 0, 100, 1, 0, 0, 1, 1, false, false, false, false, false);
+      Settings black = new Settings.full(2, 0, 0, 40, Color.fromRGBO(0, 0, 0, 1), 255, 0, 0, false, 120, 0, 120, 8, 0, false, Colors.blue, 0, 100, 1, 0, 0, 1, 1, false, false, false, false, false);
+      Palette pBlack = new Palette.withParams(PaletteType.PALETTE, black);
+      pBlack.name = "Black";
+      Settings white = new Settings.full(2, 0, 0, 40, Color.fromRGBO(255, 255, 255, 1), 255, 0, 0, false, 120, 0, 120, 8, 0, false, Colors.blue, 0, 100, 1, 0, 0, 1, 1, false, false, false, false, false);
       Palette pWhite = new Palette.withParams(PaletteType.PALETTE, white);
       pWhite.name = "White";
-      Settings red = new Settings.full(2, 0, 0, 128, Color.fromRGBO(255, 0, 0, 1), 255, 0, 0, false, 120, 0, 120, 8, 0, false, Colors.blue, 0, 100, 1, 0, 0, 1, 1, false, false, false, false, false);
+      Settings red = new Settings.full(2, 0, 0, 40, Color.fromRGBO(255, 0, 0, 1), 255, 0, 0, false, 120, 0, 120, 8, 0, false, Colors.blue, 0, 100, 1, 0, 0, 1, 1, false, false, false, false, false);
       Palette pRed = new Palette.withParams(PaletteType.PALETTE, red);
       pRed.name = "Red";
-      Settings green = new Settings.full(2, 0, 0, 128, Color.fromRGBO(0, 255, 0, 1), 255, 0, 0, false, 120, 0, 120, 8, 0, false, Colors.blue, 0, 100, 1, 0, 0, 1, 1, false, false, false, false, false);
+      Settings green = new Settings.full(2, 0, 0, 40, Color.fromRGBO(0, 255, 0, 1), 255, 0, 0, false, 120, 0, 120, 8, 0, false, Colors.blue, 0, 100, 1, 0, 0, 1, 1, false, false, false, false, false);
       Palette pGreen = new Palette.withParams(PaletteType.PALETTE, green);
       pGreen.name = "Green";
+      Settings blue = new Settings.full(2, 0, 0, 40, Color.fromRGBO(0, 0, 255, 1), 255, 0, 0, false, 120, 0, 120, 8, 0, false, Colors.blue, 0, 100, 1, 0, 0, 1, 1, false, false, false, false, false);
+      Palette pBlue = new Palette.withParams(PaletteType.PALETTE, blue);
+      pBlue.name = "Blue";
+      Settings cyan = new Settings.full(2, 0, 0, 40, Color.fromRGBO(0, 255, 255, 1), 255, 0, 0, false, 120, 0, 120, 8, 0, false, Colors.blue, 0, 100, 1, 0, 0, 1, 1, false, false, false, false, false);
+      Palette pCyan = new Palette.withParams(PaletteType.PALETTE, cyan);
+      pCyan.name = "Cyan";
+      Settings magenta = new Settings.full(2, 0, 0, 40, Color.fromRGBO(255, 0, 255, 1), 255, 0, 0, false, 120, 0, 120, 8, 0, false, Colors.blue, 0, 100, 1, 0, 0, 1, 1, false, false, false, false, false);
+      Palette pMagenta = new Palette.withParams(PaletteType.PALETTE, magenta);
+      pMagenta.name = "Magenta";
+      Settings yellow = new Settings.full(2, 0, 0, 40, Color.fromRGBO(255, 255, 0, 1), 255, 0, 0, false, 120, 0, 120, 8, 0, false, Colors.blue, 0, 100, 1, 0, 0, 1, 1, false, false, false, false, false);
+      Palette pYellow = new Palette.withParams(PaletteType.PALETTE, yellow);
+      pYellow.name = "Yellow";
 
-//      Settings red = new Settings.full(2, 0, 0, 128, Color.fromRGBO(255, 0, 0, 1), 255, 0, 0, false, 120, 0, 120, 8);
-//      Palette pRed = new Palette.withParams(PaletteType.PALETTE, red);
-//      Settings green = new Settings.full(2, 0, 0, 128, Color.fromRGBO(0, 255, 0, 1), 255, 0, 0, false, 120, 0, 120, 8);
-//      Palette pGreen = new Palette.withParams(PaletteType.PALETTE, green);
-//      Settings blue = new Settings.full(2, 0, 0, 128, Color.fromRGBO(0, 0, 255, 1), 255, 0, 0, false, 120, 0, 120, 8);
-//      Palette pBlue = new Palette.withParams(PaletteType.PALETTE, blue);
-//      Settings black = new Settings.full(2, 0, 0, 128, Color.fromRGBO(0, 0, 0, 1), 255, 0, 0, false, 120, 0, 120, 8);
-//      Palette pBlack = new Palette.withParams(PaletteType.PALETTE, black);
-      List<Palette> palettes = [pWhite, pRed, pGreen];
+      Settings fx1 = new Settings.full(2, 0, 3, 95, Color.fromRGBO(0, 0, 10, 1), 30, 0, 0, false, 120, 0, 120, 8, 0, false, Colors.white, 0, 100, 6, 0, 8, 1, 1, false, false, false, true, false);
+      Palette pFx1 = new Palette.withParams(PaletteType.PALETTE, fx1);
+      pFx1.name = "Starts";
+
+      Settings fx2 = new Settings.full(2, 0, 3, 78, Color.fromRGBO(0, 0, 0, 1), 30, 0, 0, false, 120, 0, 120, 8, 0, false, Colors.amber, 0, 100, 1, 0, 4, 1, 3, false, false, true, false, false);
+      Palette pFx2 = new Palette.withParams(PaletteType.PALETTE, fx2);
+      pFx2.name = "Line";
+
+      List<Palette> palettes = [pBlack, pWhite, pRed, pGreen, pBlue, pCyan, pMagenta, pYellow, pFx1, pFx2];
       var sink = f.openWrite();
       palettes.forEach((element) async{
-        print(element.name);
+        //print(element.name);
         await sink.write('${jsonEncode(element)}\n');
       });
       await sink.close();
-      print(f.length());
+      //print(f.length());
     }
     await loadPalettesFromFS(f);
   }
@@ -132,7 +154,7 @@ abstract class Controller {
   }
 
   static setSendWithoutUpdate(int save) {
-    UDPCotroller.setSend(save);
+    UDPCotroller.setSend(save, true);
     //providerModel.notify();
   }
 
@@ -354,7 +376,7 @@ abstract class Controller {
     transform(new LineSplitter()).
     listen((String line) {
       Palette pal = Palette.fromJson(jsonDecode(line));
-      print(pal.name);
+     // print(pal.name);
       paletteProvider.list[ii++] = (Palette.fromJson(jsonDecode(line)));
       if(ii == 27) {
         paletteProvider.notify();
@@ -374,7 +396,7 @@ abstract class Controller {
   }
 
   static savePalette(Palette palette) async{
-    if(providerModel.countSelected() == 1) {
+    if(palette.paletteType == PaletteType.PALETTE) {
       palette.settings.clear();
       Settings set = Settings.empty();
       set.copyForPalette(providerModel.getFirstChecked().ramSet);

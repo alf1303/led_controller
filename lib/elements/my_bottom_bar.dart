@@ -133,7 +133,7 @@ class MyBottomBar extends StatelessWidget {
                         Controller.deselectAll();
                       }),
                   Visibility(
-                    visible: !isEditor,
+                    visible: false,
                     child: RaisedButton(
                         ),
                   ),

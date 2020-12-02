@@ -13,6 +13,7 @@ class Palette {
   PaletteType paletteType;
   String name;
   bool playlistItem = false;
+  bool selected = false;
 
 
   Palette.palette() {

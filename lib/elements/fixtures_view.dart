@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:ledcontroller/styles.dart';
 
 import '../controller.dart';
+import 'custom/fitted_text.dart';
 
 class FixturesView extends StatelessWidget {
   @override
@@ -130,7 +131,7 @@ class _EspViewState extends State<EspView> {
                   ],
                 ),
               ),
-              Text(widget._espModel.name == null ? "empty" : widget._espModel.name, style: smallText,)
+              Expanded(child: FText(widget._espModel.name == null ? "empty" : widget._espModel.name, smallText,))
             ],
           ),
         ),

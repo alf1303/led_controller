@@ -25,6 +25,27 @@ class PaletteProvider extends ChangeNotifier{
     }
   }
 
+  deselectPalettes() {
+    if(list.isNotEmpty) {
+      list.forEach((element) {
+        if(element.paletteType == PaletteType.PALETTE && element.selected) {
+          element.selected = false;
+        }
+      });
+    }
+  }
+
+  deselectPrograms() {
+    if(list.isNotEmpty) {
+      list.forEach((element) {
+        if(element.paletteType == PaletteType.PROGRAM && element.selected) {
+          element.selected = false;
+        }
+      });
+    }
+    notify();
+  }
+
   void notify() {
     notifyListeners();
   }
