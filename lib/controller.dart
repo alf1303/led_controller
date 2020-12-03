@@ -375,12 +375,14 @@ abstract class Controller {
     inputStream.transform(utf8.decoder).
     transform(new LineSplitter()).
     listen((String line) {
-      Palette pal = Palette.fromJson(jsonDecode(line));
-     // print(pal.name);
-      paletteProvider.list[ii++] = (Palette.fromJson(jsonDecode(line)));
-      if(ii == 27) {
-        paletteProvider.notify();
-        //providerModel.notify();
+      if(line != "v1") {
+        Palette pal = Palette.fromJson(jsonDecode(line));
+        // print(pal.name);
+        paletteProvider.list[ii++] = (Palette.fromJson(jsonDecode(line)));
+        if(ii == paletteProvider.PALETTES_COUNT) {
+          paletteProvider.notify();
+          //providerModel.notify();
+        }
       }
     });
 
