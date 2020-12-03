@@ -121,6 +121,7 @@ class MyBottomBar extends StatelessWidget {
                     return IndicatorRaisedButton(label: "HL", value: Controller.highlite, onPressed: onChanged,);
                   }),
                   RaisedButton(
+                    shape: buttonShape,
                     elevation: 10,
                       child: Icon(Icons.select_all),
                       onPressed: () {
@@ -162,6 +163,7 @@ const IndicatorRaisedButton({
         splashColor: splashColor,
         minWidth: 36,
       child: RaisedButton(
+        shape: RoundedRectangleBorder(side: BorderSide(color: buttonBorderColor, width: 1), borderRadius: BorderRadius.circular(6) ),
         //padding: EdgeInsets.only(top: 25),
             child: Column(
               mainAxisSize: MainAxisSize.min,
