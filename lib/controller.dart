@@ -56,10 +56,14 @@ abstract class Controller {
   static initPalettes() async{
     paletteProvider.createEmptyPalettes();
     String dir = (await getApplicationDocumentsDirectory()).path;
-    f = new File("$dir/palettes.txt");
+    f = new File("$dir/palettes2.txt");
     //f.delete();
     if(!await f.exists()) {
-      print("palette file notExists");
+      File prevFile = new File("$dir/palettes.txt");
+      if(await prevFile.exists()) {
+        await prevFile.delete();
+      }
+      print("palette2 file notExists");
       //List<Palette> palettes = List();
       Settings black = new Settings.full(2, 0, 0, 40, Color.fromRGBO(0, 0, 0, 1), 255, 0, 0, false, 120, 0, 120, 8, 0, false, Colors.blue, 0, 100, 1, 0, 0, 1, 1, false, false, false, false, false);
       Palette pBlack = new Palette.withParams(PaletteType.PALETTE, black);
