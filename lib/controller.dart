@@ -57,7 +57,7 @@ abstract class Controller {
     paletteProvider.createEmptyPalettes();
     String dir = (await getApplicationDocumentsDirectory()).path;
     f = new File("$dir/palettes2.txt");
-    //f.delete();
+    f.delete();
     if(!await f.exists()) {
       File prevFile = new File("$dir/palettes.txt");
       if(await prevFile.exists()) {
@@ -67,19 +67,19 @@ abstract class Controller {
       //List<Palette> palettes = List();
       Settings black = new Settings.full(2, 0, 0, 40, Color.fromRGBO(0, 0, 0, 1), 255, 0, 0, false, 120, 0, 120, 8, 0, false, Colors.blue, 0, 100, 1, 0, 0, 1, 1, false, false, false, false, false);
       Palette pBlack = new Palette.withParams(PaletteType.PALETTE, black);
-      pBlack.name = "Black";
+      pBlack.name = "black";
       Settings white = new Settings.full(2, 0, 0, 40, Color.fromRGBO(255, 255, 255, 1), 255, 0, 0, false, 120, 0, 120, 8, 0, false, Colors.blue, 0, 100, 1, 0, 0, 1, 1, false, false, false, false, false);
       Palette pWhite = new Palette.withParams(PaletteType.PALETTE, white);
-      pWhite.name = "White";
+      pWhite.name = "white";
       Settings red = new Settings.full(2, 0, 0, 40, Color.fromRGBO(255, 0, 0, 1), 255, 0, 0, false, 120, 0, 120, 8, 0, false, Colors.blue, 0, 100, 1, 0, 0, 1, 1, false, false, false, false, false);
       Palette pRed = new Palette.withParams(PaletteType.PALETTE, red);
-      pRed.name = "Red";
+      pRed.name = "red";
       Settings green = new Settings.full(2, 0, 0, 40, Color.fromRGBO(0, 255, 0, 1), 255, 0, 0, false, 120, 0, 120, 8, 0, false, Colors.blue, 0, 100, 1, 0, 0, 1, 1, false, false, false, false, false);
       Palette pGreen = new Palette.withParams(PaletteType.PALETTE, green);
-      pGreen.name = "Green";
+      pGreen.name = "green";
       Settings blue = new Settings.full(2, 0, 0, 40, Color.fromRGBO(0, 0, 255, 1), 255, 0, 0, false, 120, 0, 120, 8, 0, false, Colors.blue, 0, 100, 1, 0, 0, 1, 1, false, false, false, false, false);
       Palette pBlue = new Palette.withParams(PaletteType.PALETTE, blue);
-      pBlue.name = "Blue";
+      pBlue.name = "blue";
       Settings cyan = new Settings.full(2, 0, 0, 40, Color.fromRGBO(0, 255, 255, 1), 255, 0, 0, false, 120, 0, 120, 8, 0, false, Colors.blue, 0, 100, 1, 0, 0, 1, 1, false, false, false, false, false);
       Palette pCyan = new Palette.withParams(PaletteType.PALETTE, cyan);
       pCyan.name = "Cyan";
@@ -382,6 +382,7 @@ abstract class Controller {
       if(line != "v1") {
         Palette pal = Palette.fromJson(jsonDecode(line));
         // print(pal.name);
+        paletteProvider.list[ii] = null;
         paletteProvider.list[ii++] = (Palette.fromJson(jsonDecode(line)));
         if(ii == paletteProvider.PALETTES_COUNT) {
           paletteProvider.notify();
@@ -438,7 +439,8 @@ abstract class Controller {
         });
       }
     }
-    setFaders(palette.settings[0].settings);
+      setFaders(palette.settings[0].settings);
+
     //providerModel.notify();
   }
 

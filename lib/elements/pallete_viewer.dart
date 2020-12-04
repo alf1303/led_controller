@@ -24,6 +24,7 @@ class PaletteViewer extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         physics: BouncingScrollPhysics(),
         child: GridView.count(
+          cacheExtent: 100,
             scrollDirection: Axis.horizontal,
             shrinkWrap: true,
             mainAxisSpacing: 3,
@@ -54,7 +55,7 @@ var _tapPosition;
     super.initState();
             //Animating pallete element on pressing
     _controller = AnimationController(
-      duration: const Duration(milliseconds: 300),lowerBound: 0.65,
+      duration: const Duration(milliseconds: 500),lowerBound: 0.65,
       vsync: this,
     )..addListener(() {
       if(_controller.status == AnimationStatus.completed && _allowResetanimation) _controller.reset();
@@ -66,7 +67,7 @@ var _tapPosition;
   void resetAllowAnimation(bool val) {
     _allowResetanimation = val;
     _controller.animateTo(0.65);
-    setState(() {  });
+
   }
 
   @override
@@ -80,7 +81,7 @@ var _tapPosition;
 
   showMenu(
       context: context,
-      color: mainBackgroundColor.withOpacity(0),
+      //color: mainBackgroundColor.withOpacity(0),
       //shape: Border.all(color: secondaryBackgroundColor),
       elevation: 10,
       items: <PopupMenuEntry<void>>[MyPaletteEntry(widget._palette, resetAllowAnimation)],
@@ -138,19 +139,19 @@ void _storePosition(TapDownDetails details) {
                     BoxDecoration(border: Border.all(color: Colors.yellowAccent, width: widget._palette.selected ? 4 : 0), borderRadius: BorderRadius.circular(8), shape: BoxShape.rectangle, gradient: colorPal != emptyPaletteColor ? LinearGradient(
                         colors: [Colors.cyanAccent, Colors.amber, Colors.pink,],
                     begin: Alignment.topLeft,
-                    end: Alignment.bottomRight) : LinearGradient(colors: [Colors.grey.withOpacity(0.7), Colors.grey.withOpacity(0.7)]),
+                    end: Alignment.bottomRight) : LinearGradient(colors: [Colors.grey, Colors.grey]),
                       boxShadow: [
                         BoxShadow(color: Colors.grey, spreadRadius: 2, blurRadius: (colorPal == null || colorPal == Colors.grey.withOpacity(0.7)) ? 0 : 4)
                       ]
                     ),
                   child: Material(
-                    clipBehavior: Clip.antiAlias,
+                    //clipBehavior: Clip.hardEdge,
                     shape: RoundedRectangleBorder(side: BorderSide(color: Colors.transparent, width: 0), borderRadius: BorderRadius.all(Radius.circular(isPalette ? 20 : 5))),
                     color: Colors.transparent,
                     child: InkWell(
                       child: Center(child: Column(
                         children: <Widget>[
-                          SizedBox(height: 6,),
+                          SizedBox(height: 6),
                           InvertColors(child: Text(label, style: smallText.copyWith(fontSize: iconSize/1.6, color: widget._palette.settings.isNotEmpty ? widget._palette.settings[0].settings.fxColor : Colors.white),)),
                           Visibility(
                             visible: widget._palette.playlistItem,
@@ -160,12 +161,14 @@ void _storePosition(TapDownDetails details) {
                       splashColor: mainBackgroundColor,
                       onTap: () {
                         _controller.animateTo(1);
-                        Controller.loadPalette(widget._palette);
-                        Controller.setSendWithoutUpdate(128);
-                        isPalette ? paletteProvider.deselectPalettes() : paletteProvider.deselectPrograms();
-                        setState(() {
-                          widget._palette.selected = true;
-                        });
+                        if (widget._palette.isNotEmpty()) {
+                          Controller.loadPalette(widget._palette);
+                          Controller.setSendWithoutUpdate(128);
+                          isPalette ? paletteProvider.deselectPalettes() : paletteProvider.deselectPrograms();
+                          setState(() {
+                            widget._palette.selected = true;
+                          });
+                        }
                       },
                       onLongPress: () {
                         _controller.animateTo(1);
@@ -180,7 +183,8 @@ void _storePosition(TapDownDetails details) {
               SizedBox(height: 1,),
               Expanded(
                   flex: 2,
-                  child: SizedBox(height: 12,child: Text(widget._palette.name, style: smallText.copyWith(fontSize: 12))))
+                  child: SizedBox(height: 12,child: Text(widget._palette.name, style: smallText.copyWith(fontSize: 12)))
+              )
             ],
           ),
         ),
@@ -195,6 +199,7 @@ class MyPaletteEntry extends PopupMenuEntry<int>{
 
   MyPaletteEntry(this._palette, this.valueChanged);
 
+
   @override
   MyPaletteEntryState createState() {
     return MyPaletteEntryState();
@@ -208,8 +213,12 @@ class MyPaletteEntry extends PopupMenuEntry<int>{
 }
 
 class MyPaletteEntryState extends State<MyPaletteEntry> {
+
+
   void save() {
-    Controller.savePalette(widget._palette);
+    if (!Controller.areNotSelected()) {
+      Controller.savePalette(widget._palette);
+    }
     widget.valueChanged(true);
     Navigator.pop(context);
   }
@@ -258,6 +267,7 @@ class MyPaletteEntryState extends State<MyPaletteEntry> {
               IconButton(icon: Icon(Icons.save, size: 40,), onPressed: () {
                 if(_formKey67.currentState.validate()) {
                   widget._palette.name = _nameController.text;
+                  widget.valueChanged(true);
                   Navigator.pop(context);
                 }
               })

@@ -28,9 +28,9 @@ class PaletteProvider extends ChangeNotifier{
   deselectPalettes() {
     if(list.isNotEmpty) {
       list.forEach((element) {
-        if(element.paletteType == PaletteType.PALETTE && element.selected) {
+        //if(element.paletteType == PaletteType.PALETTE && element.selected) {
           element.selected = false;
-        }
+        //}
       });
     }
   }
@@ -57,11 +57,13 @@ class PaletteProvider extends ChangeNotifier{
       Palette palette;
       if(i%2 == 0) {
         palette = Palette.palette();
+        palette.selected = false;
         palette.name = "Palette$numPal";
         numPal++;
       }
       else {
         palette = Palette.program();
+        palette.selected = false;
         palette.name = "Program$numProg";
         numProg++;
       }

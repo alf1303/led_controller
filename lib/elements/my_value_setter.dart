@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:expandable/expandable.dart';
 import 'package:invert_colors/invert_colors.dart';
@@ -22,7 +21,6 @@ class MyValueSetter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final providerModel = Provider.of<ProviderModel>(context, listen: true);
     return Container(
      padding: EdgeInsets.symmetric(horizontal: 8),
      //color: Colors.black,
@@ -93,11 +91,6 @@ class _ValueSetterViewState extends State<ValueSetterView> {
     }
   }
 
-  onDimmerChanged(double value) {
-    setState(() {
-      _dim = value;
-    });
-  }
   onDimmerChangeEnd(double value) {
     if(Controller.providerModel.list != null) {
       processAttributes();
@@ -106,9 +99,7 @@ class _ValueSetterViewState extends State<ValueSetterView> {
   }
 
   onRedChanged(double value) {
-    setState(() {
       _red = value;
-    });
   }
   onRedChangeEnd(double value) {
     if(Controller.providerModel.list != null) {
@@ -118,9 +109,7 @@ class _ValueSetterViewState extends State<ValueSetterView> {
   }
 
   onGreenChanged(double value) {
-    setState(() {
       _green = value;
-    });
   }
   onGreenChangeEnd(double value) {
     if(Controller.providerModel.list != null) {
@@ -130,9 +119,7 @@ class _ValueSetterViewState extends State<ValueSetterView> {
   }
 
   onBlueChanged(double value) {
-    setState(() {
       _blue = value;
-    });
   }
   onBlueChangeEnd(double value) {
     if(Controller.providerModel.list != null) {
@@ -326,53 +313,57 @@ class _ValueSetterViewState extends State<ValueSetterView> {
                 child: FText("Color Setter", headerTextSmall)),
             collapsed: Container(
               color: mainBackgroundColor,
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Expanded(
-                    flex: 6,
-                    child: Column(
-                      children: <Widget>[
-                        MyCustomSlider("", _dim, 0, 255, secondaryBackgroundColor, linesColor, linesColor, 5, onDimmerChanged, onDimmerChangeEnd),
-                        MyCustomSlider("", _red, 0, 255, secondaryBackgroundColor, linesColor, Colors.red, 5, onRedChanged, onRedChangeEnd),
-                        MyCustomSlider("", _green, 0, 255, secondaryBackgroundColor, linesColor, Colors.green, 5, onGreenChanged, onGreenChangeEnd),
-                        MyCustomSlider("", _blue, 0, 255, secondaryBackgroundColor, linesColor, Colors.blue, 5, onBlueChanged, onBlueChangeEnd),
-                      ],
-                    ),
-                  ),
-                  //COLOR VIEWER
-                  Expanded(
-                    child: Column(
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.only(left: 8, right: 8.0),
-                          child: Container(
-                            height: 120,
-                            decoration: BoxDecoration(
-                                color: Color.fromRGBO(_red.round(), _green.round(), _blue.round(), 1),
-                                border: Border.all(color: Colors.grey),
-                                borderRadius: BorderRadius.all(Radius.circular(5)),
-                                boxShadow: [
-                                  boxShadow1
-                                ]
+              child: StatefulBuilder(
+                builder: (context, setStat) {
+                  return Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Expanded(
+                        flex: 6,
+                        child: Column(
+                          children: <Widget>[
+                            MyCustomSlider("", _dim, 0, 255, secondaryBackgroundColor, linesColor, linesColor, 5, (v) {setStat((){_dim = v;});}, onDimmerChangeEnd),
+                            MyCustomSlider("", _red, 0, 255, secondaryBackgroundColor, linesColor, Colors.red, 5, (v) {setStat((){_red = v;});}, onRedChangeEnd),
+                            MyCustomSlider("", _green, 0, 255, secondaryBackgroundColor, linesColor, Colors.green, 5, (v) {setStat((){_green = v;});}, onGreenChangeEnd),
+                            MyCustomSlider("", _blue, 0, 255, secondaryBackgroundColor, linesColor, Colors.blue, 5, (v) {setStat((){_blue = v;});}, onBlueChangeEnd),
+                          ],
+                        ),
+                      ),
+                      //COLOR VIEWER
+                      Expanded(
+                        child: Column(
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.only(left: 8, right: 8.0),
+                              child: Container(
+                                height: 120,
+                                decoration: BoxDecoration(
+                                    color: Color.fromRGBO(_red.round(), _green.round(), _blue.round(), 1),
+                                    border: Border.all(color: Colors.grey),
+                                    borderRadius: BorderRadius.all(Radius.circular(5)),
+                                    boxShadow: [
+                                      boxShadow1
+                                    ]
+                                ),
+                              ),
                             ),
-                          ),
+                            RaisedButton(
+                              color: buttonColor,
+                                child: Icon(Icons.clear, size: 24,),
+                                shape: roundedButtonShape,
+                                onPressed: _zeroVals
+                            ),
+                            RaisedButton(
+                                child: Icon(Icons.save, size: 24,),
+                                shape: roundedButtonShape,
+                                onPressed: onSavePressed
+                            )
+                          ],
                         ),
-                        RaisedButton(
-                          color: buttonColor,
-                            child: Icon(Icons.clear, size: 24,),
-                            shape: roundedButtonShape,
-                            onPressed: _zeroVals
-                        ),
-                        RaisedButton(
-                            child: Icon(Icons.save, size: 24,),
-                            shape: roundedButtonShape,
-                            onPressed: onSavePressed
-                        )
-                      ],
-                    ),
-                  )
-                ],
+                      )
+                    ],
+                  );
+                }
               ),
             ),
           ),
@@ -402,12 +393,11 @@ class _ValueSetterViewState extends State<ValueSetterView> {
                       decoration: BoxDecoration(
                           border: Border.all(color: mainBackgroundColor, width: 1),
                           borderRadius: BorderRadius.all(Radius.circular(3)),
-                          color: Colors.transparent,
                           boxShadow: [
                             BoxShadow(
-                              color: mainBackgroundColor.withOpacity(0.3),
-                              spreadRadius: -3,
-                              blurRadius: 5,
+                              color: mainBackgroundColor,
+                              spreadRadius: -1,
+                              blurRadius: 2,
                               //offset: Offset(1, 2)
                             )
                           ]
@@ -430,12 +420,11 @@ class _ValueSetterViewState extends State<ValueSetterView> {
                       decoration: BoxDecoration(
                           border: Border.all(color: mainBackgroundColor, width: 1),
                           borderRadius: BorderRadius.all(Radius.circular(3)),
-                          color: Colors.transparent,
                           boxShadow: [
                             BoxShadow(
-                              color: mainBackgroundColor.withOpacity(0.3),
-                              spreadRadius: -3,
-                              blurRadius: 5,
+                              color: mainBackgroundColor,
+                              spreadRadius: -1,
+                              blurRadius: 2,
                               //offset: Offset(1, 2)
                             )
                           ]
@@ -895,6 +884,7 @@ class MyCustomSlider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double tmpVal = value;
     return Stack(
       alignment: Alignment.topCenter,
       children: <Widget>[
@@ -906,23 +896,32 @@ class MyCustomSlider extends StatelessWidget {
           child: SliderTheme(
             data: SliderTheme.of(context).copyWith(
             ),
-            child: Slider(
-                min: min,
-                max: max,
-                activeColor: sliderColor,
-                inactiveColor: sliderColor.withOpacity(0.3),
-                value: value,
-                label: value.round().toString(),
-                divisions: max.round(),
-                onChanged: onValChanged,
-                onChangeEnd: onValChangeEnd
-            ),
+            child: StatefulBuilder(
+              builder: (context, setStat) {
+                return Slider(
+                    min: min,
+                    max: max,
+                    activeColor: sliderColor,
+                    inactiveColor: sliderColor.withOpacity(0.3),
+                    value: tmpVal,
+                    label: tmpVal.round().toString(),
+                    divisions: max.round(),
+                    onChanged: (value) {
+                      setStat(() {tmpVal = value;});
+                      _valueChanged(value);
+                    },
+                    onChangeEnd: onValChangeEnd
+                );
+              },
+            )
           ),
         ),
       ],
     );
   }
 }
+
+
 class MyCustomSliderNoCard extends StatelessWidget {
   final String _label;
   final double value;
