@@ -57,7 +57,7 @@ abstract class Controller {
     paletteProvider.createEmptyPalettes();
     String dir = (await getApplicationDocumentsDirectory()).path;
     f = new File("$dir/palettes2.txt");
-    f.delete();
+    //f.delete();
     if(!await f.exists()) {
       File prevFile = new File("$dir/palettes.txt");
       if(await prevFile.exists()) {

@@ -8,10 +8,11 @@ import 'package:ledcontroller/model/palette_types.dart';
 import 'package:ledcontroller/styles.dart';
 import 'package:provider/provider.dart';
 import '../palettes_provider.dart';
-import 'custom/fitted_text.dart';
+import 'package:shimmer/shimmer.dart';
 
 class PaletteViewer extends StatelessWidget {
   final bool isPalette;
+
   const PaletteViewer(this.isPalette);
 
   @override
@@ -38,53 +39,28 @@ class PaletteViewer extends StatelessWidget {
 
 class ViewPaletteItem extends StatefulWidget{
 final Palette _palette;
-ViewPaletteItem(this._palette);
+
+const ViewPaletteItem(this._palette);
 
   @override
   _ViewPaletteItemState createState() => _ViewPaletteItemState();
 }
 
 class _ViewPaletteItemState extends State<ViewPaletteItem> with TickerProviderStateMixin {
-  AnimationController _controller;
-  Animation _animation;
-  bool _allowResetanimation = true;
 var _tapPosition;
-
-  @override
-  void initState() {
-    super.initState();
-            //Animating pallete element on pressing
-    _controller = AnimationController(
-      duration: const Duration(milliseconds: 500),lowerBound: 0.65,
-      vsync: this,
-    )..addListener(() {
-      if(_controller.status == AnimationStatus.completed && _allowResetanimation) _controller.reset();
-    });
-    _animation = CurvedAnimation(parent: _controller, curve: Curves.fastOutSlowIn);
-  }
-
-        //allow pallete item to resize to default size after resizing on long press
-  void resetAllowAnimation(bool val) {
-    _allowResetanimation = val;
-    _controller.animateTo(0.65);
-
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _controller.dispose();
-  }
+double radiusPal = 24;
+bool index = false;
 
   void _showCustomMenu() {
   final RenderBox overlay = Overlay.of(context).context.findRenderObject();
 
   showMenu(
       context: context,
-      //color: mainBackgroundColor.withOpacity(0),
+      color: Colors.transparent,
       //shape: Border.all(color: secondaryBackgroundColor),
-      elevation: 10,
-      items: <PopupMenuEntry<void>>[MyPaletteEntry(widget._palette, resetAllowAnimation)],
+
+      elevation: 0,
+      items: <PopupMenuEntry<void>>[MyPaletteEntry(widget._palette)],
       position: RelativeRect.fromRect(
           _tapPosition & const Size(40, 40), // smaller rect, the touch area
           Offset.zero & overlay.size   // Bigger rect, the entire screen
@@ -117,76 +93,80 @@ void _storePosition(TapDownDetails details) {
   //print("palettesCount: ${paletteProvider.list.length}");
     final double height = MediaQuery.of(context).size.height;
     final double width = MediaQuery.of(context).size.width;
+    print("PaletteItem, width: $width, height: $height");
     final double iconSize = height > width ? (width/25) : (height/25);
     final paletteProvider = Provider.of<PaletteProvider>(context, listen: true);
     bool isPalette = widget._palette.paletteType == PaletteType.PALETTE;
+    bool selected = widget._palette.selected == null ? false : widget._palette.selected;
     Color colorPal = widget._palette.getColor();
     String label = widget._palette.getLabel();
+    double rPalSelected = width/30;
+    double rPal = width/15;
+    List<double> paletteRadiuses = [rPalSelected, rPal];
+    int indexPal = 0;
+
     //print(colorPal);
     return Padding(
       padding: const EdgeInsets.all(4.0),
-      child: ScaleTransition(
-        scale: _animation,
-        child: Container(
-          child: Column(
-            children: <Widget>[
-              //Text(isPalette ? "Palette" : "Program"),
-              Expanded(
-                flex: 7,
-                child: Container(
-                  decoration: isPalette ? BoxDecoration(border: Border.all(color: Colors.yellowAccent, width: widget._palette.selected ? 4 : 0), color: colorPal, shape: BoxShape.circle, boxShadow: [
-                    BoxShadow(color: Colors.grey, spreadRadius: 2, blurRadius: (colorPal == null || colorPal == Colors.grey.withOpacity(0.7)) ? 0 : 4)]) :
-                    BoxDecoration(border: Border.all(color: Colors.yellowAccent, width: widget._palette.selected ? 4 : 0), borderRadius: BorderRadius.circular(8), shape: BoxShape.rectangle, gradient: colorPal != emptyPaletteColor ? LinearGradient(
-                        colors: [Colors.cyanAccent, Colors.amber, Colors.pink,],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight) : LinearGradient(colors: [Colors.grey, Colors.grey]),
-                      boxShadow: [
-                        BoxShadow(color: Colors.grey, spreadRadius: 2, blurRadius: (colorPal == null || colorPal == Colors.grey.withOpacity(0.7)) ? 0 : 4)
-                      ]
-                    ),
-                  child: Material(
-                    //clipBehavior: Clip.hardEdge,
-                    shape: RoundedRectangleBorder(side: BorderSide(color: Colors.transparent, width: 0), borderRadius: BorderRadius.all(Radius.circular(isPalette ? 20 : 5))),
-                    color: Colors.transparent,
-                    child: InkWell(
-                      child: Center(child: Column(
-                        children: <Widget>[
-                          SizedBox(height: 6),
-                          InvertColors(child: Text(label, style: smallText.copyWith(fontSize: iconSize/1.6, color: widget._palette.settings.isNotEmpty ? widget._palette.settings[0].settings.fxColor : Colors.white),)),
-                          Visibility(
-                            visible: widget._palette.playlistItem,
-                              child: InvertColors(child: Icon(Icons.play_circle_outline, size: iconSize, color: widget._palette.settings.isNotEmpty ? widget._palette.settings[0].settings.color : Colors.white,)))
-                        ],
-                      )),
-                      splashColor: mainBackgroundColor,
-                      onTap: () {
-                        _controller.animateTo(1);
-                        if (widget._palette.isNotEmpty()) {
-                          Controller.loadPalette(widget._palette);
-                          Controller.setSendWithoutUpdate(128);
-                          isPalette ? paletteProvider.deselectPalettes() : paletteProvider.deselectPrograms();
-                          setState(() {
-                            widget._palette.selected = true;
-                          });
-                        }
-                      },
-                      onLongPress: () {
-                        _controller.animateTo(1);
-                        _allowResetanimation = false;
-                        _showCustomMenu();
-                      },
-                      onTapDown: _storePosition,
-                    ),
+      child: Container(
+        child: Column(
+          children: <Widget>[
+            //Text(isPalette ? "Palette" : "Program"),
+            Expanded(
+              flex: 7,
+              child: AnimatedContainer(
+                duration: Duration(milliseconds: 1000),
+
+                onEnd: () {
+                  setState(() {
+                    indexPal = (indexPal + 1);
+                  });
+                },
+                decoration: isPalette ? BoxDecoration(border: Border.all(color: Colors.grey, width: selected ? 4 : 0), color: colorPal, shape: BoxShape.rectangle, borderRadius: BorderRadius.circular(selected ? paletteRadiuses[indexPal%2] : rPal)) :
+                  BoxDecoration(border: Border.all(color: Colors.grey, width: selected ? 4 : 0), borderRadius: BorderRadius.circular(8), shape: BoxShape.rectangle, gradient: colorPal != emptyPaletteColor ? LinearGradient(
+                      colors: [Colors.cyanAccent, Colors.amber, Colors.pink,],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight) : LinearGradient(colors: [Colors.grey, Colors.grey]),
+                  ),
+                child: Material(
+                  //clipBehavior: Clip.hardEdge,
+                  shape: RoundedRectangleBorder(side: BorderSide(color: Colors.transparent, width: 0), borderRadius: BorderRadius.all(Radius.circular(isPalette ? 20 : 5))),
+                  color: Colors.transparent,
+                  child: InkWell(
+                    child: Center(child: Column(
+                      children: <Widget>[
+                        SizedBox(height: 6),
+                        InvertColors(child: Text(label, style: smallText.copyWith(fontSize: iconSize/1.6, color: widget._palette.settings.isNotEmpty ? widget._palette.settings[0].settings.fxColor : Colors.white),)),
+                        Visibility(
+                          visible: widget._palette.playlistItem,
+                            child: InvertColors(child: Icon(Icons.play_circle_outline, size: iconSize, color: widget._palette.settings.isNotEmpty ? widget._palette.settings[0].settings.color : Colors.white,)))
+                      ],
+                    )),
+                    splashColor: mainBackgroundColor,
+                    onTap: () {
+                      if (widget._palette.isNotEmpty()) {
+                        Controller.loadPalette(widget._palette);
+                        Controller.setSendWithoutUpdate(128);
+                        isPalette ? paletteProvider.deselectPalettes() : paletteProvider.deselectPrograms();
+                        setState(() {
+                          widget._palette.selected = true;
+                        });
+                      }
+                    },
+                    onLongPress: () {
+                      _showCustomMenu();
+                    },
+                    onTapDown: _storePosition,
                   ),
                 ),
               ),
-              SizedBox(height: 1,),
-              Expanded(
-                  flex: 2,
-                  child: SizedBox(height: 12,child: Text(widget._palette.name, style: smallText.copyWith(fontSize: 12)))
-              )
-            ],
-          ),
+            ),
+            SizedBox(height: 1,),
+            Expanded(
+                flex: 2,
+                child: SizedBox(height: 12,child: Text(widget._palette.name, style: smallText.copyWith(fontSize: 12)))
+            )
+          ],
         ),
       ),
     );
@@ -195,9 +175,8 @@ void _storePosition(TapDownDetails details) {
 
 class MyPaletteEntry extends PopupMenuEntry<int>{
   final Palette _palette;
-  final ValueChanged<bool> valueChanged;
 
-  MyPaletteEntry(this._palette, this.valueChanged);
+  MyPaletteEntry(this._palette);
 
 
   @override
@@ -213,31 +192,25 @@ class MyPaletteEntry extends PopupMenuEntry<int>{
 }
 
 class MyPaletteEntryState extends State<MyPaletteEntry> {
-
-
   void save() {
     if (!Controller.areNotSelected()) {
       Controller.savePalette(widget._palette);
     }
-    widget.valueChanged(true);
     Navigator.pop(context);
   }
 
   void clear() {
     Controller.clearPalette(widget._palette);
-    widget.valueChanged(true);
     Navigator.pop(context);
   }
 
   void add() {
     Controller.addPaletteToPlaylist(widget._palette);
-    widget.valueChanged(true);
     Navigator.pop(context);
   }
 
   void remove() {
     Controller.removePaletteFromPlaylist(widget._palette);
-    widget.valueChanged(true);
     Navigator.pop(context);
   }
   
@@ -267,7 +240,6 @@ class MyPaletteEntryState extends State<MyPaletteEntry> {
               IconButton(icon: Icon(Icons.save, size: 40,), onPressed: () {
                 if(_formKey67.currentState.validate()) {
                   widget._palette.name = _nameController.text;
-                  widget.valueChanged(true);
                   Navigator.pop(context);
                 }
               })
