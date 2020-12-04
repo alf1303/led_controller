@@ -2,17 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:expandable/expandable.dart';
 import 'package:invert_colors/invert_colors.dart';
 import 'package:ledcontroller/elements/custom/custom_group_radio.dart';
-import 'package:ledcontroller/elements/pallete_viewer.dart';
+import 'package:ledcontroller/elements/palette_viewer.dart';
 import 'package:ledcontroller/fx_names.dart';
-import 'package:ledcontroller/model/esp_model.dart';
 import 'package:ledcontroller/provider_model_attribute.dart';
 import 'package:ledcontroller/styles.dart';
-import 'package:ledcontroller/udp_controller.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_circle_color_picker/flutter_circle_color_picker.dart';
 
 import '../controller.dart';
-import '../provider_model.dart';
 import 'custom/custom_radio.dart';
 import 'custom/fitted_text.dart';
 import 'my_bottom_bar.dart';
@@ -381,59 +377,22 @@ class _ValueSetterViewState extends State<ValueSetterView> {
                 child: FText("Palettes:", headerTextSmall)),
             collapsed: Column(
               children: [
-                Container(
-                  decoration: BoxDecoration(
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 0.0, left: 5, right: 5),
+                  child: Container(
+                    child: PaletteViewer(),
+                    decoration: BoxDecoration(
                       color: mainBackgroundColor,
-                      borderRadius: expandedBodyRadius
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: 8.0, left: 5, right: 5),
-                    child: Container(
-                      child: PaletteViewer(true),
-                      decoration: BoxDecoration(
-                          border: Border.all(color: mainBackgroundColor, width: 1),
-                          borderRadius: BorderRadius.all(Radius.circular(3)),
-                          boxShadow: [
-                            BoxShadow(
-                              color: mainBackgroundColor,
-                              spreadRadius: -1,
-                              blurRadius: 2,
-                              //offset: Offset(1, 2)
-                            )
-                          ]
-                      ),
-                      height: height > width ? height/9 : width/9,
-                      width: width,
+                        //border: Border.all(color: Colors.black, width: 1),
+                        borderRadius: BorderRadius.all(Radius.circular(3)),
                     ),
+                    height: height > width ? height/4 : width/4,
+                    width: width,
                   ),
                 ),
                 //FText("Programs:", headerTextSmall),
-                Container(
-                  decoration: BoxDecoration(
-                      color: mainBackgroundColor,
-                      borderRadius: expandedBodyRadius
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: 8.0, left: 5, right: 5),
-                    child: Container(
-                      child: PaletteViewer(false),
-                      decoration: BoxDecoration(
-                          border: Border.all(color: mainBackgroundColor, width: 1),
-                          borderRadius: BorderRadius.all(Radius.circular(3)),
-                          boxShadow: [
-                            BoxShadow(
-                              color: mainBackgroundColor,
-                              spreadRadius: -1,
-                              blurRadius: 2,
-                              //offset: Offset(1, 2)
-                            )
-                          ]
-                      ),
-                      height: height > width ? height/9 : width/9,
-                      width: width,
-                    ),
-                  ),
-                ),
+
+
               ],
             ),
           ),

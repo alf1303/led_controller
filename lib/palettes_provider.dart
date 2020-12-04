@@ -28,9 +28,9 @@ class PaletteProvider extends ChangeNotifier{
   deselectPalettes() {
     if(list.isNotEmpty) {
       list.forEach((element) {
-        //if(element.paletteType == PaletteType.PALETTE && element.selected) {
+        if(element.paletteType == PaletteType.PALETTE && element.selected) {
           element.selected = false;
-        //}
+        }
       });
     }
   }
@@ -55,7 +55,7 @@ class PaletteProvider extends ChangeNotifier{
     int numProg = 1;
     for(int i = 0; i < PALETTES_COUNT; i++) {
       Palette palette;
-      if(i%2 == 0) {
+      if(i < PALETTES_COUNT/2) {
         palette = Palette.palette();
         palette.selected = false;
         palette.name = "Palette$numPal";

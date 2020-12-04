@@ -5,6 +5,9 @@ import 'package:flutter/material.dart';
 const Color mainBackgroundColor = Color.fromARGB(255, 252, 235, 255);
 Color secondaryBackgroundColor = Colors.white;
 const Color thirdBackgroundColor = Color.fromARGB(255, 212, 255, 233);
+//const Color palBackColor = Color.fromARGB(255, 150, 240, 255);
+const Color palBackColor = thirdBackgroundColor;
+
 //const Color buttonColor = Color.fromARGB(255, 161, 230, 255);
 const Color buttonColor = Colors.white;
 const Color buttonBorderColor = Colors.grey;
