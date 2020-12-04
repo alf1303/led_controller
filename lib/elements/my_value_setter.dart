@@ -301,10 +301,11 @@ class _ValueSetterViewState extends State<ValueSetterView> {
           //COLOR SETTER
           ExpandablePanel(
             header: Container(
+              height: 60,
                 decoration: BoxDecoration(
                     color: mainBackgroundColor,
-                    //border: Border.all(),
-                    borderRadius: expandedHeaderRadius
+                    border: Border.all(),
+                    borderRadius: expandedHeaderRadius,
                 ),
                 child: FText("Color Setter", headerTextSmall)),
             collapsed: Container(
@@ -318,7 +319,7 @@ class _ValueSetterViewState extends State<ValueSetterView> {
                         flex: 6,
                         child: Column(
                           children: <Widget>[
-                            MyCustomSlider("", _dim, 0, 255, secondaryBackgroundColor, linesColor, linesColor, 5, (v) {setStat((){_dim = v;});}, onDimmerChangeEnd),
+                            MyCustomSlider("", _dim, 0, 255, secondaryBackgroundColor, linesColor, Colors.black45, 5, (v) {setStat((){_dim = v;});}, onDimmerChangeEnd),
                             MyCustomSlider("", _red, 0, 255, secondaryBackgroundColor, linesColor, Colors.red, 5, (v) {setStat((){_red = v;});}, onRedChangeEnd),
                             MyCustomSlider("", _green, 0, 255, secondaryBackgroundColor, linesColor, Colors.green, 5, (v) {setStat((){_green = v;});}, onGreenChangeEnd),
                             MyCustomSlider("", _blue, 0, 255, secondaryBackgroundColor, linesColor, Colors.blue, 5, (v) {setStat((){_blue = v;});}, onBlueChangeEnd),
@@ -364,14 +365,15 @@ class _ValueSetterViewState extends State<ValueSetterView> {
             ),
           ),
           Container(height: 2 , color: mainBackgroundColor),
-          SizedBox(height: 6,),
+          SizedBox(height: 15,),
 
           //PALLETES VIEWER
           ExpandablePanel(
             header: Container(
+              height: 60,
               decoration: BoxDecoration(
                 color: mainBackgroundColor,
-                //border: Border.all(),
+                border: Border.all(),
                 borderRadius: expandedHeaderRadius
               ),
                 child: FText("Palettes:", headerTextSmall)),
@@ -397,18 +399,18 @@ class _ValueSetterViewState extends State<ValueSetterView> {
             ),
           ),
           Container(height: 2, color: mainBackgroundColor),
-          SizedBox(height: 8,),
+          SizedBox(height: 15,),
 
                         /////////FX SETTER
           ExpandablePanel(
             header: Container(
                 decoration: BoxDecoration(
                     color: mainBackgroundColor,
-                    //border: Border.all(),
+                    border: Border.all(),
                     borderRadius: expandedHeaderRadius
                 ),
                 child: SizedBox(
-                  height:50 ,
+                  height:60 ,
                   child: CustomScrollView(
                     scrollDirection: Axis.horizontal,
                     slivers: [
@@ -848,10 +850,11 @@ class MyCustomSlider extends StatelessWidget {
       alignment: Alignment.topCenter,
       children: <Widget>[
         Text(_label, style: smallText,),
-        Card(
-          color: Colors.transparent,
-          shadowColor: secondaryBackgroundColor,
-          shape: RoundedRectangleBorder(side: BorderSide(color: borderColor) ,borderRadius: BorderRadius.circular(borderRadius)),
+        Container(
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.grey, width: 1),
+            borderRadius: BorderRadius.circular(15)
+          ),
           child: SliderTheme(
             data: SliderTheme.of(context).copyWith(
             ),
