@@ -428,14 +428,18 @@ abstract class Controller {
       providerModel.list.forEach((element) {
         if(element.selected && palette.isNotEmpty()) {
           element.ramSet.copyForPalette(palette.settings[0].settings);
-        print("num: ${element.ramSet.numEffect}");
+        //print("num: ${element.ramSet.numEffect}");
         }
       });
     }
     else {
       if(palette.isNotEmpty() && providerModel.list.isNotEmpty) {
         palette.settings.forEach((el) {
-          providerModel.list.firstWhere((element) => element.uni == el.uni).ramSet.copyForPalette(el.settings);
+          EspModel model = providerModel.list.firstWhere((element) => element.uni == el.uni, orElse: ()=>null);
+          if(model != null) {
+            model.ramSet.copyForPalette(el.settings);
+          }
+          //providerModel.list.firstWhere((element) => element.uni == el.uni).ramSet.copyForPalette(el.settings);
         });
       }
     }

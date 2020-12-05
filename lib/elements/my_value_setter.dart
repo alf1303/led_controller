@@ -301,7 +301,8 @@ class _ValueSetterViewState extends State<ValueSetterView> {
           //COLOR SETTER
           ExpandablePanel(
             header: Container(
-              height: 60,
+                margin: EdgeInsets.only(bottom: 1),
+                height: 60,
                 decoration: BoxDecoration(
                     color: mainBackgroundColor,
                     border: Border.all(),
@@ -309,7 +310,12 @@ class _ValueSetterViewState extends State<ValueSetterView> {
                 ),
                 child: FText("Color Setter", headerTextSmall)),
             collapsed: Container(
-              color: mainBackgroundColor,
+              padding: EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+              decoration: BoxDecoration(
+                color: mainBackgroundColor,
+                border: Border.all(),
+                borderRadius: expandedBodyRadius,
+              ),
               child: StatefulBuilder(
                 builder: (context, setStat) {
                   return Row(
@@ -370,32 +376,24 @@ class _ValueSetterViewState extends State<ValueSetterView> {
           //PALLETES VIEWER
           ExpandablePanel(
             header: Container(
-              height: 60,
+                margin: EdgeInsets.only(bottom: 1),
+                height: 60,
               decoration: BoxDecoration(
                 color: mainBackgroundColor,
                 border: Border.all(),
                 borderRadius: expandedHeaderRadius
               ),
                 child: FText("Palettes:", headerTextSmall)),
-            collapsed: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 0.0, left: 5, right: 5),
-                  child: Container(
-                    child: PaletteViewer(),
-                    decoration: BoxDecoration(
-                      color: mainBackgroundColor,
-                        //border: Border.all(color: Colors.black, width: 1),
-                        borderRadius: BorderRadius.all(Radius.circular(3)),
-                    ),
-                    height: height > width ? height/4 : width/4,
-                    width: width,
-                  ),
-                ),
-                //FText("Programs:", headerTextSmall),
-
-
-              ],
+            collapsed: Container(
+              child: PaletteViewer(),
+             // padding: EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+              decoration: BoxDecoration(
+                color: mainBackgroundColor,
+                border: Border.all(),
+                borderRadius: BorderRadius.only(topLeft: Radius.circular(15)),
+              ),
+              height: height > width ? height/4 : width/4,
+              width: width,
             ),
           ),
           Container(height: 2, color: mainBackgroundColor),
@@ -404,6 +402,7 @@ class _ValueSetterViewState extends State<ValueSetterView> {
                         /////////FX SETTER
           ExpandablePanel(
             header: Container(
+                margin: EdgeInsets.only(bottom: 1),
                 decoration: BoxDecoration(
                     color: mainBackgroundColor,
                     border: Border.all(),
@@ -487,9 +486,11 @@ class _ValueSetterViewState extends State<ValueSetterView> {
                   ),
                 )),
             collapsed: Container(
+              padding: EdgeInsets.symmetric(horizontal: 6, vertical: 4),
               decoration: BoxDecoration(
                 color: mainBackgroundColor,
-                borderRadius: expandedBodyRadius
+                border: Border.all(),
+                borderRadius: expandedBodyRadius,
               ),
               child: Column(
                 children: [
@@ -499,34 +500,28 @@ class _ValueSetterViewState extends State<ValueSetterView> {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: <Widget>[
                           /////////////////////////////////////////////////    FX COLOR
-                          Column(
-                            children: <Widget>[
-                              GestureDetector(
-                                child: Stack(
-                                  alignment: Alignment.center,
-                                  children: <Widget>[
-                                    Container(
-                                      height: height > width ? width/6 : height/6,
-                                      width: height > width ? width/6 : height/6,
-                                      decoration: BoxDecoration(
-                                          boxShadow: [boxShadow1],
-                                          color: _fxColor, border: Border.all(color: linesColor), borderRadius: BorderRadius.circular(12)),
-                                    ),
-
-                                    InvertColors(child: Text("   FX\ncolor", style: smallText.copyWith(fontSize: fontSize, color: _fxColor),))
-                                  ],
-                                ),
-                                onTap: () {
-                                  showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return MyColorPicker(width*0.8, _fxColor, _fxSize, onFxColorChanged, onFxSizeChanged);
-                                      });
-                                },
+                          Expanded(
+                            flex: 2,
+                            child: GestureDetector(
+                              child: Container(
+                                height: height > width ? width/6 : height/6,
+                                width: height > width ? width/6 : height/6,
+                                decoration: BoxDecoration(
+                                    boxShadow: [boxShadow1],
+                                    color: _fxColor, border: Border.all(color: linesColor), borderRadius: BorderRadius.circular(12)),
+                                child: InvertColors(child: FittedBox(fit: BoxFit.fitHeight, child: Text("  FX\ncolor", style: smallText.copyWith(fontSize: fontSize, color: _fxColor),))),
                               ),
-                            ],
+                              onTap: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return MyColorPicker(width*0.8, _fxColor, _fxSize, onFxColorChanged, onFxSizeChanged);
+                                    });
+                              },
+                            ),
                           ),
                           Expanded(
+                            flex: 4,
                             child: GridView.count(crossAxisCount: 3,
                               shrinkWrap: true,
                               physics: ClampingScrollPhysics(),
@@ -541,65 +536,82 @@ class _ValueSetterViewState extends State<ValueSetterView> {
                           ),
 
                           //////////////////////////////////////////   FX SETTINGS
-                          GestureDetector(
-                            onTap: () {
-                              showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return AlertDialog(
-                                      contentPadding: EdgeInsets.symmetric(horizontal: 0, vertical: 15),
-                                      shape: alertShape,
-                                      backgroundColor: thirdBackgroundColor.withOpacity(0.8),
-                                      content: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: <Widget>[
-                                          StatefulBuilder(builder: (context, setStat) {
-                                            //print("fxSpeed: $_fxSpeed");
-                                            //return MyCustomSliderNoCard("Speed", _fxSpeed, 0, 100, secondaryBackgroundColor, linesColor, linesColor, 5, (value) {setStat(() {_fxSpeed = value;}); }, onFxSpeedChangeEnd);
-                                            return FxSliderWidget("Speed", _fxSpeed, onFxSpeedChangeEnd, true);
-                                          }),
-                                          FxSliderWidget("Width", _fxWidth, onFxWidthChangeEnd, (_fxNum == FxNames.Cyclon.index || _fxNum == FxNames.Fade.index)),
-                                          FxSliderWidget("Parts", _fxParts, onFxPartsChangeEnd, (_fxNum != FxNames.OFF.index && _fxNum != FxNames.Cyclon.index)),
-                                          FxSliderWidget("Spread", _fxSpread, onFxSpreadChangeEnd, (_fxNum == FxNames.Sinus.index)),
-                                          StatefulBuilder(builder: (context, setStat) {
-                                            onAttack(value) {onFxAttackChange(value); setStat(() {});}
-                                            onSymm(value) {onFxSymmChange(value); setStat(() {});}
-                                            onReverse(value) {onFxReverseChange(value); setStat(() {});}
-                                            onRandom(value) {onFxRndChange(value); setStat(() {});}
-                                            onRandomCol(value) {onFxRndColorChange(value); setStat(() {});}
-                                            return Column(
+                          Expanded(
+                            flex: 2,
+                            child: GestureDetector(
+                              onTap: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      double alertWidth;
+                                      if(width > height) {
+                                        alertWidth = width*0.6;
+                                      }
+                                      else {
+                                        alertWidth = width*0.95;
+                                      }
+                                      return Center(
+                                        child: Card(
+                                          shape: alertShape,
+                                          color: thirdBackgroundColor.withOpacity(0.8),
+                                          child: Container(
+                                            width: alertWidth,
+                                            decoration: BoxDecoration(
+                                            ),
+                                            padding: EdgeInsets.symmetric(horizontal: 0, vertical: 15),
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.min,
                                               children: <Widget>[
-                                                Row(
-                                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                                  children: <Widget>[
-                                                    CustomRadio(label: "Attack", value: _fxAttack, onChanged: onAttack, color: radioColor, margin: 0, visible: (_fxNum == FxNames.Sinus.index), fontSize: fontSize,),
-                                                    CustomRadio(label: "Symm", value: _fxSymm, onChanged: onSymm, color: radioColor, margin: 0, visible: (_fxNum == FxNames.Sinus.index || _fxNum == FxNames.Fade.index), fontSize: fontSize,),
-                                                    CustomRadio(label: "Reverse", value: _fxReverse, onChanged: onReverse, color: radioColor, margin: 0, visible: (_fxNum != FxNames.OFF.index && _fxNum != FxNames.Cyclon.index), fontSize: fontSize,),
-                                                    CustomRadio(label: "Random", value: _fxRnd, onChanged: onRandom, color: radioColor, margin: 0, visible: (_fxNum == FxNames.Fade.index), fontSize: fontSize,),
-                                                  ],
-                                                ),
-                                                CustomRadio(label: "Random Color", value: _fxRndColor, onChanged: onRandomCol, color: radioColor, visible: (_fxNum == FxNames.Fade.index), fontSize: fontSize,),
+                                                StatefulBuilder(builder: (context, setStat) {
+                                                  //print("fxSpeed: $_fxSpeed");
+                                                  //return MyCustomSliderNoCard("Speed", _fxSpeed, 0, 100, secondaryBackgroundColor, linesColor, linesColor, 5, (value) {setStat(() {_fxSpeed = value;}); }, onFxSpeedChangeEnd);
+                                                  return FxSliderWidget("Speed", _fxSpeed, onFxSpeedChangeEnd, true);
+                                                }),
+                                                FxSliderWidget("Width", _fxWidth, onFxWidthChangeEnd, (_fxNum == FxNames.Cyclon.index || _fxNum == FxNames.Fade.index)),
+                                                FxSliderWidget("Parts", _fxParts, onFxPartsChangeEnd, (_fxNum != FxNames.OFF.index && _fxNum != FxNames.Cyclon.index)),
+                                                FxSliderWidget("Spread", _fxSpread, onFxSpreadChangeEnd, (_fxNum == FxNames.Sinus.index)),
+                                                StatefulBuilder(builder: (context, setStat) {
+                                                  onAttack(value) {onFxAttackChange(value); setStat(() {});}
+                                                  onSymm(value) {onFxSymmChange(value); setStat(() {});}
+                                                  onReverse(value) {onFxReverseChange(value); setStat(() {});}
+                                                  onRandom(value) {onFxRndChange(value); setStat(() {});}
+                                                  onRandomCol(value) {onFxRndColorChange(value); setStat(() {});}
+                                                  return Column(
+                                                    children: <Widget>[
+                                                      Row(
+                                                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                        children: <Widget>[
+                                                          CustomRadio(label: "Attack", value: _fxAttack, onChanged: onAttack, color: radioColor, margin: 0, visible: (_fxNum == FxNames.Sinus.index), fontSize: fontSize,),
+                                                          CustomRadio(label: "Symm", value: _fxSymm, onChanged: onSymm, color: radioColor, margin: 0, visible: (_fxNum == FxNames.Sinus.index || _fxNum == FxNames.Fade.index), fontSize: fontSize,),
+                                                          CustomRadio(label: "Reverse", value: _fxReverse, onChanged: onReverse, color: radioColor, margin: 0, visible: (_fxNum != FxNames.OFF.index && _fxNum != FxNames.Cyclon.index), fontSize: fontSize,),
+                                                          CustomRadio(label: "Random", value: _fxRnd, onChanged: onRandom, color: radioColor, margin: 0, visible: (_fxNum == FxNames.Fade.index), fontSize: fontSize,),
+                                                        ],
+                                                      ),
+                                                      CustomRadio(label: "Random Color", value: _fxRndColor, onChanged: onRandomCol, color: radioColor, visible: (_fxNum == FxNames.Fade.index), fontSize: fontSize,),
+                                                    ],
+                                                  );
+                                                })
+                                                //MyColorPicker(width*0.8)
                                               ],
-                                            );
-                                          })
-                                          //MyColorPicker(width*0.8)
-                                        ],
-                                      ),
-                                    );
-                                  });
-                            },
-                            child: Stack(
-                              alignment: Alignment.center,
-                              children: <Widget>[
-                                Container(
-                                  height: height > width ? width/6 : height/6,
-                                  width: height > width ? width/6 : height/6,
-                                  decoration: BoxDecoration(
-                                      boxShadow: [boxShadow1],
-                                      color: Colors.grey, border: Border.all(color: linesColor), borderRadius: BorderRadius.circular(12)),
-                                ),
-                                Text("    FX \nSettings", style: smallText.copyWith(fontSize: fontSize),),
-                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    });
+                              },
+                              child: Stack(
+                                alignment: Alignment.center,
+                                children: <Widget>[
+                                  Container(
+                                    height: height > width ? width/6 : height/6,
+                                    width: height > width ? width/6 : height/6,
+                                    decoration: BoxDecoration(
+                                        boxShadow: [boxShadow1],
+                                        color: Colors.grey, border: Border.all(color: linesColor), borderRadius: BorderRadius.circular(12)),
+                                  ),
+                                  Text("    FX \nSettings", style: smallText.copyWith(fontSize: fontSize),),
+                                ],
+                              ),
                             ),
                           )
                         ],
@@ -610,7 +622,7 @@ class _ValueSetterViewState extends State<ValueSetterView> {
               ),
             ),
           ),
-          Container(height: 2, color: mainBackgroundColor),
+          Container(height: 50, color: thirdBackgroundColor),
         ],
       ),
     );

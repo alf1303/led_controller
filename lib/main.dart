@@ -26,7 +26,9 @@ void main() async{
 class Main extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    Controller.scan();
+    Future.delayed(Duration(seconds: 2), () {
+      Controller.scan();
+    });
     return MaterialApp(
       theme: ThemeData(
         buttonTheme: mainButtonTheme.data,

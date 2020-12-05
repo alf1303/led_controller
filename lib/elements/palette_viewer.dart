@@ -14,7 +14,6 @@ class PaletteViewer extends StatelessWidget {
     final paletteProvider = Provider.of<PaletteProvider>(context, listen: true);
     List<Palette> palettes = paletteProvider.getPalettes();
     List<Palette> programs = paletteProvider.getProgramms();
-    print("plength: ${palettes.length}");
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -113,7 +112,7 @@ class _ViewPaletteState extends State<ViewPalette> {
     final double width = MediaQuery.of(context).size.width;
     double radius = width/12;
     final paletteProvider = Provider.of<PaletteProvider>(context, listen: false);
-    print("PaletteItem, width: $width, height: $height");
+    //print("PaletteItem, width: $width, height: $height");
     final double iconSize = height > width ? (width/25) : (height/25);
     Color colorPal = widget._palette.getColor();
     String label = widget._palette.getLabel();
@@ -226,7 +225,7 @@ class _ViewProgramsState extends State<ViewPrograms> {
     final double width = MediaQuery.of(context).size.width;
     double radius = width/50;
     final paletteProvider = Provider.of<PaletteProvider>(context, listen: false);
-    print("PaletteItem, width: $width, height: $height");
+    //print("PaletteItem, width: $width, height: $height");
     Color colorPal = widget._palette.getColor();
     String label = widget._palette.getLabel();
     bool selected = widget._palette.selected;
