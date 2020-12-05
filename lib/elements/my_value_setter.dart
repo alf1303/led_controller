@@ -1,19 +1,14 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:expandable/expandable.dart';
 import 'package:invert_colors/invert_colors.dart';
 import 'package:ledcontroller/elements/custom/custom_group_radio.dart';
-import 'package:ledcontroller/elements/pallete_viewer.dart';
+import 'package:ledcontroller/elements/palette_viewer.dart';
 import 'package:ledcontroller/fx_names.dart';
-import 'package:ledcontroller/model/esp_model.dart';
 import 'package:ledcontroller/provider_model_attribute.dart';
 import 'package:ledcontroller/styles.dart';
-import 'package:ledcontroller/udp_controller.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_circle_color_picker/flutter_circle_color_picker.dart';
 
 import '../controller.dart';
-import '../provider_model.dart';
 import 'custom/custom_radio.dart';
 import 'custom/fitted_text.dart';
 import 'my_bottom_bar.dart';
@@ -22,7 +17,6 @@ class MyValueSetter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final providerModel = Provider.of<ProviderModel>(context, listen: true);
     return Container(
      padding: EdgeInsets.symmetric(horizontal: 8),
      //color: Colors.black,
@@ -61,7 +55,11 @@ class _ValueSetterViewState extends State<ValueSetterView> {
   bool _playlistMode = false;
   Color _fxColor = Colors.grey;
   int _fxNum = 0;
-  double _temp = 0;
+
+  ////////////////
+  double wwidth;
+  double hheight;
+  double ffontSize;
 
   void processAttributes() {
     Controller.providerModel.list.forEach((element) {
@@ -93,11 +91,6 @@ class _ValueSetterViewState extends State<ValueSetterView> {
     }
   }
 
-  onDimmerChanged(double value) {
-    setState(() {
-      _dim = value;
-    });
-  }
   onDimmerChangeEnd(double value) {
     if(Controller.providerModel.list != null) {
       processAttributes();
@@ -106,9 +99,7 @@ class _ValueSetterViewState extends State<ValueSetterView> {
   }
 
   onRedChanged(double value) {
-    setState(() {
       _red = value;
-    });
   }
   onRedChangeEnd(double value) {
     if(Controller.providerModel.list != null) {
@@ -118,9 +109,7 @@ class _ValueSetterViewState extends State<ValueSetterView> {
   }
 
   onGreenChanged(double value) {
-    setState(() {
       _green = value;
-    });
   }
   onGreenChangeEnd(double value) {
     if(Controller.providerModel.list != null) {
@@ -130,9 +119,7 @@ class _ValueSetterViewState extends State<ValueSetterView> {
   }
 
   onBlueChanged(double value) {
-    setState(() {
       _blue = value;
-    });
   }
   onBlueChangeEnd(double value) {
     if(Controller.providerModel.list != null) {
@@ -170,6 +157,9 @@ class _ValueSetterViewState extends State<ValueSetterView> {
   }
 
   onFxNumChanged(value) {
+    if (value != 0) {
+      showFxSettings(context);
+    }
     setState(() {
       _fxNum = value;
     });
@@ -273,9 +263,67 @@ class _ValueSetterViewState extends State<ValueSetterView> {
     setState(() {  });
   }
 
-  bool _colorSetterExpanded = true;
-  bool _palettesExpanded = true;
-  bool _fxExpanded = true;
+  void showFxSettings(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          double alertWidth;
+          if(wwidth > hheight) {
+            alertWidth = wwidth*0.6;
+          }
+          else {
+            alertWidth = wwidth*0.95;
+          }
+          return Center(
+            child: Card(
+              shape: alertShape,
+              color: thirdBackgroundColor.withOpacity(0.8),
+              child: Container(
+                width: alertWidth,
+                decoration: BoxDecoration(
+                ),
+                padding: EdgeInsets.symmetric(horizontal: 0, vertical: 15),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    StatefulBuilder(builder: (context, setStat) {
+                      //print("fxSpeed: $_fxSpeed");
+                      //return MyCustomSliderNoCard("Speed", _fxSpeed, 0, 100, secondaryBackgroundColor, linesColor, linesColor, 5, (value) {setStat(() {_fxSpeed = value;}); }, onFxSpeedChangeEnd);
+                      return FxSliderWidget("Speed", _fxSpeed, 100, onFxSpeedChangeEnd, true);
+                    }),
+                    FxSliderWidget("Width", _fxWidth, 30, onFxWidthChangeEnd, (_fxNum == FxNames.Cyclon.index || _fxNum == FxNames.Fade.index)),
+                    FxSliderWidget("Parts", _fxParts, 100, onFxPartsChangeEnd, (_fxNum != FxNames.OFF.index && _fxNum != FxNames.Cyclon.index)),
+                    StatefulBuilder(builder: (context, setStat) {
+                      onAttack(value) {onFxAttackChange(value); setStat(() {});}
+                      onSymm(value) {onFxSymmChange(value); setStat(() {});}
+                      onReverse(value) {onFxReverseChange(value); setStat(() {});}
+                      onRandom(value) {onFxRndChange(value); setStat(() {});}
+                      onRandomCol(value) {onFxRndColorChange(value); setStat(() {});}
+                      return Column(
+                        children: <Widget>[
+                          FxSliderWidget("Spread", _fxSpread, 100, onFxSpreadChangeEnd, (_fxNum == FxNames.Sinus.index || (_fxNum == FxNames.Fade.index && _fxRnd))),
+
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: <Widget>[
+                              CustomRadio(label: "Attack", value: _fxAttack, onChanged: onAttack, color: radioColor, margin: 0, visible: (_fxNum == FxNames.Sinus.index), fontSize: ffontSize,),
+                              CustomRadio(label: "Symm", value: _fxSymm, onChanged: onSymm, color: radioColor, margin: 0, visible: (_fxNum == FxNames.Sinus.index || _fxNum == FxNames.Fade.index), fontSize: ffontSize,),
+                              CustomRadio(label: "Reverse", value: _fxReverse, onChanged: onReverse, color: radioColor, margin: 0, visible: (_fxNum != FxNames.OFF.index && _fxNum != FxNames.Cyclon.index), fontSize: ffontSize,),
+                              CustomRadio(label: "Random", value: _fxRnd, onChanged: onRandom, color: radioColor, margin: 0, visible: (_fxNum == FxNames.Fade.index), fontSize: ffontSize,),
+                            ],
+                          ),
+                          CustomRadio(label: "Random Color", value: _fxRndColor, onChanged: onRandomCol, color: radioColor, visible: (_fxNum == FxNames.Fade.index), fontSize: ffontSize,),
+                        ],
+                      );
+                    })
+                    //MyColorPicker(width*0.8)
+                  ],
+                ),
+              ),
+            ),
+          );
+        });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -284,6 +332,11 @@ class _ValueSetterViewState extends State<ValueSetterView> {
     final double width = MediaQuery.of(context).size.width;
     final double fontSize = height > width ? (width/25)/1.1 : (height/25)/1.1;
     final _attrModel = Provider.of<ProviderModelAttribute>(context, listen: true);
+
+    wwidth = width;
+    hheight = height;
+    ffontSize = fontSize;
+
     if(_attrModel.flag) {
       _dim = _attrModel.dim;
       _red = _attrModel.red;
@@ -318,149 +371,115 @@ class _ValueSetterViewState extends State<ValueSetterView> {
           //COLOR SETTER
           ExpandablePanel(
             header: Container(
+                margin: EdgeInsets.only(bottom: 1),
+                height: 60,
                 decoration: BoxDecoration(
                     color: mainBackgroundColor,
-                    //border: Border.all(),
-                    borderRadius: expandedHeaderRadius
+                    border: Border.all(),
+                    borderRadius: expandedHeaderRadius,
                 ),
                 child: FText("Color Setter", headerTextSmall)),
             collapsed: Container(
-              color: mainBackgroundColor,
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Expanded(
-                    flex: 6,
-                    child: Column(
-                      children: <Widget>[
-                        MyCustomSlider("", _dim, 0, 255, secondaryBackgroundColor, linesColor, linesColor, 5, onDimmerChanged, onDimmerChangeEnd),
-                        MyCustomSlider("", _red, 0, 255, secondaryBackgroundColor, linesColor, Colors.red, 5, onRedChanged, onRedChangeEnd),
-                        MyCustomSlider("", _green, 0, 255, secondaryBackgroundColor, linesColor, Colors.green, 5, onGreenChanged, onGreenChangeEnd),
-                        MyCustomSlider("", _blue, 0, 255, secondaryBackgroundColor, linesColor, Colors.blue, 5, onBlueChanged, onBlueChangeEnd),
-                      ],
-                    ),
-                  ),
-                  //COLOR VIEWER
-                  Expanded(
-                    child: Column(
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.only(left: 8, right: 8.0),
-                          child: Container(
-                            height: 120,
-                            decoration: BoxDecoration(
-                                color: Color.fromRGBO(_red.round(), _green.round(), _blue.round(), 1),
-                                border: Border.all(color: Colors.grey),
-                                borderRadius: BorderRadius.all(Radius.circular(5)),
-                                boxShadow: [
-                                  boxShadow1
-                                ]
+              padding: EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+              decoration: BoxDecoration(
+                color: mainBackgroundColor,
+                border: Border.all(),
+                borderRadius: expandedBodyRadius,
+              ),
+              child: StatefulBuilder(
+                builder: (context, setStat) {
+                  return Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Expanded(
+                        flex: 6,
+                        child: Column(
+                          children: <Widget>[
+                            MyCustomSlider("", _dim, 0, 255, secondaryBackgroundColor, linesColor, Colors.black45, 5, (v) {setStat((){_dim = v;});}, onDimmerChangeEnd),
+                            MyCustomSlider("", _red, 0, 255, secondaryBackgroundColor, linesColor, Colors.red, 5, (v) {setStat((){_red = v;});}, onRedChangeEnd),
+                            MyCustomSlider("", _green, 0, 255, secondaryBackgroundColor, linesColor, Colors.green, 5, (v) {setStat((){_green = v;});}, onGreenChangeEnd),
+                            MyCustomSlider("", _blue, 0, 255, secondaryBackgroundColor, linesColor, Colors.blue, 5, (v) {setStat((){_blue = v;});}, onBlueChangeEnd),
+                          ],
+                        ),
+                      ),
+                      //COLOR VIEWER
+                      Expanded(
+                        child: Column(
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.only(left: 8, right: 8.0),
+                              child: Container(
+                                height: 120,
+                                decoration: BoxDecoration(
+                                    color: Color.fromRGBO(_red.round(), _green.round(), _blue.round(), 1),
+                                    border: Border.all(color: Colors.grey),
+                                    borderRadius: BorderRadius.all(Radius.circular(5)),
+                                    boxShadow: [
+                                      boxShadow1
+                                    ]
+                                ),
+                              ),
                             ),
-                          ),
+                            RaisedButton(
+                              color: buttonColor,
+                                child: Icon(Icons.clear, size: 24,),
+                                shape: roundedButtonShape,
+                                onPressed: _zeroVals
+                            ),
+                            RaisedButton(
+                                child: Icon(Icons.save, size: 24,),
+                                shape: roundedButtonShape,
+                                onPressed: onSavePressed
+                            )
+                          ],
                         ),
-                        RaisedButton(
-                          color: buttonColor,
-                            child: Icon(Icons.clear, size: 24,),
-                            shape: roundedButtonShape,
-                            onPressed: _zeroVals
-                        ),
-                        RaisedButton(
-                            child: Icon(Icons.save, size: 24,),
-                            shape: roundedButtonShape,
-                            onPressed: onSavePressed
-                        )
-                      ],
-                    ),
-                  )
-                ],
+                      )
+                    ],
+                  );
+                }
               ),
             ),
           ),
           Container(height: 2 , color: mainBackgroundColor),
-          SizedBox(height: 6,),
+          SizedBox(height: 15,),
 
           //PALLETES VIEWER
           ExpandablePanel(
             header: Container(
+                margin: EdgeInsets.only(bottom: 1),
+                height: 60,
               decoration: BoxDecoration(
                 color: mainBackgroundColor,
-                //border: Border.all(),
+                border: Border.all(),
                 borderRadius: expandedHeaderRadius
               ),
                 child: FText("Palettes:", headerTextSmall)),
-            collapsed: Column(
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                      color: mainBackgroundColor,
-                      borderRadius: expandedBodyRadius
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: 8.0, left: 5, right: 5),
-                    child: Container(
-                      child: PaletteViewer(true),
-                      decoration: BoxDecoration(
-                          border: Border.all(color: mainBackgroundColor, width: 1),
-                          borderRadius: BorderRadius.all(Radius.circular(3)),
-                          color: Colors.transparent,
-                          boxShadow: [
-                            BoxShadow(
-                              color: mainBackgroundColor.withOpacity(0.3),
-                              spreadRadius: -3,
-                              blurRadius: 5,
-                              //offset: Offset(1, 2)
-                            )
-                          ]
-                      ),
-                      height: height > width ? height/9 : width/9,
-                      width: width,
-                    ),
-                  ),
-                ),
-                //FText("Programs:", headerTextSmall),
-                Container(
-                  decoration: BoxDecoration(
-                      color: mainBackgroundColor,
-                      borderRadius: expandedBodyRadius
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: 8.0, left: 5, right: 5),
-                    child: Container(
-                      child: PaletteViewer(false),
-                      decoration: BoxDecoration(
-                          border: Border.all(color: mainBackgroundColor, width: 1),
-                          borderRadius: BorderRadius.all(Radius.circular(3)),
-                          color: Colors.transparent,
-                          boxShadow: [
-                            BoxShadow(
-                              color: mainBackgroundColor.withOpacity(0.3),
-                              spreadRadius: -3,
-                              blurRadius: 5,
-                              //offset: Offset(1, 2)
-                            )
-                          ]
-                      ),
-                      height: height > width ? height/9 : width/9,
-                      width: width,
-                    ),
-                  ),
-                ),
-              ],
+            collapsed: Container(
+              child: PaletteViewer(),
+             // padding: EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+              decoration: BoxDecoration(
+                color: mainBackgroundColor,
+                border: Border.all(),
+                borderRadius: BorderRadius.only(topLeft: Radius.circular(15)),
+              ),
+              height: height > width ? height/4 : width/4,
+              width: width,
             ),
           ),
           Container(height: 2, color: mainBackgroundColor),
-          SizedBox(height: 8,),
+          SizedBox(height: 15,),
 
                         /////////FX SETTER
           ExpandablePanel(
             header: Container(
+                margin: EdgeInsets.only(bottom: 1),
                 decoration: BoxDecoration(
                     color: mainBackgroundColor,
-                    //border: Border.all(),
+                    border: Border.all(),
                     borderRadius: expandedHeaderRadius
                 ),
                 child: SizedBox(
-                  height:50 ,
+                  height:60 ,
                   child: CustomScrollView(
                     scrollDirection: Axis.horizontal,
                     slivers: [
@@ -537,9 +556,11 @@ class _ValueSetterViewState extends State<ValueSetterView> {
                   ),
                 )),
             collapsed: Container(
+              padding: EdgeInsets.symmetric(horizontal: 6, vertical: 4),
               decoration: BoxDecoration(
                 color: mainBackgroundColor,
-                borderRadius: expandedBodyRadius
+                border: Border.all(),
+                borderRadius: expandedBodyRadius,
               ),
               child: Column(
                 children: [
@@ -549,34 +570,28 @@ class _ValueSetterViewState extends State<ValueSetterView> {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: <Widget>[
                           /////////////////////////////////////////////////    FX COLOR
-                          Column(
-                            children: <Widget>[
-                              GestureDetector(
-                                child: Stack(
-                                  alignment: Alignment.center,
-                                  children: <Widget>[
-                                    Container(
-                                      height: height > width ? width/6 : height/6,
-                                      width: height > width ? width/6 : height/6,
-                                      decoration: BoxDecoration(
-                                          boxShadow: [boxShadow1],
-                                          color: _fxColor, border: Border.all(color: linesColor), borderRadius: BorderRadius.circular(12)),
-                                    ),
-
-                                    InvertColors(child: Text("   FX\ncolor", style: smallText.copyWith(fontSize: fontSize, color: _fxColor),))
-                                  ],
-                                ),
-                                onTap: () {
-                                  showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return MyColorPicker(width*0.8, _fxColor, _fxSize, onFxColorChanged, onFxSizeChanged);
-                                      });
-                                },
+                          Expanded(
+                            flex: 2,
+                            child: GestureDetector(
+                              child: Container(
+                                height: height > width ? width/6 : height/6,
+                                width: height > width ? width/6 : height/6,
+                                decoration: BoxDecoration(
+                                    boxShadow: [boxShadow1],
+                                    color: _fxColor, border: Border.all(color: linesColor), borderRadius: BorderRadius.circular(12)),
+                                child: InvertColors(child: FittedBox(fit: BoxFit.fitHeight, child: Text("  FX\ncolor", style: smallText.copyWith(fontSize: fontSize, color: _fxColor),))),
                               ),
-                            ],
+                              onTap: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return MyColorPicker(width*0.8, _fxColor, _fxSize, onFxColorChanged, onFxSizeChanged);
+                                    });
+                              },
+                            ),
                           ),
                           Expanded(
+                            flex: 4,
                             child: GridView.count(crossAxisCount: 3,
                               shrinkWrap: true,
                               physics: ClampingScrollPhysics(),
@@ -591,65 +606,20 @@ class _ValueSetterViewState extends State<ValueSetterView> {
                           ),
 
                           //////////////////////////////////////////   FX SETTINGS
-                          GestureDetector(
-                            onTap: () {
-                              showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return AlertDialog(
-                                      contentPadding: EdgeInsets.symmetric(horizontal: 0, vertical: 15),
-                                      shape: alertShape,
-                                      backgroundColor: thirdBackgroundColor.withOpacity(0.8),
-                                      content: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: <Widget>[
-                                          StatefulBuilder(builder: (context, setStat) {
-                                            //print("fxSpeed: $_fxSpeed");
-                                            //return MyCustomSliderNoCard("Speed", _fxSpeed, 0, 100, secondaryBackgroundColor, linesColor, linesColor, 5, (value) {setStat(() {_fxSpeed = value;}); }, onFxSpeedChangeEnd);
-                                            return FxSliderWidget("Speed", _fxSpeed, onFxSpeedChangeEnd, true);
-                                          }),
-                                          FxSliderWidget("Width", _fxWidth, onFxWidthChangeEnd, (_fxNum == FxNames.Cyclon.index || _fxNum == FxNames.Fade.index)),
-                                          FxSliderWidget("Parts", _fxParts, onFxPartsChangeEnd, (_fxNum != FxNames.OFF.index && _fxNum != FxNames.Cyclon.index)),
-                                          FxSliderWidget("Spread", _fxSpread, onFxSpreadChangeEnd, (_fxNum == FxNames.Sinus.index)),
-                                          StatefulBuilder(builder: (context, setStat) {
-                                            onAttack(value) {onFxAttackChange(value); setStat(() {});}
-                                            onSymm(value) {onFxSymmChange(value); setStat(() {});}
-                                            onReverse(value) {onFxReverseChange(value); setStat(() {});}
-                                            onRandom(value) {onFxRndChange(value); setStat(() {});}
-                                            onRandomCol(value) {onFxRndColorChange(value); setStat(() {});}
-                                            return Column(
-                                              children: <Widget>[
-                                                Row(
-                                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                                  children: <Widget>[
-                                                    CustomRadio(label: "Attack", value: _fxAttack, onChanged: onAttack, color: radioColor, margin: 0, visible: (_fxNum == FxNames.Sinus.index), fontSize: fontSize,),
-                                                    CustomRadio(label: "Symm", value: _fxSymm, onChanged: onSymm, color: radioColor, margin: 0, visible: (_fxNum == FxNames.Sinus.index || _fxNum == FxNames.Fade.index), fontSize: fontSize,),
-                                                    CustomRadio(label: "Reverse", value: _fxReverse, onChanged: onReverse, color: radioColor, margin: 0, visible: (_fxNum != FxNames.OFF.index && _fxNum != FxNames.Cyclon.index), fontSize: fontSize,),
-                                                    CustomRadio(label: "Random", value: _fxRnd, onChanged: onRandom, color: radioColor, margin: 0, visible: (_fxNum == FxNames.Fade.index), fontSize: fontSize,),
-                                                  ],
-                                                ),
-                                                CustomRadio(label: "Random Color", value: _fxRndColor, onChanged: onRandomCol, color: radioColor, visible: (_fxNum == FxNames.Fade.index), fontSize: fontSize,),
-                                              ],
-                                            );
-                                          })
-                                          //MyColorPicker(width*0.8)
-                                        ],
-                                      ),
-                                    );
-                                  });
-                            },
-                            child: Stack(
-                              alignment: Alignment.center,
-                              children: <Widget>[
-                                Container(
-                                  height: height > width ? width/6 : height/6,
-                                  width: height > width ? width/6 : height/6,
-                                  decoration: BoxDecoration(
-                                      boxShadow: [boxShadow1],
-                                      color: Colors.grey, border: Border.all(color: linesColor), borderRadius: BorderRadius.circular(12)),
-                                ),
-                                Text("    FX \nSettings", style: smallText.copyWith(fontSize: fontSize),),
-                              ],
+                          Expanded(
+                            flex: 2,
+                            child: GestureDetector(
+                              onTap: () {
+                                showFxSettings(context);
+                              },
+                              child: Container(
+                                height: height > width ? width/6 : height/6,
+                                width: height > width ? width/6 : height/6,
+                                decoration: BoxDecoration(
+                                    boxShadow: [boxShadow1],
+                                    color: Colors.grey, border: Border.all(color: linesColor), borderRadius: BorderRadius.circular(12)),
+                                child: FittedBox(fit: BoxFit.fitWidth, child: Text("    FX \nSettings", style: smallText.copyWith(fontSize: fontSize),))
+                              ),
                             ),
                           )
                         ],
@@ -660,7 +630,7 @@ class _ValueSetterViewState extends State<ValueSetterView> {
               ),
             ),
           ),
-          Container(height: 2, color: mainBackgroundColor),
+          Container(height: 50, color: thirdBackgroundColor),
         ],
       ),
     );
@@ -895,34 +865,45 @@ class MyCustomSlider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double tmpVal = value;
     return Stack(
       alignment: Alignment.topCenter,
       children: <Widget>[
         Text(_label, style: smallText,),
-        Card(
-          color: Colors.transparent,
-          shadowColor: secondaryBackgroundColor,
-          shape: RoundedRectangleBorder(side: BorderSide(color: borderColor) ,borderRadius: BorderRadius.circular(borderRadius)),
+        Container(
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.grey, width: 1),
+            borderRadius: BorderRadius.circular(15)
+          ),
           child: SliderTheme(
             data: SliderTheme.of(context).copyWith(
             ),
-            child: Slider(
-                min: min,
-                max: max,
-                activeColor: sliderColor,
-                inactiveColor: sliderColor.withOpacity(0.3),
-                value: value,
-                label: value.round().toString(),
-                divisions: max.round(),
-                onChanged: onValChanged,
-                onChangeEnd: onValChangeEnd
-            ),
+            child: StatefulBuilder(
+              builder: (context, setStat) {
+                return Slider(
+                    min: min,
+                    max: max,
+                    activeColor: sliderColor,
+                    inactiveColor: sliderColor.withOpacity(0.3),
+                    value: tmpVal,
+                    label: tmpVal.round().toString(),
+                    divisions: max.round(),
+                    onChanged: (value) {
+                      setStat(() {tmpVal = value;});
+                      _valueChanged(value);
+                    },
+                    onChangeEnd: onValChangeEnd
+                );
+              },
+            )
           ),
         ),
       ],
     );
   }
 }
+
+
 class MyCustomSliderNoCard extends StatelessWidget {
   final String _label;
   final double value;
@@ -974,6 +955,7 @@ class MyCustomSliderNoCard extends StatelessWidget {
 class FxSliderWidget extends StatefulWidget{
   final String label;
   final double fxParametr;
+  final double max;
   final ValueChanged<double> onChanged;
   final bool visible;
 
@@ -983,6 +965,7 @@ class FxSliderWidget extends StatefulWidget{
   const FxSliderWidget(
       this.label,
       this.fxParametr,
+      this.max,
       this.onChanged,
       this.visible);
 
@@ -994,6 +977,7 @@ class _FxSliderWidgetState extends State<FxSliderWidget> {
   @override
   Widget build(BuildContext context) {
     double _param = widget.fxParametr;
+    print("${widget.label}, $_param");
     return  Visibility(
       visible: widget.visible,
       child: StatefulBuilder(
@@ -1008,12 +992,12 @@ class _FxSliderWidgetState extends State<FxSliderWidget> {
                       widget.onParametrChanged(_param);
                     });
                   }),
-              Expanded(child: MyCustomSliderNoCard(widget.label, _param, 1, 100, secondaryBackgroundColor, linesColor2, linesColor2, 5, (value) {setStat(() {_param = value;}); }, widget.onParametrChanged)),
+              Expanded(child: MyCustomSliderNoCard(widget.label, _param, 1, widget.max, secondaryBackgroundColor, linesColor2, linesColor2, 5, (value) {setStat(() {_param = value;}); }, widget.onParametrChanged)),
               IconButton(
                   icon: Icon(Icons.arrow_forward_ios, color: linesColor2,),
                   onPressed: () {
                     setStat(() {
-                      _param >= 100 ? 100 : _param++;
+                      _param >= widget.max ? widget.max : _param++;
                       widget.onParametrChanged(_param);
                     });
                   }),

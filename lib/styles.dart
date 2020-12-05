@@ -3,10 +3,14 @@ import 'package:flutter/material.dart';
 //COLORS
 //const Color mainBackgroundColor = Color.fromARGB(255, 252, 215, 251);
 const Color mainBackgroundColor = Color.fromARGB(255, 252, 235, 255);
-Color secondaryBackgroundColor = Colors.white.withOpacity(0.4);
+Color secondaryBackgroundColor = Colors.white;
 const Color thirdBackgroundColor = Color.fromARGB(255, 212, 255, 233);
+//const Color palBackColor = Color.fromARGB(255, 150, 240, 255);
+const Color palBackColor = thirdBackgroundColor;
+
 //const Color buttonColor = Color.fromARGB(255, 161, 230, 255);
 const Color buttonColor = Colors.white;
+const Color buttonBorderColor = Colors.grey;
 const Color linesColor = mainBackgroundColor;
 const Color linesColor2 = Colors.pink;
 const Color radioColor = linesColor2;
@@ -35,8 +39,9 @@ const TextStyle smallText = TextStyle(fontSize: 20, color: textBlack);
 const TextStyle mainWhiteText = TextStyle(color: Colors.white);
 
 //SHAPES AND BORDERS
-RoundedRectangleBorder buttonShape = RoundedRectangleBorder(side: BorderSide(color: linesColor, width: 2), borderRadius: BorderRadius.circular(6));
-RoundedRectangleBorder roundedButtonShape = RoundedRectangleBorder(borderRadius: BorderRadius.circular(20),side: BorderSide(color: linesColor));
+RoundedRectangleBorder buttonShape = RoundedRectangleBorder(side: BorderSide(color: buttonBorderColor, width: 2), borderRadius: BorderRadius.circular(6));
+RoundedRectangleBorder buttonSelectShape = RoundedRectangleBorder(side: BorderSide(color: Colors.red, width: 2), borderRadius: BorderRadius.circular(6));
+RoundedRectangleBorder roundedButtonShape = RoundedRectangleBorder(borderRadius: BorderRadius.circular(20),side: BorderSide(color: buttonBorderColor));
 RoundedRectangleBorder alertShape = RoundedRectangleBorder(side: BorderSide(color: secondaryBackgroundColor,),  borderRadius: BorderRadius.circular(12));
 const OutlineInputBorder focusedBorder = OutlineInputBorder(borderSide: BorderSide(color: splashColor));
 const OutlineInputBorder enabledBorder = OutlineInputBorder(borderSide: BorderSide(color: mainBackgroundColor));
