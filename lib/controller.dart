@@ -243,7 +243,8 @@ abstract class Controller {
     }
     if(datagr != null) {
       Uint8List d = datagr.data;
-      int uni = d[2];
+      //print("d2: ${d[2]}, ipAddr: ${datagr.address.rawAddress[3]}");
+      int uni = datagr.address.rawAddress[3];
       String version = String.fromCharCodes(datagr.data, 3, 10);
       String ipaddr = datagr.address.address;
       EspModel espModel = createEspFromData(d);
