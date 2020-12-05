@@ -368,7 +368,7 @@ class _ValueSetterViewState extends State<ValueSetterView> {
       ),
       child: Column(
         children: <Widget>[
-          //COLOR SETTER
+          //PALLETES VIEWER
           ExpandablePanel(
             header: Container(
                 margin: EdgeInsets.only(bottom: 1),
@@ -376,87 +376,12 @@ class _ValueSetterViewState extends State<ValueSetterView> {
                 decoration: BoxDecoration(
                     color: mainBackgroundColor,
                     border: Border.all(),
-                    borderRadius: expandedHeaderRadius,
+                    borderRadius: expandedHeaderRadius
                 ),
-                child: FText("Color Setter", headerTextSmall)),
-            collapsed: Container(
-              padding: EdgeInsets.symmetric(horizontal: 6, vertical: 4),
-              decoration: BoxDecoration(
-                color: mainBackgroundColor,
-                border: Border.all(),
-                borderRadius: expandedBodyRadius,
-              ),
-              child: StatefulBuilder(
-                builder: (context, setStat) {
-                  return Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      Expanded(
-                        flex: 6,
-                        child: Column(
-                          children: <Widget>[
-                            MyCustomSlider("", _dim, 0, 255, secondaryBackgroundColor, linesColor, Colors.black45, 5, (v) {setStat((){_dim = v;});}, onDimmerChangeEnd),
-                            MyCustomSlider("", _red, 0, 255, secondaryBackgroundColor, linesColor, Colors.red, 5, (v) {setStat((){_red = v;});}, onRedChangeEnd),
-                            MyCustomSlider("", _green, 0, 255, secondaryBackgroundColor, linesColor, Colors.green, 5, (v) {setStat((){_green = v;});}, onGreenChangeEnd),
-                            MyCustomSlider("", _blue, 0, 255, secondaryBackgroundColor, linesColor, Colors.blue, 5, (v) {setStat((){_blue = v;});}, onBlueChangeEnd),
-                          ],
-                        ),
-                      ),
-                      //COLOR VIEWER
-                      Expanded(
-                        child: Column(
-                          children: <Widget>[
-                            Padding(
-                              padding: const EdgeInsets.only(left: 8, right: 8.0),
-                              child: Container(
-                                height: 120,
-                                decoration: BoxDecoration(
-                                    color: Color.fromRGBO(_red.round(), _green.round(), _blue.round(), 1),
-                                    border: Border.all(color: Colors.grey),
-                                    borderRadius: BorderRadius.all(Radius.circular(5)),
-                                    boxShadow: [
-                                      boxShadow1
-                                    ]
-                                ),
-                              ),
-                            ),
-                            RaisedButton(
-                              color: buttonColor,
-                                child: Icon(Icons.clear, size: 24,),
-                                shape: roundedButtonShape,
-                                onPressed: _zeroVals
-                            ),
-                            RaisedButton(
-                                child: Icon(Icons.save, size: 24,),
-                                shape: roundedButtonShape,
-                                onPressed: onSavePressed
-                            )
-                          ],
-                        ),
-                      )
-                    ],
-                  );
-                }
-              ),
-            ),
-          ),
-          Container(height: 2 , color: mainBackgroundColor),
-          SizedBox(height: 15,),
-
-          //PALLETES VIEWER
-          ExpandablePanel(
-            header: Container(
-                margin: EdgeInsets.only(bottom: 1),
-                height: 60,
-              decoration: BoxDecoration(
-                color: mainBackgroundColor,
-                border: Border.all(),
-                borderRadius: expandedHeaderRadius
-              ),
                 child: FText("Palettes:", headerTextSmall)),
             collapsed: Container(
               child: PaletteViewer(),
-             // padding: EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+              // padding: EdgeInsets.symmetric(horizontal: 6, vertical: 4),
               decoration: BoxDecoration(
                 color: mainBackgroundColor,
                 border: Border.all(),
@@ -466,10 +391,10 @@ class _ValueSetterViewState extends State<ValueSetterView> {
               width: width,
             ),
           ),
-          Container(height: 2, color: mainBackgroundColor),
+          Container(height: 2 , color: mainBackgroundColor),
           SizedBox(height: 15,),
 
-                        /////////FX SETTER
+          /////////FX SETTER
           ExpandablePanel(
             header: Container(
                 margin: EdgeInsets.only(bottom: 1),
@@ -613,12 +538,12 @@ class _ValueSetterViewState extends State<ValueSetterView> {
                                 showFxSettings(context);
                               },
                               child: Container(
-                                height: height > width ? width/6 : height/6,
-                                width: height > width ? width/6 : height/6,
-                                decoration: BoxDecoration(
-                                    boxShadow: [boxShadow1],
-                                    color: Colors.grey, border: Border.all(color: linesColor), borderRadius: BorderRadius.circular(12)),
-                                child: FittedBox(fit: BoxFit.fitWidth, child: Text("    FX \nSettings", style: smallText.copyWith(fontSize: fontSize),))
+                                  height: height > width ? width/6 : height/6,
+                                  width: height > width ? width/6 : height/6,
+                                  decoration: BoxDecoration(
+                                      boxShadow: [boxShadow1],
+                                      color: Colors.grey, border: Border.all(color: linesColor), borderRadius: BorderRadius.circular(12)),
+                                  child: FittedBox(fit: BoxFit.fitWidth, child: Text("    FX \nSettings", style: smallText.copyWith(fontSize: fontSize),))
                               ),
                             ),
                           )
@@ -627,6 +552,81 @@ class _ValueSetterViewState extends State<ValueSetterView> {
                     ],
                   ),
                 ],
+              ),
+            ),
+          ),
+          Container(height: 2, color: mainBackgroundColor),
+          SizedBox(height: 15,),
+
+          //COLOR SETTER
+          ExpandablePanel(
+            header: Container(
+                margin: EdgeInsets.only(bottom: 1),
+                height: 60,
+                decoration: BoxDecoration(
+                  color: mainBackgroundColor,
+                  border: Border.all(),
+                  borderRadius: expandedHeaderRadius,
+                ),
+                child: FText("Color Setter", headerTextSmall)),
+            collapsed: Container(
+              padding: EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+              decoration: BoxDecoration(
+                color: mainBackgroundColor,
+                border: Border.all(),
+                borderRadius: expandedBodyRadius,
+              ),
+              child: StatefulBuilder(
+                  builder: (context, setStat) {
+                    return Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Expanded(
+                          flex: 6,
+                          child: Column(
+                            children: <Widget>[
+                              MyCustomSlider("", _dim, 0, 255, secondaryBackgroundColor, linesColor, Colors.black45, 5, (v) {setStat((){_dim = v;});}, onDimmerChangeEnd),
+                              MyCustomSlider("", _red, 0, 255, secondaryBackgroundColor, linesColor, Colors.red, 5, (v) {setStat((){_red = v;});}, onRedChangeEnd),
+                              MyCustomSlider("", _green, 0, 255, secondaryBackgroundColor, linesColor, Colors.green, 5, (v) {setStat((){_green = v;});}, onGreenChangeEnd),
+                              MyCustomSlider("", _blue, 0, 255, secondaryBackgroundColor, linesColor, Colors.blue, 5, (v) {setStat((){_blue = v;});}, onBlueChangeEnd),
+                            ],
+                          ),
+                        ),
+                        //COLOR VIEWER
+                        Expanded(
+                          child: Column(
+                            children: <Widget>[
+                              Padding(
+                                padding: const EdgeInsets.only(left: 8, right: 8.0),
+                                child: Container(
+                                  height: 120,
+                                  decoration: BoxDecoration(
+                                      color: Color.fromRGBO(_red.round(), _green.round(), _blue.round(), 1),
+                                      border: Border.all(color: Colors.grey),
+                                      borderRadius: BorderRadius.all(Radius.circular(5)),
+                                      boxShadow: [
+                                        boxShadow1
+                                      ]
+                                  ),
+                                ),
+                              ),
+                              RaisedButton(
+                                  color: buttonColor,
+                                  child: Icon(Icons.clear, size: 24,),
+                                  shape: roundedButtonShape,
+                                  onPressed: _zeroVals
+                              ),
+                              RaisedButton(
+                                  child: Icon(Icons.save, size: 24,),
+                                  shape: roundedButtonShape,
+                                  onPressed: onSavePressed
+                              )
+                            ],
+                          ),
+                        )
+                      ],
+                    );
+                  }
               ),
             ),
           ),
