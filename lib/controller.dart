@@ -90,15 +90,27 @@ abstract class Controller {
       Palette pYellow = new Palette.withParams(PaletteType.PALETTE, yellow);
       pYellow.name = "Yellow";
 
-      Settings fx1 = new Settings.full(2, 0, 3, 95, Color.fromRGBO(0, 0, 10, 1), 30, 0, 0, false, 120, 0, 120, 8, 0, false, Colors.white, 0, 100, 6, 0, 8, 1, 1, false, false, false, true, false);
+      Settings fx1 = new Settings.full(2, 0, 3, 96, Color.fromRGBO(0, 0, 10, 1), 30, 0, 0, false, 120, 0, 120, 8, 0, false, Colors.white, 0, 100, 6, 0, 8, 8, 3, false, false, false, true, false);
       Palette pFx1 = new Palette.withParams(PaletteType.PALETTE, fx1);
-      pFx1.name = "Starts";
+      pFx1.name = "Stars";
 
       Settings fx2 = new Settings.full(2, 0, 3, 78, Color.fromRGBO(0, 0, 0, 1), 30, 0, 0, false, 120, 0, 120, 8, 0, false, Colors.amber, 0, 100, 1, 0, 4, 1, 3, false, false, true, false, false);
       Palette pFx2 = new Palette.withParams(PaletteType.PALETTE, fx2);
-      pFx2.name = "Line";
+      pFx2.name = "Symm";
 
-      List<Palette> palettes = [pBlack, pWhite, pRed, pGreen, pBlue, pCyan, pMagenta, pYellow, pFx1, pFx2];
+      Settings fx3 = new Settings.full(2, 0, 3, 99, Color.fromRGBO(0, 0, 0, 1), 30, 0, 0, false, 120, 0, 120, 8, 0, false, Colors.amber, 0, 100, 6, 0, 136, 16, 4, false, false, false, true, true);
+      Palette pFx3 = new Palette.withParams(PaletteType.PALETTE, fx3);
+      pFx3.name = "RndCol";
+
+      Settings fx4 = new Settings.full(2, 0, 4, 31, Color.fromRGBO(0, 0, 0, 1), 30, 0, 0, false, 120, 0, 120, 8, 0, false, Colors.amber, 0, 100, 42, 0, 0, 1, 1, false, false, false, false, false);
+      Palette pFx4 = new Palette.withParams(PaletteType.PALETTE, fx4);
+      pFx4.name = "RGB";
+
+      Settings fx5 = new Settings.full(2, 0, 3, 80, Color.fromRGBO(170, 0, 0, 1), 30, 0, 0, false, 120, 0, 120, 8, 0, false, Colors.cyan, 0, 100, 22, 0, 0, 1, 3, false, false, false, false, false);
+      Palette pFx5 = new Palette.withParams(PaletteType.PALETTE, fx5);
+      pFx5.name = "Snake";
+
+      List<Palette> palettes = [pBlack, pWhite, pRed, pGreen, pBlue, pCyan, pMagenta, pYellow, pFx1, pFx2, pFx3, pFx4, pFx5];
       var sink = f.openWrite();
       palettes.forEach((element) async{
         //print(element.name);
