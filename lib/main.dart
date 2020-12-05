@@ -148,13 +148,13 @@ class MyAppBar extends StatelessWidget{
                     },
                     child: Text("LEDController", style: headerText,)),
                 SettingsWidget(),
-                IconButton(icon: Icon(Icons.help_outline, color: Colors.black), onPressed: () {
-                  showDialog(
-                      context: context,
-                      builder: (context) {
-                        return HelpWidget();
-                      });
-                })
+//                IconButton(icon: Icon(Icons.help_outline, color: Colors.black), onPressed: () {
+//                  showDialog(
+//                      context: context,
+//                      builder: (context) {
+//                        return HelpWidget();
+//                      });
+//                })
               ],
             ),
           )
