@@ -55,7 +55,11 @@ class _ValueSetterViewState extends State<ValueSetterView> {
   bool _playlistMode = false;
   Color _fxColor = Colors.grey;
   int _fxNum = 0;
-  double _temp = 0;
+
+  ////////////////
+  double wwidth;
+  double hheight;
+  double ffontSize;
 
   void processAttributes() {
     Controller.providerModel.list.forEach((element) {
@@ -153,6 +157,9 @@ class _ValueSetterViewState extends State<ValueSetterView> {
   }
 
   onFxNumChanged(value) {
+    if (value != 0) {
+      showFxSettings(context);
+    }
     setState(() {
       _fxNum = value;
     });
@@ -256,9 +263,67 @@ class _ValueSetterViewState extends State<ValueSetterView> {
     setState(() {  });
   }
 
-  bool _colorSetterExpanded = true;
-  bool _palettesExpanded = true;
-  bool _fxExpanded = true;
+  void showFxSettings(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          double alertWidth;
+          if(wwidth > hheight) {
+            alertWidth = wwidth*0.6;
+          }
+          else {
+            alertWidth = wwidth*0.95;
+          }
+          return Center(
+            child: Card(
+              shape: alertShape,
+              color: thirdBackgroundColor.withOpacity(0.8),
+              child: Container(
+                width: alertWidth,
+                decoration: BoxDecoration(
+                ),
+                padding: EdgeInsets.symmetric(horizontal: 0, vertical: 15),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    StatefulBuilder(builder: (context, setStat) {
+                      //print("fxSpeed: $_fxSpeed");
+                      //return MyCustomSliderNoCard("Speed", _fxSpeed, 0, 100, secondaryBackgroundColor, linesColor, linesColor, 5, (value) {setStat(() {_fxSpeed = value;}); }, onFxSpeedChangeEnd);
+                      return FxSliderWidget("Speed", _fxSpeed, 100, onFxSpeedChangeEnd, true);
+                    }),
+                    FxSliderWidget("Width", _fxWidth, 30, onFxWidthChangeEnd, (_fxNum == FxNames.Cyclon.index || _fxNum == FxNames.Fade.index)),
+                    FxSliderWidget("Parts", _fxParts, 100, onFxPartsChangeEnd, (_fxNum != FxNames.OFF.index && _fxNum != FxNames.Cyclon.index)),
+                    StatefulBuilder(builder: (context, setStat) {
+                      onAttack(value) {onFxAttackChange(value); setStat(() {});}
+                      onSymm(value) {onFxSymmChange(value); setStat(() {});}
+                      onReverse(value) {onFxReverseChange(value); setStat(() {});}
+                      onRandom(value) {onFxRndChange(value); setStat(() {});}
+                      onRandomCol(value) {onFxRndColorChange(value); setStat(() {});}
+                      return Column(
+                        children: <Widget>[
+                          FxSliderWidget("Spread", _fxSpread, 100, onFxSpreadChangeEnd, (_fxNum == FxNames.Sinus.index || (_fxNum == FxNames.Fade.index && _fxRnd))),
+
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: <Widget>[
+                              CustomRadio(label: "Attack", value: _fxAttack, onChanged: onAttack, color: radioColor, margin: 0, visible: (_fxNum == FxNames.Sinus.index), fontSize: ffontSize,),
+                              CustomRadio(label: "Symm", value: _fxSymm, onChanged: onSymm, color: radioColor, margin: 0, visible: (_fxNum == FxNames.Sinus.index || _fxNum == FxNames.Fade.index), fontSize: ffontSize,),
+                              CustomRadio(label: "Reverse", value: _fxReverse, onChanged: onReverse, color: radioColor, margin: 0, visible: (_fxNum != FxNames.OFF.index && _fxNum != FxNames.Cyclon.index), fontSize: ffontSize,),
+                              CustomRadio(label: "Random", value: _fxRnd, onChanged: onRandom, color: radioColor, margin: 0, visible: (_fxNum == FxNames.Fade.index), fontSize: ffontSize,),
+                            ],
+                          ),
+                          CustomRadio(label: "Random Color", value: _fxRndColor, onChanged: onRandomCol, color: radioColor, visible: (_fxNum == FxNames.Fade.index), fontSize: ffontSize,),
+                        ],
+                      );
+                    })
+                    //MyColorPicker(width*0.8)
+                  ],
+                ),
+              ),
+            ),
+          );
+        });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -267,6 +332,11 @@ class _ValueSetterViewState extends State<ValueSetterView> {
     final double width = MediaQuery.of(context).size.width;
     final double fontSize = height > width ? (width/25)/1.1 : (height/25)/1.1;
     final _attrModel = Provider.of<ProviderModelAttribute>(context, listen: true);
+
+    wwidth = width;
+    hheight = height;
+    ffontSize = fontSize;
+
     if(_attrModel.flag) {
       _dim = _attrModel.dim;
       _red = _attrModel.red;
@@ -540,64 +610,7 @@ class _ValueSetterViewState extends State<ValueSetterView> {
                             flex: 2,
                             child: GestureDetector(
                               onTap: () {
-                                showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      double alertWidth;
-                                      if(width > height) {
-                                        alertWidth = width*0.6;
-                                      }
-                                      else {
-                                        alertWidth = width*0.95;
-                                      }
-                                      return Center(
-                                        child: Card(
-                                          shape: alertShape,
-                                          color: thirdBackgroundColor.withOpacity(0.8),
-                                          child: Container(
-                                            width: alertWidth,
-                                            decoration: BoxDecoration(
-                                            ),
-                                            padding: EdgeInsets.symmetric(horizontal: 0, vertical: 15),
-                                            child: Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: <Widget>[
-                                                StatefulBuilder(builder: (context, setStat) {
-                                                  //print("fxSpeed: $_fxSpeed");
-                                                  //return MyCustomSliderNoCard("Speed", _fxSpeed, 0, 100, secondaryBackgroundColor, linesColor, linesColor, 5, (value) {setStat(() {_fxSpeed = value;}); }, onFxSpeedChangeEnd);
-                                                  return FxSliderWidget("Speed", _fxSpeed, onFxSpeedChangeEnd, true);
-                                                }),
-                                                FxSliderWidget("Width", _fxWidth, onFxWidthChangeEnd, (_fxNum == FxNames.Cyclon.index || _fxNum == FxNames.Fade.index)),
-                                                FxSliderWidget("Parts", _fxParts, onFxPartsChangeEnd, (_fxNum != FxNames.OFF.index && _fxNum != FxNames.Cyclon.index)),
-                                                FxSliderWidget("Spread", _fxSpread, onFxSpreadChangeEnd, (_fxNum == FxNames.Sinus.index)),
-                                                StatefulBuilder(builder: (context, setStat) {
-                                                  onAttack(value) {onFxAttackChange(value); setStat(() {});}
-                                                  onSymm(value) {onFxSymmChange(value); setStat(() {});}
-                                                  onReverse(value) {onFxReverseChange(value); setStat(() {});}
-                                                  onRandom(value) {onFxRndChange(value); setStat(() {});}
-                                                  onRandomCol(value) {onFxRndColorChange(value); setStat(() {});}
-                                                  return Column(
-                                                    children: <Widget>[
-                                                      Row(
-                                                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                                        children: <Widget>[
-                                                          CustomRadio(label: "Attack", value: _fxAttack, onChanged: onAttack, color: radioColor, margin: 0, visible: (_fxNum == FxNames.Sinus.index), fontSize: fontSize,),
-                                                          CustomRadio(label: "Symm", value: _fxSymm, onChanged: onSymm, color: radioColor, margin: 0, visible: (_fxNum == FxNames.Sinus.index || _fxNum == FxNames.Fade.index), fontSize: fontSize,),
-                                                          CustomRadio(label: "Reverse", value: _fxReverse, onChanged: onReverse, color: radioColor, margin: 0, visible: (_fxNum != FxNames.OFF.index && _fxNum != FxNames.Cyclon.index), fontSize: fontSize,),
-                                                          CustomRadio(label: "Random", value: _fxRnd, onChanged: onRandom, color: radioColor, margin: 0, visible: (_fxNum == FxNames.Fade.index), fontSize: fontSize,),
-                                                        ],
-                                                      ),
-                                                      CustomRadio(label: "Random Color", value: _fxRndColor, onChanged: onRandomCol, color: radioColor, visible: (_fxNum == FxNames.Fade.index), fontSize: fontSize,),
-                                                    ],
-                                                  );
-                                                })
-                                                //MyColorPicker(width*0.8)
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      );
-                                    });
+                                showFxSettings(context);
                               },
                               child: Stack(
                                 alignment: Alignment.center,
@@ -947,6 +960,7 @@ class MyCustomSliderNoCard extends StatelessWidget {
 class FxSliderWidget extends StatefulWidget{
   final String label;
   final double fxParametr;
+  final double max;
   final ValueChanged<double> onChanged;
   final bool visible;
 
@@ -956,6 +970,7 @@ class FxSliderWidget extends StatefulWidget{
   const FxSliderWidget(
       this.label,
       this.fxParametr,
+      this.max,
       this.onChanged,
       this.visible);
 
@@ -967,6 +982,7 @@ class _FxSliderWidgetState extends State<FxSliderWidget> {
   @override
   Widget build(BuildContext context) {
     double _param = widget.fxParametr;
+    print("${widget.label}, $_param");
     return  Visibility(
       visible: widget.visible,
       child: StatefulBuilder(
@@ -981,12 +997,12 @@ class _FxSliderWidgetState extends State<FxSliderWidget> {
                       widget.onParametrChanged(_param);
                     });
                   }),
-              Expanded(child: MyCustomSliderNoCard(widget.label, _param, 1, 100, secondaryBackgroundColor, linesColor2, linesColor2, 5, (value) {setStat(() {_param = value;}); }, widget.onParametrChanged)),
+              Expanded(child: MyCustomSliderNoCard(widget.label, _param, 1, widget.max, secondaryBackgroundColor, linesColor2, linesColor2, 5, (value) {setStat(() {_param = value;}); }, widget.onParametrChanged)),
               IconButton(
                   icon: Icon(Icons.arrow_forward_ios, color: linesColor2,),
                   onPressed: () {
                     setStat(() {
-                      _param >= 100 ? 100 : _param++;
+                      _param >= widget.max ? widget.max : _param++;
                       widget.onParametrChanged(_param);
                     });
                   }),

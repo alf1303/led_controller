@@ -177,10 +177,10 @@ class Settings {
     'fxParams' : fxParams,
     'fxSpread' : fxSpread,
     'fxWidth' : fxWidth,
-    'fxReverse' : fxReverse,
-    'fxAttack' : fxAttack,
-    'fxSymm' : fxSymm,
-    'fxRnd' : fxRnd,
+    'fxReverse' : (fxReverse ? 1 : 0),
+    'fxAttack' : (fxAttack ? 1 : 0),
+    'fxSymm' : (fxSymm ? 1 : 0),
+    'fxRnd' : (fxRnd ? 1 : 0),
     'fxRndColor' : fxRndColor,
   };
 

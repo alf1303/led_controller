@@ -14,6 +14,7 @@ class PaletteViewer extends StatelessWidget {
     final paletteProvider = Provider.of<PaletteProvider>(context, listen: true);
     List<Palette> palettes = paletteProvider.getPalettes();
     List<Palette> programs = paletteProvider.getProgramms();
+    //print("palLength: ${palettes.length}, progLength: ${programs.length}, allLength: ${paletteProvider.list.length}");
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [

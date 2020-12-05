@@ -366,6 +366,7 @@ abstract class Controller {
     providerModelAttribute.fxRnd = set.fxRnd;
     providerModelAttribute.fxRndColor = set.fxRndColor;
     providerModelAttribute.playlistMode = set.playlistMode;
+    //print("setFaders: ${set.fxRnd}");
     providerModelAttribute.notify();
   }
 
@@ -380,8 +381,11 @@ abstract class Controller {
     transform(new LineSplitter()).
     listen((String line) {
       if(line != "v1") {
+        //print(line);
         Palette pal = Palette.fromJson(jsonDecode(line));
-        // print(pal.name);
+        if (pal.settings.isNotEmpty) {
+          //print("name: ${pal.name}, rnd: ${pal.settings[0].settings.fxRnd}");
+        }
         paletteProvider.list[ii] = null;
         paletteProvider.list[ii++] = (Palette.fromJson(jsonDecode(line)));
         if(ii == paletteProvider.PALETTES_COUNT) {
@@ -428,7 +432,8 @@ abstract class Controller {
       providerModel.list.forEach((element) {
         if(element.selected && palette.isNotEmpty()) {
           element.ramSet.copyForPalette(palette.settings[0].settings);
-        //print("num: ${element.ramSet.numEffect}");
+          //print("rnd: ${palette.settings[0].settings.fxRnd}");
+          //print("params: ${palette.settings[0].settings.fxParams}");
         }
       });
     }
