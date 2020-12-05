@@ -148,13 +148,22 @@ class _ViewPaletteState extends State<ViewPalette> {
                   )),
                   splashColor: mainBackgroundColor,
                   onTap: () {
-                    if (widget._palette.isNotEmpty()) {
-                      Controller.loadPalette(widget._palette);
-                      Controller.setSendWithoutUpdate(128);
-                      paletteProvider.deselectPalettes();
-                      setState(() {
-                        widget._palette.selected = true;
-                      });
+                    if(Controller.areNotSelected()) {
+                      final snackBar = SnackBar(
+                        content: Text("Fixtures are not selected!"),
+                        duration: Duration(seconds: 2),
+                      );
+                      Scaffold.of(context).showSnackBar(snackBar);
+                    }
+                    else {
+                      if (widget._palette.isNotEmpty()) {
+                        Controller.loadPalette(widget._palette);
+                        Controller.setSendWithoutUpdate(128);
+                        paletteProvider.deselectPalettes();
+                        setState(() {
+                          widget._palette.selected = true;
+                        });
+                      }
                     }
                   },
                   onLongPress: () {

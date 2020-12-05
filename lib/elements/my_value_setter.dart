@@ -612,18 +612,13 @@ class _ValueSetterViewState extends State<ValueSetterView> {
                               onTap: () {
                                 showFxSettings(context);
                               },
-                              child: Stack(
-                                alignment: Alignment.center,
-                                children: <Widget>[
-                                  Container(
-                                    height: height > width ? width/6 : height/6,
-                                    width: height > width ? width/6 : height/6,
-                                    decoration: BoxDecoration(
-                                        boxShadow: [boxShadow1],
-                                        color: Colors.grey, border: Border.all(color: linesColor), borderRadius: BorderRadius.circular(12)),
-                                  ),
-                                  Text("    FX \nSettings", style: smallText.copyWith(fontSize: fontSize),),
-                                ],
+                              child: Container(
+                                height: height > width ? width/6 : height/6,
+                                width: height > width ? width/6 : height/6,
+                                decoration: BoxDecoration(
+                                    boxShadow: [boxShadow1],
+                                    color: Colors.grey, border: Border.all(color: linesColor), borderRadius: BorderRadius.circular(12)),
+                                child: FittedBox(fit: BoxFit.fitWidth, child: Text("    FX \nSettings", style: smallText.copyWith(fontSize: fontSize),))
                               ),
                             ),
                           )

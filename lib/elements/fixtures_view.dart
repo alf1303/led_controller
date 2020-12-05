@@ -25,21 +25,25 @@ class FixturesView extends StatelessWidget {
             children: [
               MyBottomBar(false),
               SizedBox(height: 5,),
-              Container(
-                child: GridView.count(
-                  childAspectRatio: 0.9,
-                  shrinkWrap: true,
-                  physics: ClampingScrollPhysics(),
-                  mainAxisSpacing: 10,
-                  crossAxisSpacing: 10,
-                  padding: EdgeInsets.only(bottom: 5),
-                  //crossAxisCount: (MediaQuery.of(context).size.width/75).floor(),
-                    crossAxisCount: width > height ? 10 : 5 ,
-                children: List.generate(model.list.length, (index) {
-                return EspView(model.list[index]);
-              })
-              )
+              Expanded(
+                child: Container(
+                  child: SingleChildScrollView(
+                    child: GridView.count(
+                      childAspectRatio: 0.9,
+                      shrinkWrap: true,
+                      physics: ClampingScrollPhysics(),
+                      mainAxisSpacing: 10,
+                      crossAxisSpacing: 10,
+                      padding: EdgeInsets.only(bottom: 5),
+                      //crossAxisCount: (MediaQuery.of(context).size.width/75).floor(),
+                        crossAxisCount: width > height ? 10 : 5 ,
+                    children: List.generate(model.list.length, (index) {
+                    return EspView(model.list[index]);
+                })
+                ),
+                  )
         ),
+              ),
             ],
           )
           )

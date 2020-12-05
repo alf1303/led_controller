@@ -128,8 +128,9 @@ class MyBottomBar extends StatelessWidget {
                         Controller.selectAll();
                       }),
                   RaisedButton(
+                    shape: Controller.areNotSelected() ? buttonShape : buttonSelectShape,
                     elevation: 10,
-                      child: Icon(Icons.clear),
+                      child: Icon(Icons.clear, color: Controller.areNotSelected() ? Colors.black : Colors.red,),
                       onPressed: () {
                         Controller.deselectAll();
                       }),

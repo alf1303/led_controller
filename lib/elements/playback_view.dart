@@ -14,7 +14,7 @@ class PlaybackView extends StatelessWidget{
     final paletteProvider = Provider.of<PaletteProvider>(context, listen: true);
     final List<Palette> programs = paletteProvider.getProgramms().where((element) => element.isNotEmpty()).toList();
     return Container(
-      color: thirdBackgroundColor,
+      color: Colors.black,
       padding: EdgeInsets.all(4),
       child: GridView.count(
           crossAxisCount: 3,
@@ -56,7 +56,7 @@ class _ViewPlaybackState extends State<ViewPlayback> {
         alignment: Alignment.center,
         children: [
           AnimatedContainer(
-            duration: Duration(milliseconds: 500),
+            duration: Duration(milliseconds: 400),
             decoration: BoxDecoration(
               color: _selected ? mainBackgroundColor : Colors.grey,
               border: Border.all(color: _selected ? Colors.yellowAccent : Colors.grey, width: _selected ? 4 : 1),

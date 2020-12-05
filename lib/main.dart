@@ -23,9 +23,15 @@ void main() async{
   runApp(Main());
 }
 
-class Main extends StatelessWidget {
+class Main extends StatefulWidget {
+  @override
+  _MainState createState() => _MainState();
+}
+
+class _MainState extends State<Main> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
+    final _tabController = TabController(length: 3, vsync: this);
     Future.delayed(Duration(seconds: 2), () {
       Controller.scan();
     });
@@ -41,44 +47,42 @@ class Main extends StatelessWidget {
             ChangeNotifierProvider<ProviderModelAttribute>(create: (_) => ProviderModelAttribute(),),
             ChangeNotifierProvider<PaletteProvider>(create: (_) => PaletteProvider(),)
           ],
-          child: DefaultTabController(
-            length: 3,
-            child: Scaffold(
-              appBar: AppBar(
-                flexibleSpace: Container(decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      thirdBackgroundColor,
-                      mainBackgroundColor,
-                    ],
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter
-                  )
-                ),),
-                  title: MyAppBar(),
-                  bottom: TabBar(
-                    labelColor: mainBackgroundColor,
-                    indicatorSize: TabBarIndicatorSize.tab,
-                    indicatorPadding: EdgeInsets.all(0),
-                    indicator: BoxDecoration(
-                        color: thirdBackgroundColor,
-                        border: Border(top: BorderSide(color: Colors.grey, width: 1),
-                          left: BorderSide(color: Colors.grey, width: 1),
-                          right: BorderSide(color: Colors.grey, width: 1),
-                          bottom: BorderSide(color: Colors.grey, width: 1),),
-                        borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(10),
-                            topRight: Radius.circular(10)
-                        )),
-                    tabs: [
-                      Tab(child: FText("Fixtures List", headerTextSmall,)),
-                      Tab(child: FText("Color Editor", headerTextSmall,)),
-                      Tab(child: FText("PLAYBACK", headerTextSmall,)),
-                    ],),
-              ),
-              body: TabMainPage(),
-              //bottomNavigationBar: MyBottomBar(),
+          child: Scaffold(
+            appBar: AppBar(
+              flexibleSpace: Container(decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    thirdBackgroundColor,
+                    mainBackgroundColor,
+                  ],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter
+                )
+              ),),
+                title: MyAppBar(_tabController),
+                bottom: TabBar(
+                  controller: _tabController,
+                  labelColor: mainBackgroundColor,
+                  indicatorSize: TabBarIndicatorSize.tab,
+                  indicatorPadding: EdgeInsets.all(0),
+                  indicator: BoxDecoration(
+                      color: thirdBackgroundColor,
+                      border: Border(top: BorderSide(color: Colors.grey, width: 1),
+                        left: BorderSide(color: Colors.grey, width: 1),
+                        right: BorderSide(color: Colors.grey, width: 1),
+                        bottom: BorderSide(color: Colors.grey, width: 1),),
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(10),
+                          topRight: Radius.circular(10)
+                      )),
+                  tabs: [
+                    Tab(child: FText("Fixtures List", headerTextSmall,)),
+                    Tab(child: FText("Color Editor", headerTextSmall,)),
+                    Tab(child: FText("PLAYBACK", headerTextSmall,)),
+                  ],),
             ),
+            body: TabMainPage(_tabController),
+            //bottomNavigationBar: MyBottomBar(),
           ),
         ),
       ),
@@ -87,9 +91,14 @@ class Main extends StatelessWidget {
 }
 
 class TabMainPage extends StatelessWidget{
+  final _tabController;
+
+  TabMainPage(this._tabController);
+
   @override
   Widget build(BuildContext context) {
     return TabBarView(
+      controller: _tabController,
         children: [
           FixturesView(),
           MyValueSetter(),
@@ -99,75 +108,12 @@ class TabMainPage extends StatelessWidget{
   }
 }
 
-class MainPage extends StatelessWidget{
-  Future<void> futur;
-  bool _isLoading = false;
-
-  @override
-  Widget build(BuildContext context) {
-    double _winHeight = MediaQuery.of(context).size.height;
-    double _winWidth = MediaQuery.of(context).size.width;
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        Container(
-          decoration: mainDecoration,
-          child: SizedBox(
-            width: MediaQuery.of(context).size.width,
-            height: 40,
-            child: CustomScrollView(
-              scrollDirection: Axis.horizontal,
-              shrinkWrap: true,
-              slivers: [
-                SliverFillRemaining(
-                  hasScrollBody: false,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: <Widget>[
-                      ScanWidget(),
-                      SettingsWidget(),
-                      Text("LEDControl", style: headerText,),
-                      IconButton(icon: Icon(Icons.help_outline, color: Colors.black), onPressed: () {
-                        showDialog(
-                            context: context,
-                        builder: (context) {
-                           return HelpWidget();
-                        });
-                      })
-                    ],
-                  ),
-                )
-              ],
-            ),
-          )
-        ),
-        Expanded(
-          child: SingleChildScrollView(
-            physics: ClampingScrollPhysics(),
-            child: Container(
-              height: _winHeight > _winWidth ? _winHeight + 50 : _winWidth + 50,
-              //color: mainBackgroundColor,
-              decoration: mainDecoration,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  MyValueSetter(),
-                  Container(
-                    height: 3,
-                    color: dividerColor,
-                  ),
-                  Expanded(child: FixturesView())
-                ],
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
 
 class MyAppBar extends StatelessWidget{
+  final _tabController;
+
+  const MyAppBar(this._tabController);
+
   @override
   Widget build(BuildContext context) {
     return  SizedBox(
@@ -182,8 +128,25 @@ class MyAppBar extends StatelessWidget{
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
-                ScanWidget(),
-                Text("LEDController", style: headerText,),
+                ScanWidget(_tabController),
+                GestureDetector(
+                    onLongPress: () {
+                      showDialog(
+                          context: context,
+                        builder: (context) {
+                            return AlertDialog(
+                              content: Text("Insert virtual fixtures?"),
+                              actions: [
+                                IconButton(icon: Icon(Icons.check), onPressed: () {
+                                  Controller.fakeInit();
+                                  Navigator.pop(context);
+                                })
+                              ],
+                            );
+                        }
+                      );
+                    },
+                    child: Text("LEDController", style: headerText,)),
                 SettingsWidget(),
                 IconButton(icon: Icon(Icons.help_outline, color: Colors.black), onPressed: () {
                   showDialog(
@@ -202,6 +165,10 @@ class MyAppBar extends StatelessWidget{
 }
 
 class ScanWidget extends StatefulWidget{
+  TabController _tabController;
+
+  ScanWidget(this._tabController);
+
   @override
   _ScanWidgetState createState() => _ScanWidgetState();
 }
@@ -214,6 +181,7 @@ class _ScanWidgetState extends State<ScanWidget> {
     futur = Controller.scan();
     setState(() {
     });
+    widget._tabController.animateTo(0);
   }
 
   @override

@@ -40,6 +40,7 @@ const TextStyle mainWhiteText = TextStyle(color: Colors.white);
 
 //SHAPES AND BORDERS
 RoundedRectangleBorder buttonShape = RoundedRectangleBorder(side: BorderSide(color: buttonBorderColor, width: 2), borderRadius: BorderRadius.circular(6));
+RoundedRectangleBorder buttonSelectShape = RoundedRectangleBorder(side: BorderSide(color: Colors.red, width: 2), borderRadius: BorderRadius.circular(6));
 RoundedRectangleBorder roundedButtonShape = RoundedRectangleBorder(borderRadius: BorderRadius.circular(20),side: BorderSide(color: buttonBorderColor));
 RoundedRectangleBorder alertShape = RoundedRectangleBorder(side: BorderSide(color: secondaryBackgroundColor,),  borderRadius: BorderRadius.circular(12));
 const OutlineInputBorder focusedBorder = OutlineInputBorder(borderSide: BorderSide(color: splashColor));
