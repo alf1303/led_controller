@@ -378,7 +378,7 @@ class _ValueSetterViewState extends State<ValueSetterView> {
                     border: Border.all(),
                     borderRadius: expandedHeaderRadius
                 ),
-                child: FText("Palettes:", headerTextSmall)),
+                child: FText("Palettes:")),
             collapsed: Container(
               child: PaletteViewer(),
               // padding: EdgeInsets.symmetric(horizontal: 6, vertical: 4),
@@ -414,9 +414,9 @@ class _ValueSetterViewState extends State<ValueSetterView> {
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             CustomRadio(label: _playlistMode ? "Stop Playlist" : "Start Playlist", value: _playlistMode, onChanged: onPlaylistModeChange, color: radioColor, fontSize: fontSize,),
-                            FText("FX Setter", headerTextSmall),
+                            FText("FX Setter"),
                             RaisedButton(
-                                child: Text("Playlist", style: smallText.copyWith(fontSize: fontSize),),
+                                child: FittedBox(fit: BoxFit.scaleDown, child: Text("Playlist", style: smallText.copyWith(fontSize: fontSize),)),
                                 shape: roundedButtonShape,
                                 onPressed: () {
                                   showDialog(context: context,
@@ -504,7 +504,7 @@ class _ValueSetterViewState extends State<ValueSetterView> {
                                 decoration: BoxDecoration(
                                     boxShadow: [boxShadow1],
                                     color: _fxColor, border: Border.all(color: linesColor), borderRadius: BorderRadius.circular(12)),
-                                child: InvertColors(child: FittedBox(fit: BoxFit.fitHeight, child: Text("  FX\ncolor", style: smallText.copyWith(fontSize: fontSize, color: _fxColor),))),
+                                child: InvertColors(child: FittedBox(fit: BoxFit.scaleDown, child: Text("  FX\ncolor", style: smallText.copyWith(fontSize: fontSize, color: _fxColor),))),
                               ),
                               onTap: () {
                                 showDialog(
@@ -543,7 +543,7 @@ class _ValueSetterViewState extends State<ValueSetterView> {
                                   decoration: BoxDecoration(
                                       boxShadow: [boxShadow1],
                                       color: Colors.grey, border: Border.all(color: linesColor), borderRadius: BorderRadius.circular(12)),
-                                  child: FittedBox(fit: BoxFit.fitWidth, child: Text("    FX \nSettings", style: smallText.copyWith(fontSize: fontSize),))
+                                  child: FittedBox(fit: BoxFit.scaleDown, child: Text("    FX \nSettings", style: smallText.copyWith(fontSize: fontSize),))
                               ),
                             ),
                           )
@@ -568,7 +568,7 @@ class _ValueSetterViewState extends State<ValueSetterView> {
                   border: Border.all(),
                   borderRadius: expandedHeaderRadius,
                 ),
-                child: FText("Color Setter", headerTextSmall)),
+                child: FText("Color Setter")),
             collapsed: Container(
               padding: EdgeInsets.symmetric(horizontal: 6, vertical: 4),
               decoration: BoxDecoration(

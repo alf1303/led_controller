@@ -66,7 +66,7 @@ class _ViewPlaybackState extends State<ViewPlayback> {
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Center(child: FText(" ${widget._palette.name} ", headerTextSmall)),
+              Center(child: FText(" ${widget._palette.name} ")),
             ],
           )
         ],

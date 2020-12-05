@@ -135,7 +135,7 @@ class _EspViewState extends State<EspView> {
                   ],
                 ),
               ),
-              Expanded(child: FText(widget._espModel.name == null ? "empty" : widget._espModel.name, smallText,))
+              Expanded(child: FittedBox(fit: BoxFit.scaleDown, child: Text(widget._espModel.name == null ? "empty" : widget._espModel.name, style: smallText,)))
             ],
           ),
         ),

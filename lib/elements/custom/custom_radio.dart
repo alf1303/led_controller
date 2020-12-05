@@ -47,7 +47,7 @@ class CustomRadioState extends State<CustomRadio> {
               color: Colors.transparent,
               borderRadius: BorderRadius.circular(7)
           ),
-          child: Text(widget.label, style: TextStyle(color: (widget.value) ? widget.color : Colors.grey, fontSize: widget.fontSize == null ? 10 : widget.fontSize), ),
+          child: FittedBox(fit: BoxFit.scaleDown, child: Text(widget.label, style: TextStyle(color: (widget.value) ? widget.color : Colors.grey, fontSize: widget.fontSize == null ? 10 : widget.fontSize), )),
         ),
       ),
     );

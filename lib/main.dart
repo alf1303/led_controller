@@ -76,9 +76,9 @@ class _MainState extends State<Main> with TickerProviderStateMixin {
                           topRight: Radius.circular(10)
                       )),
                   tabs: [
-                    Tab(child: FText("Fixtures List", headerTextSmall,)),
-                    Tab(child: FText("Color Editor", headerTextSmall,)),
-                    Tab(child: FText("PLAYBACK", headerTextSmall,)),
+                    Tab(child: FText("Fixtures List")),
+                    Tab(child: FText("Color Editor")),
+                    Tab(child: FText("PLAYBACK")),
                   ],),
             ),
             body: TabMainPage(_tabController),
