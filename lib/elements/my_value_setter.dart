@@ -362,7 +362,7 @@ class _ValueSetterViewState extends State<ValueSetterView> {
           ExpandablePanel(
             header: Container(
                 margin: EdgeInsets.only(bottom: 1),
-                height: 60,
+                height: 45,
                 decoration: BoxDecoration(
                     color: mainBackgroundColor,
                     border: Border.all(),
@@ -394,7 +394,7 @@ class _ValueSetterViewState extends State<ValueSetterView> {
                     borderRadius: expandedHeaderRadius
                 ),
                 child: SizedBox(
-                  height:60 ,
+                  height:45 ,
                   child: FText("FX Setter"),
                 )),
             collapsed: Container(
@@ -437,7 +437,7 @@ class _ValueSetterViewState extends State<ValueSetterView> {
                             child: GridView.count(crossAxisCount: 3,
                               shrinkWrap: true,
                               physics: ClampingScrollPhysics(),
-                              childAspectRatio: 1.5,
+                              childAspectRatio: 1.0,
                               children: <Widget>[
                                 CustomGroupRadio(label: "OFF", value: 0, groupValue: _fxNum, onChanged: onFxNumChanged, enabled: true, color: radioColor, fontSize: fontSize,),
                                 CustomGroupRadio(label: "Sinus", value: 1, groupValue: _fxNum, onChanged: onFxNumChanged, enabled: true, color: radioColor, padding: 0, fontSize: fontSize,),
@@ -462,6 +462,7 @@ class _ValueSetterViewState extends State<ValueSetterView> {
                                           contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
                                           shape: alertShape,
                                           backgroundColor: thirdBackgroundColor.withOpacity(0.3),
+                                          title: Text("Playlist settings", style: mainWhiteText,),
                                           content: Form(
                                             key: _formKey,
                                             child: Column(
@@ -551,7 +552,7 @@ class _ValueSetterViewState extends State<ValueSetterView> {
           ExpandablePanel(
             header: Container(
                 margin: EdgeInsets.only(bottom: 1),
-                height: 60,
+                height: 45,
                 decoration: BoxDecoration(
                   color: mainBackgroundColor,
                   border: Border.all(),

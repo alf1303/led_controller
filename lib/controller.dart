@@ -129,7 +129,7 @@ abstract class Controller {
     providerModel.notify();
     //providerModel.list.forEach((element) { element.isAlive = false;});
     await UDPCotroller.scanRequest();
-    await UDPCotroller.scanRequest();
+    //await UDPCotroller.scanRequest();
     //setSend(255);
     providerModel.notify();
     return await Future.delayed(Duration(seconds: 1), () {return false;});
