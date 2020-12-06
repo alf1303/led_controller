@@ -421,11 +421,7 @@ class _ValueSetterViewState extends State<ValueSetterView> {
                                 decoration: BoxDecoration(
                                     boxShadow: [boxShadow1],
                                     color: _fxColor, border: Border.all(color: linesColor), borderRadius: BorderRadius.circular(12)),
-<<<<<<< HEAD
-                                child: InvertColors(child: FittedBox(fit: BoxFit.scaleDown, child: Text("  FX\ncolor", style: smallText.copyWith(fontSize: fontSize, color: _fxColor),))),
-=======
                                 child: InvertColors(child: FittedBox(fit: BoxFit.scaleDown, child: Text("  FX\ncolor", style: smallText.copyWith(fontSize: fontSize*1.3, color: _fxColor),))),
->>>>>>> ios
                               ),
                               onTap: () {
                                 showDialog(
@@ -536,11 +532,7 @@ class _ValueSetterViewState extends State<ValueSetterView> {
                                   decoration: BoxDecoration(
                                       boxShadow: [boxShadow1],
                                       color: Colors.grey, border: Border.all(color: linesColor), borderRadius: BorderRadius.circular(12)),
-<<<<<<< HEAD
-                                  child: FittedBox(fit: BoxFit.scaleDown, child: Text("    FX \nSettings", style: smallText.copyWith(fontSize: fontSize),))
-=======
                                   child: FittedBox(fit: BoxFit.scaleDown, child: Text("Playlist \nSettings", style: smallText.copyWith(fontSize: fontSize*1.3),))
->>>>>>> ios
                               ),
                             ),
                           )
