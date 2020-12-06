@@ -10,6 +10,13 @@ import '../controller.dart';
 class MyBottomBar extends StatelessWidget {
   final bool isEditor;
   const MyBottomBar(this.isEditor);
+
+  void onSavePressed() {
+    if(Controller.providerModel.list != null) {
+      Controller.setSend(255);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final providerModel = Provider.of<ProviderModel>(context, listen: true);
@@ -135,9 +142,12 @@ class MyBottomBar extends StatelessWidget {
                         Controller.deselectAll();
                       }),
                   Visibility(
-                    visible: false,
+                    visible: isEditor,
                     child: RaisedButton(
-                        ),
+                        child: Icon(Icons.save, size: 24,),
+                        shape: roundedButtonShape,
+                        onPressed: onSavePressed
+                    )
                   ),
                 ],
               ),

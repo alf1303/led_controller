@@ -84,13 +84,6 @@ class _ValueSetterViewState extends State<ValueSetterView> {
     });
   }
 
-  void onSavePressed() {
-    if(Controller.providerModel.list != null) {
-      processAttributes();
-      Controller.setSend(255);
-    }
-  }
-
   onDimmerChangeEnd(double value) {
     if(Controller.providerModel.list != null) {
       processAttributes();
@@ -612,11 +605,6 @@ class _ValueSetterViewState extends State<ValueSetterView> {
                                   shape: roundedButtonShape,
                                   onPressed: _zeroVals
                               ),
-                              RaisedButton(
-                                  child: Icon(Icons.save, size: 24,),
-                                  shape: roundedButtonShape,
-                                  onPressed: onSavePressed
-                              )
                             ],
                           ),
                         )
