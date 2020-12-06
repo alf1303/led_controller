@@ -395,7 +395,7 @@ class _ValueSetterViewState extends State<ValueSetterView> {
                 ),
                 child: SizedBox(
                   height:60 ,
-                  child: FText("FX Setter", headerTextSmall),
+                  child: FText("FX Setter"),
                 )),
             collapsed: Container(
               padding: EdgeInsets.symmetric(horizontal: 6, vertical: 4),
