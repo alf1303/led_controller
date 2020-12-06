@@ -131,7 +131,8 @@ abstract class Controller {
     await UDPCotroller.scanRequest();
     await UDPCotroller.scanRequest();
     //setSend(255);
-    return await Future.delayed(Duration(seconds: 2), () {return false;});
+    providerModel.notify();
+    return await Future.delayed(Duration(seconds: 1), () {return false;});
   }
 
   static void setHighlite() {

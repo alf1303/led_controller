@@ -191,15 +191,12 @@ class _ScanWidgetState extends State<ScanWidget> {
         builder: (context, snapshot) {
           Widget child;
           if(snapshot.connectionState == ConnectionState.none) child = (RaisedButton(
-              shape: buttonShape,
               elevation: 10,
               child: Text("Scan"),
               onPressed: onScanPressed
           ));
           if(snapshot.connectionState == ConnectionState.waiting) child = child = (RaisedButton(
             elevation: 10,
-              color: mainBackgroundColor,
-              splashColor: linesColor,
               child: Container(
                   padding: EdgeInsets.all(2),
                   child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(linesColor),)),
@@ -210,7 +207,7 @@ class _ScanWidgetState extends State<ScanWidget> {
 //            onPressed: onScanPressed
 //        ));
           if(snapshot.connectionState == ConnectionState.done) child = (RaisedButton(
-              shape: RoundedRectangleBorder(side: BorderSide(color: linesColor), borderRadius: BorderRadius.circular(6)),
+            elevation: 10,
               child: Text("Scan"),
               onPressed: onScanPressed
           ));

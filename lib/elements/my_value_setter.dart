@@ -84,13 +84,6 @@ class _ValueSetterViewState extends State<ValueSetterView> {
     });
   }
 
-  void onSavePressed() {
-    if(Controller.providerModel.list != null) {
-      processAttributes();
-      Controller.setSend(255);
-    }
-  }
-
   onDimmerChangeEnd(double value) {
     if(Controller.providerModel.list != null) {
       processAttributes();
@@ -244,9 +237,6 @@ class _ValueSetterViewState extends State<ValueSetterView> {
   }
 
   onPlaylistModeChange(value) {
-    setState(() {
-      _playlistMode = value;
-    });
     if(Controller.providerModel.list != null) {
       processAttributes();
       Controller.setSend(131);
@@ -405,80 +395,7 @@ class _ValueSetterViewState extends State<ValueSetterView> {
                 ),
                 child: SizedBox(
                   height:60 ,
-                  child: CustomScrollView(
-                    scrollDirection: Axis.horizontal,
-                    slivers: [
-                      SliverFillRemaining(
-                        hasScrollBody: false,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            CustomRadio(label: _playlistMode ? "Stop Playlist" : "Start Playlist", value: _playlistMode, onChanged: onPlaylistModeChange, color: radioColor, fontSize: fontSize,),
-                            FText("FX Setter"),
-                            RaisedButton(
-                                child: FittedBox(fit: BoxFit.scaleDown, child: Text("Playlist", style: smallText.copyWith(fontSize: fontSize),)),
-                                shape: roundedButtonShape,
-                                onPressed: () {
-                                  showDialog(context: context,
-                                      builder: (context) {
-                                        final _formKey = GlobalKey<FormState>();
-                                        TextEditingController _periodController = TextEditingController();
-                                        _periodController.text = Controller.paletteProvider.playlistPeriod.toString();
-                                        return AlertDialog(
-                                          contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-                                          shape: alertShape,
-                                          backgroundColor: thirdBackgroundColor.withOpacity(0.8),
-                                          content: Form(
-                                            key: _formKey,
-                                            child: Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: <Widget>[
-                                                Text("Playlist items: ${Controller.paletteProvider.playlist.length}"),
-                                                Row(
-                                                  children: <Widget>[
-                                                    Text("Period (seconds):"),
-                                                    Expanded(
-                                                      child: Container(
-                                                        color: mainBackgroundColor.withOpacity(0.8),
-                                                        child: TextFormField(
-                                                          decoration: inputDecoration,
-                                                          controller: _periodController,
-                                                          keyboardType: TextInputType.number,
-                                                          validator: (value) {
-                                                            if(value.isEmpty || int.parse(value) < 1 || int.parse(value) > 3600) return "1-3600 seconds";
-                                                            return null;
-                                                          },
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          actions: <Widget>[
-                                            RaisedButton(
-                                                shape: roundedButtonShape,
-                                                child: Text("Save"),
-                                                onPressed: () {
-                                                  if(_formKey.currentState.validate()) {
-                                                    Controller.paletteProvider.playlistPeriod = int.parse(_periodController.text);
-                                                    Controller.sendPlaylist();
-                                                    Navigator.of(context).pop();
-                                                  }
-                                                })
-                                          ],
-                                        );
-                                      }
-                                  );
-                                }
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
+                  child: FText("FX Setter", headerTextSmall),
                 )),
             collapsed: Container(
               padding: EdgeInsets.symmetric(horizontal: 6, vertical: 4),
@@ -504,7 +421,11 @@ class _ValueSetterViewState extends State<ValueSetterView> {
                                 decoration: BoxDecoration(
                                     boxShadow: [boxShadow1],
                                     color: _fxColor, border: Border.all(color: linesColor), borderRadius: BorderRadius.circular(12)),
+<<<<<<< HEAD
                                 child: InvertColors(child: FittedBox(fit: BoxFit.scaleDown, child: Text("  FX\ncolor", style: smallText.copyWith(fontSize: fontSize, color: _fxColor),))),
+=======
+                                child: InvertColors(child: FittedBox(fit: BoxFit.scaleDown, child: Text("  FX\ncolor", style: smallText.copyWith(fontSize: fontSize*1.3, color: _fxColor),))),
+>>>>>>> ios
                               ),
                               onTap: () {
                                 showDialog(
@@ -535,7 +456,79 @@ class _ValueSetterViewState extends State<ValueSetterView> {
                             flex: 2,
                             child: GestureDetector(
                               onTap: () {
-                                showFxSettings(context);
+                                //showFxSettings(context);
+                                  showDialog(context: context,
+                                      builder: (context) {
+                                        final _formKey = GlobalKey<FormState>();
+                                        TextEditingController _periodController = TextEditingController();
+                                        _periodController.text = Controller.paletteProvider.playlistPeriod.toString();
+                                        return AlertDialog(
+                                          contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                                          shape: alertShape,
+                                          backgroundColor: thirdBackgroundColor.withOpacity(0.3),
+                                          content: Form(
+                                            key: _formKey,
+                                            child: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: <Widget>[
+                                                Text("Playlist items: ${Controller.paletteProvider.playlist.length}", style: mainWhiteText),
+                                                Row(
+                                                  children: <Widget>[
+                                                    Text("Period (seconds):", style: mainWhiteText),
+                                                    Expanded(
+                                                      child: Container(
+                                                        color: mainBackgroundColor.withOpacity(0.8),
+                                                        child: TextFormField(
+                                                          decoration: inputDecoration,
+                                                          controller: _periodController,
+                                                          keyboardType: TextInputType.number,
+                                                          validator: (value) {
+                                                            if(value.isEmpty || int.parse(value) < 1 || int.parse(value) > 3600) return "1-3600 seconds";
+                                                            return null;
+                                                          },
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          actions: <Widget>[
+                                           Container(
+                                             //color: mainBackgroundColor,
+                                             decoration: roundedDecoration,
+                                             child: Row(
+                                               children: [
+                                                 StatefulBuilder(
+                                                     builder: (context, setStat) {
+                                                       return CustomRadio(label: _playlistMode ? "Stop Playlist" : "Start Playlist", value: _playlistMode, onChanged: (value) {
+                                                         setStat((){
+                                                           _playlistMode = value;
+                                                         });
+                                                         onPlaylistModeChange(value);
+                                                       },
+                                                         color: radioColor, fontSize: fontSize*0.7,);
+                                                     }
+                                                 ),
+                                                 RaisedButton(
+                                                     shape: roundedButtonShape,
+                                                     child: Text("Save to Device"),
+                                                     onPressed: () {
+                                                       if(_formKey.currentState.validate()) {
+                                                         Controller.paletteProvider.playlistPeriod = int.parse(_periodController.text);
+                                                         Controller.sendPlaylist();
+                                                         Navigator.of(context).pop();
+                                                       }
+                                                     })
+                                               ],
+                                             ),
+                                           )
+                                          ],
+                                        );
+                                      }
+                                  );
                               },
                               child: Container(
                                   height: height > width ? width/6 : height/6,
@@ -543,7 +536,11 @@ class _ValueSetterViewState extends State<ValueSetterView> {
                                   decoration: BoxDecoration(
                                       boxShadow: [boxShadow1],
                                       color: Colors.grey, border: Border.all(color: linesColor), borderRadius: BorderRadius.circular(12)),
+<<<<<<< HEAD
                                   child: FittedBox(fit: BoxFit.scaleDown, child: Text("    FX \nSettings", style: smallText.copyWith(fontSize: fontSize),))
+=======
+                                  child: FittedBox(fit: BoxFit.scaleDown, child: Text("Playlist \nSettings", style: smallText.copyWith(fontSize: fontSize*1.3),))
+>>>>>>> ios
                               ),
                             ),
                           )
@@ -616,11 +613,6 @@ class _ValueSetterViewState extends State<ValueSetterView> {
                                   shape: roundedButtonShape,
                                   onPressed: _zeroVals
                               ),
-                              RaisedButton(
-                                  child: Icon(Icons.save, size: 24,),
-                                  shape: roundedButtonShape,
-                                  onPressed: onSavePressed
-                              )
                             ],
                           ),
                         )
