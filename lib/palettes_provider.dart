@@ -3,7 +3,7 @@ import 'package:ledcontroller/model/palette_types.dart';
 
 import 'model/palette.dart';
 class PaletteProvider extends ChangeNotifier{
-  final int PALETTES_COUNT = 28;
+  final int PALETTES_COUNT = 36;
   static final _instance = PaletteProvider._internal();
   factory PaletteProvider() {
     return _instance;
@@ -55,7 +55,7 @@ class PaletteProvider extends ChangeNotifier{
     int numProg = 1;
     for(int i = 0; i < PALETTES_COUNT; i++) {
       Palette palette;
-      if(i < PALETTES_COUNT/2) {
+      if(i < PALETTES_COUNT*0.66) {
         palette = Palette.palette();
         palette.selected = false;
         palette.name = "Palette$numPal";

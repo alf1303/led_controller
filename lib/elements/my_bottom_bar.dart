@@ -37,7 +37,7 @@ class MyBottomBar extends StatelessWidget {
                   Visibility(
                     visible: !isEditor,
                     child: RaisedButton(
-                        elevation: 10,
+                        elevation: 5,
                         child: Text("Reset", style: mainText,),
                         onPressed: !providerModel.selected ? null : () {
                           Controller.setReset();
@@ -46,7 +46,7 @@ class MyBottomBar extends StatelessWidget {
                   Visibility(
                     visible: !isEditor,
                     child: RaisedButton(
-                      elevation: 10,
+                      elevation: 5,
                         child: Text("Area", style: mainText,),
                         onPressed: !Controller.providerModel.selected ? null : () {
                           showDialog(
@@ -129,14 +129,14 @@ class MyBottomBar extends StatelessWidget {
                   }),
                   RaisedButton(
                     shape: buttonShape,
-                    elevation: 10,
+                    elevation: 5,
                       child: Icon(Icons.select_all),
                       onPressed: () {
                         Controller.selectAll();
                       }),
                   RaisedButton(
                     shape: Controller.areNotSelected() ? buttonShape : buttonSelectShape,
-                    elevation: 10,
+                    elevation: 5,
                       child: Icon(Icons.clear, color: Controller.areNotSelected() ? Colors.black : Colors.red,),
                       onPressed: () {
                         Controller.deselectAll();
@@ -144,7 +144,9 @@ class MyBottomBar extends StatelessWidget {
                   Visibility(
                     visible: isEditor,
                     child: RaisedButton(
-                        child: Icon(Icons.save, size: 24,),
+                      elevation: 5,
+                        //child: Icon(Icons.save, size: 24,),
+                      child: FittedBox(fit: BoxFit.scaleDown, child: Text("Save To Device"),),
                         shape: roundedButtonShape,
                         onPressed: onSavePressed
                     )
