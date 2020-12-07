@@ -13,8 +13,8 @@ import 'package:ledcontroller/provider_model_attribute.dart';
 import 'package:ledcontroller/udp_controller.dart';
 import 'package:ledcontroller/provider_model.dart';
 import 'package:path_provider/path_provider.dart';
-import 'model/esp_model.dart';
-import 'model/palette.dart';
+import 'package:ledcontroller/model/esp_model.dart';
+import 'package:ledcontroller/model/palette.dart';
 
 abstract class Controller {
   static Random random = new Random();
@@ -30,9 +30,12 @@ abstract class Controller {
     for (int i = 21; i <= 40; i++) {
       Settings fsSet = Settings(random.nextInt(4), random.nextInt(3), i, i+100, Color.fromRGBO(random.nextInt(255), random.nextInt(255), 0, 1), random.nextInt(255));
       Settings ramSet = Settings(random.nextInt(4), random.nextInt(3), i, i+100, Color.fromRGBO(random.nextInt(255), random.nextInt(255), 0, 1), random.nextInt(255));
-      ramSet.fxParts = ramSet.fxWidth = ramSet.fxSpread = ramSet.fxSize = 1;
+      ramSet.fxParts = ramSet.fxWidth = ramSet.fxSpread = ramSet.fxSize = ramSet.fxFade = 1;
       ramSet.address = 223;
+      ramSet.universe = i;
+      ramSet.strobe = 1;
       ramSet.reverse = false;
+      ramSet.segment = 1;
       ramSet.startPixel = 0;
       ramSet.endPixel = 112;
       ramSet.pixelCount = 120;
@@ -169,7 +172,7 @@ abstract class Controller {
 
   static setSend(int save) {
     UDPCotroller.setSend(save);
-    providerModel.notify();
+    //providerModel.notify();
   }
 
   static setSendWithoutUpdate(int save) {

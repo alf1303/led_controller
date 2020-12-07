@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:ledcontroller/model/palette_types.dart';
+import 'package:ledcontroller/model/palette.dart';
 
-import 'model/palette.dart';
 class PaletteProvider extends ChangeNotifier{
   final int PALETTES_COUNT = 36;
   static final _instance = PaletteProvider._internal();

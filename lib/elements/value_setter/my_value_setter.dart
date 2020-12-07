@@ -3,7 +3,9 @@ import 'package:expandable/expandable.dart';
 import 'package:invert_colors/invert_colors.dart';
 import 'package:ledcontroller/elements/custom/custom_group_radio.dart';
 import 'package:ledcontroller/elements/custom/sliders.dart';
-import 'file:///D:/Projects/FlutterProjects/led_controller/lib/elements/value_setter/palette_viewer.dart';
+import '../../palettes_provider.dart';
+import 'color_setter.dart';
+import 'package:ledcontroller/elements/value_setter/palette_viewer.dart';
 import 'package:ledcontroller/fx_names.dart';
 import 'package:ledcontroller/provider_model_attribute.dart';
 import 'package:ledcontroller/styles.dart';
@@ -41,6 +43,8 @@ class _ValueSetterViewState extends State<ValueSetterView> {
   double _red = 0;
   double _green = 0;
   double _blue = 0;
+  int _fxNum = 0;
+  Color _fxColor = Colors.grey;
   double _fxSpeed = 1;
   double _fxParts = 1;
   double _fxSpread = 1;
@@ -53,8 +57,7 @@ class _ValueSetterViewState extends State<ValueSetterView> {
   bool _fxRnd = false;
   bool _fxRndColor = false;
   bool _playlistMode = false;
-  Color _fxColor = Colors.grey;
-  int _fxNum = 0;
+
 
   ////////////////
   double wwidth;
@@ -82,43 +85,6 @@ class _ValueSetterViewState extends State<ValueSetterView> {
         element.ramSet.setPlayListMode(_playlistMode);
       }
     });
-  }
-
-  onDimmerChangeEnd(double value) {
-    if(Controller.providerModel.list != null) {
-      processAttributes();
-      Controller.setSend(1);
-    }
-  }
-
-  onRedChanged(double value) {
-      _red = value;
-  }
-  onRedChangeEnd(double value) {
-    if(Controller.providerModel.list != null) {
-      processAttributes();
-      Controller.setSend(2);
-    }
-  }
-
-  onGreenChanged(double value) {
-      _green = value;
-  }
-  onGreenChangeEnd(double value) {
-    if(Controller.providerModel.list != null) {
-      processAttributes();
-      Controller.setSend(2);
-    }
-  }
-
-  onBlueChanged(double value) {
-      _blue = value;
-  }
-  onBlueChangeEnd(double value) {
-    if(Controller.providerModel.list != null) {
-      processAttributes();
-      Controller.setSend(2);
-    }
   }
 
   onFxColorChanged(value) {
@@ -241,16 +207,6 @@ class _ValueSetterViewState extends State<ValueSetterView> {
       processAttributes();
       Controller.setSend(131);
     }
-  }
-
-  void _zeroVals() {
-    _dim = 255;
-    _red = 0;
-    _green = 0;
-    _blue = 0;
-    processAttributes();
-    Controller.setSend(2);
-    setState(() {  });
   }
 
   void showFxSettings(BuildContext context) {
@@ -559,61 +515,7 @@ class _ValueSetterViewState extends State<ValueSetterView> {
                   borderRadius: expandedHeaderRadius,
                 ),
                 child: FText("Color Setter")),
-            collapsed: Container(
-              padding: EdgeInsets.symmetric(horizontal: 6, vertical: 4),
-              decoration: BoxDecoration(
-                color: mainBackgroundColor,
-                border: Border.all(),
-                borderRadius: expandedBodyRadius,
-              ),
-              child: StatefulBuilder(
-                  builder: (context, setStat) {
-                    return Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        Expanded(
-                          flex: 6,
-                          child: Column(
-                            children: <Widget>[
-                              MyCustomSlider("", _dim, 0, 255, secondaryBackgroundColor, linesColor, Colors.black45, 5, (v) {setStat((){_dim = v;});}, onDimmerChangeEnd),
-                              MyCustomSlider("", _red, 0, 255, secondaryBackgroundColor, linesColor, Colors.red, 5, (v) {setStat((){_red = v;});}, onRedChangeEnd),
-                              MyCustomSlider("", _green, 0, 255, secondaryBackgroundColor, linesColor, Colors.green, 5, (v) {setStat((){_green = v;});}, onGreenChangeEnd),
-                              MyCustomSlider("", _blue, 0, 255, secondaryBackgroundColor, linesColor, Colors.blue, 5, (v) {setStat((){_blue = v;});}, onBlueChangeEnd),
-                            ],
-                          ),
-                        ),
-                        //COLOR VIEWER
-                        Expanded(
-                          child: Column(
-                            children: <Widget>[
-                              Padding(
-                                padding: const EdgeInsets.only(left: 8, right: 8.0),
-                                child: Container(
-                                  height: 120,
-                                  decoration: BoxDecoration(
-                                      color: Color.fromRGBO(_red.round(), _green.round(), _blue.round(), 1),
-                                      border: Border.all(color: Colors.grey),
-                                      borderRadius: BorderRadius.all(Radius.circular(5)),
-                                      boxShadow: [
-                                        boxShadow1
-                                      ]
-                                  ),
-                                ),
-                              ),
-                              RaisedButton(
-                                  color: buttonColor,
-                                  child: Icon(Icons.clear, size: 24,),
-                                  shape: roundedButtonShape,
-                                  onPressed: _zeroVals
-                              ),
-                            ],
-                          ),
-                        )
-                      ],
-                    );
-                  }
-              ),
-            ),
+            collapsed: ColorSetter()
           ),
           Container(height: 50, color: thirdBackgroundColor),
         ],

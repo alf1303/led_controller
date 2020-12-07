@@ -36,4 +36,9 @@ class EspModel {
     //this.filename = model.filename;
     //this.filesize = model.filesize;
   }
+
+  @override
+  String toString() {
+    return "uni: $uni, ipAddr: $ipAddress, name: $name, ssid: $ssid, pass: $password, netmode: $netMode, version: $version";
+  }
 }

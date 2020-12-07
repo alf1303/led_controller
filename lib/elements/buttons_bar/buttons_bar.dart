@@ -139,6 +139,7 @@ class MyBottomBar extends StatelessWidget {
             ),
             Expanded(
               child: RaisedButton(
+                  color: Controller.areNotSelected() ? buttonColor : buttonSelectedColor,
                 shape: Controller.areNotSelected() ? buttonShape : buttonSelectShape,
                 elevation: 5,
                   child: Icon(Icons.clear, color: Controller.areNotSelected() ? Colors.black : accentColor,),

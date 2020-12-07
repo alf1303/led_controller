@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ledcontroller/controller.dart';
 
 import '../../styles.dart';
 class IndicatorRaisedButton extends StatelessWidget{
@@ -12,12 +13,15 @@ class IndicatorRaisedButton extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return RaisedButton(
-        shape: RoundedRectangleBorder(side: BorderSide(color: buttonBorderColor, width: 1), borderRadius: BorderRadius.circular(6) ),
+      color: Controller.highlite ? buttonSelectedColor : buttonColor,
+        shape: Controller.highlite ? buttonSelectShape : buttonShape,
         //padding: EdgeInsets.only(top: 25),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
+        child: Row(
+         // mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(label == null ? "" : label, style: mainText,),
+            Text(label == null ? "" : label, style: mainText.copyWith(color: Controller.highlite ? Colors.yellowAccent : Colors.black),),
+            SizedBox(width: 4,),
             Container(
               decoration: BoxDecoration(
                   color: value ? Colors.yellowAccent : Colors.black,

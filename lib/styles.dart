@@ -22,7 +22,8 @@ Color emptyPaletteColor = Colors.grey.withOpacity(0.7);
 
 const Color selectedColor = mainBackgroundColor;
 const Color selectedLinesColor = Colors.yellowAccent;
-const Color accentColor = Colors.pinkAccent;
+const Color accentColor = Colors.yellowAccent;
+Color buttonSelectedColor = Colors.blueGrey;
 
 //SHADOWS
 BoxShadow boxShadow1 = BoxShadow(
@@ -77,7 +78,7 @@ ButtonTheme mainButtonTheme = ButtonTheme(
   splashColor: splashColor,
   shape: buttonShape,
   minWidth: 20,
-  padding: EdgeInsets.all(6),
+  padding: EdgeInsets.symmetric(horizontal: 6),
 );
 
 //DECORATION
