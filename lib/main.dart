@@ -17,7 +17,7 @@ import 'elements/settings_widget.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
- // await Controller.fakeInit();
+  await Controller.fakeInit();
   await Controller.initPalettes();
   await Controller.initWiFi();
   runApp(Main());
@@ -32,9 +32,9 @@ class _MainState extends State<Main> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final _tabController = TabController(length: 3, vsync: this);
-    Future.delayed(Duration(seconds: 2), () {
-      Controller.scan();
-    });
+//    Future.delayed(Duration(seconds: 2), () {
+//      Controller.scan();
+//    });
     return MaterialApp(
       theme: ThemeData(
         buttonTheme: mainButtonTheme.data,

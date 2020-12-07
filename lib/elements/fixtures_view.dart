@@ -79,17 +79,18 @@ class _EspViewState extends State<EspView> {
   }
   @override
   Widget build(BuildContext context) {
+    final highlited = Controller.highlite;
+    final selected = widget._espModel.selected;
     final BoxDecoration espViewDecoration = BoxDecoration(
         gradient: LinearGradient(
             colors: [
-              (widget._espModel.selected) ?
-              Colors.white : mainBackgroundColor.withOpacity(0.1),
-              widget._espModel.selected ? mainBackgroundColor.withOpacity(1) : thirdBackgroundColor.withOpacity(1)
+              (selected) ? Colors.white : mainBackgroundColor.withOpacity(0.1),
+              (selected) ? mainBackgroundColor.withOpacity(1) :  thirdBackgroundColor.withOpacity(1)
             ],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter
         ),
-        border: Border.all(color: (Controller.highlite && widget._espModel.selected) ? Colors.yellow : widget._espModel.selected ? Colors.white : Colors.grey, width: (Controller.highlite && widget._espModel.selected) ? 4 : widget._espModel.selected ? 3 : 2),
+        border: Border.all(color: (highlited && selected) ? selectedLinesColor : (selected) ? selectedColor : Colors.grey, width: (selected) ? 4 : 2),
         borderRadius: BorderRadius.circular(6),
         boxShadow: [
           BoxShadow(

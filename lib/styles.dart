@@ -19,6 +19,10 @@ const Color dividerColor = Colors.black12;
 const Color splashColor = mainBackgroundColor;
 Color emptyPaletteColor = Colors.grey.withOpacity(0.7);
 
+const Color selectedColor = mainBackgroundColor;
+const Color selectedLinesColor = Colors.yellowAccent;
+const Color accentColor = Colors.pinkAccent;
+
 //SHADOWS
 BoxShadow boxShadow1 = BoxShadow(
     color: mainBackgroundColor.withOpacity(0.3),
@@ -40,7 +44,7 @@ const TextStyle mainWhiteText = TextStyle(color: Colors.white);
 
 //SHAPES AND BORDERS
 RoundedRectangleBorder buttonShape = RoundedRectangleBorder(side: BorderSide(color: buttonBorderColor, width: 2), borderRadius: BorderRadius.circular(6));
-RoundedRectangleBorder buttonSelectShape = RoundedRectangleBorder(side: BorderSide(color: Colors.red, width: 2), borderRadius: BorderRadius.circular(6));
+RoundedRectangleBorder buttonSelectShape = RoundedRectangleBorder(side: BorderSide(color: accentColor, width: 2), borderRadius: BorderRadius.circular(6));
 RoundedRectangleBorder roundedButtonShape = RoundedRectangleBorder(borderRadius: BorderRadius.circular(20),side: BorderSide(color: buttonBorderColor));
 RoundedRectangleBorder alertShape = RoundedRectangleBorder(side: BorderSide(color: secondaryBackgroundColor,),  borderRadius: BorderRadius.circular(12));
 const OutlineInputBorder focusedBorder = OutlineInputBorder(borderSide: BorderSide(color: splashColor));
@@ -71,6 +75,7 @@ ButtonTheme mainButtonTheme = ButtonTheme(
   buttonColor: buttonColor,
   splashColor: splashColor,
   shape: buttonShape,
+  minWidth: 20,
 );
 
 //DECORATION
