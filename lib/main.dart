@@ -9,7 +9,7 @@ import 'controller.dart';
 import 'elements/custom/fitted_text.dart';
 import 'elements/fixture_view/fixtures_view.dart';
 import 'elements/my_app_bar.dart';
-import 'elements/my_value_setter.dart';
+import 'elements/value_setter/my_value_setter.dart';
 import 'elements/playback_view.dart';
 
 void main() async{

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:invert_colors/invert_colors.dart';
 import 'package:provider/provider.dart';
-import '../controller.dart';
-import '../palettes_provider.dart';
+import '../../controller.dart';
+import '../../palettes_provider.dart';
 import 'package:ledcontroller/model/palette.dart';
 
-import '../styles.dart';
+import '../../styles.dart';
 
 class PaletteViewer extends StatelessWidget {
 
