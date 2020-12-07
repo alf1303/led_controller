@@ -1,21 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:ledcontroller/elements/buttons_bar/settings_widget.dart';
 import 'package:ledcontroller/model/settings.dart';
 import 'package:ledcontroller/styles.dart';
 import 'package:ledcontroller/provider_model.dart';
 import 'package:provider/provider.dart';
 
-import '../controller.dart';
+import '../../controller.dart';
+import 'indicator_raised_button.dart';
 
 class MyBottomBar extends StatelessWidget {
   final bool isEditor;
   const MyBottomBar(this.isEditor);
-
-  void onSavePressed() {
-    if(Controller.providerModel.list != null) {
-      Controller.setSend(255);
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -116,6 +112,7 @@ class MyBottomBar extends StatelessWidget {
                     }),
               ),
             ),
+            Expanded(child: SettingsWidget()),
             Expanded(
               child: StatefulBuilder(builder: (context, setState) {
                 onChanged(bool value) {
@@ -149,16 +146,6 @@ class MyBottomBar extends StatelessWidget {
                     Controller.deselectAll();
                   }),
             ),
-            Visibility(
-              visible: isEditor,
-              child: RaisedButton(
-                elevation: 5,
-                  //child: Icon(Icons.save, size: 24,),
-                child: FittedBox(fit: BoxFit.scaleDown, child: Text("Save To Device"),),
-                  shape: roundedButtonShape,
-                  onPressed: onSavePressed
-              )
-            ),
           ],
         ),
       ),
@@ -166,40 +153,4 @@ class MyBottomBar extends StatelessWidget {
   }
 }
 
-class IndicatorRaisedButton extends StatelessWidget{
-  final String label;
-  final bool value;
-  final ValueChanged<bool> onPressed;
-const IndicatorRaisedButton({
-  @required this.label,
-  @required this.value,
-  @required this.onPressed});
-  @override
-  Widget build(BuildContext context) {
-    return RaisedButton(
-      shape: RoundedRectangleBorder(side: BorderSide(color: buttonBorderColor, width: 1), borderRadius: BorderRadius.circular(6) ),
-      //padding: EdgeInsets.only(top: 25),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Text(label == null ? "" : label, style: mainText,),
-              Container(
-                decoration: BoxDecoration(
-                    color: value ? Colors.yellowAccent : Colors.black,
-                  boxShadow: [
-                    BoxShadow(color: Colors.white,
-                    blurRadius: value ? 3 : 0,
-                    spreadRadius: value ? 2 : 0)
-                  ]
-                ),
 
-                width: 12,
-                height: 12,
-              ),
-            ],
-          ),
-          onPressed: () {
-            onPressed(!value);
-          });
-  }
-}

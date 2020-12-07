@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 //COLORS
@@ -16,7 +17,7 @@ const Color linesColor2 = Colors.pink;
 const Color radioColor = linesColor2;
 const Color textBlack = Colors.black;
 const Color dividerColor = Colors.black12;
-const Color splashColor = mainBackgroundColor;
+const Color splashColor = accentColor;
 Color emptyPaletteColor = Colors.grey.withOpacity(0.7);
 
 const Color selectedColor = mainBackgroundColor;
@@ -76,6 +77,7 @@ ButtonTheme mainButtonTheme = ButtonTheme(
   splashColor: splashColor,
   shape: buttonShape,
   minWidth: 20,
+  padding: EdgeInsets.all(6),
 );
 
 //DECORATION

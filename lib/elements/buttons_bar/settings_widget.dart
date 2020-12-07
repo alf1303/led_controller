@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:ledcontroller/model/esp_model.dart';
 import 'package:provider/provider.dart';
 
-import '../controller.dart';
-import '../provider_model.dart';
-import '../styles.dart';
+import '../../controller.dart';
+import '../../provider_model.dart';
+import '../../styles.dart';
 
 
 class SettingsWidget extends StatelessWidget{

@@ -11,7 +11,7 @@ import 'package:provider/provider.dart';
 import '../controller.dart';
 import 'custom/custom_radio.dart';
 import 'custom/fitted_text.dart';
-import 'my_bottom_bar.dart';
+import 'buttons_bar/buttons_bar.dart';
 
 class MyValueSetter extends StatelessWidget {
 
@@ -23,7 +23,6 @@ class MyValueSetter extends StatelessWidget {
      decoration: secondaryDecoration,
      child: Column(
        children: <Widget>[
-         MyBottomBar(true),
          Expanded(child: SingleChildScrollView(child: ValueSetterView())),
        ],
      ),
