@@ -40,6 +40,23 @@ class ProviderModelAttribute extends ChangeNotifier{
     });
   }
 
+  processFxColor() {
+      Controller.providerModel.list.forEach((element) {
+        if(element.selected) {
+          element.ramSet.fxColor = fxColor;
+          element.ramSet.fxSize = fxSize.round();
+        }
+      });
+  }
+
+  processFxNum() {
+    Controller.providerModel.list.forEach((element) {
+      if(element.selected) {
+        element.ramSet.numEffect = fxNum;
+      }
+    });
+  }
+
   zeroColors() {
     dim = 255;
     red = 0;

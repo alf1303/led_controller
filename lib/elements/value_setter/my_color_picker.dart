@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ledcontroller/provider_model_attribute.dart';
 
 import '../../styles.dart';
 
@@ -6,14 +7,13 @@ class MyColorPicker extends StatefulWidget{
   final double width;
   final Color color;
   final double fxSize;
-  final ValueChanged<Color> changedColor;
-  final ValueChanged<double> changedFxSize;
 
-  MyColorPicker(this.width, this.color, this.fxSize, this.changedColor, this.changedFxSize);
+  MyColorPicker(this.width, this.color, this.fxSize);
   @override
   _MyColorPickerState createState() => _MyColorPickerState();
 }
 class _MyColorPickerState extends State<MyColorPicker> {
+  final attr = ProviderModelAttribute();
   final List<Color> _colors = [
     Color.fromARGB(255, 0, 0, 0),
     Color.fromARGB(255, 255, 0, 0),
@@ -50,21 +50,20 @@ class _MyColorPickerState extends State<MyColorPicker> {
     if(position < 0) {
       position = 0;
     }
-    setState(() {
-      _colorSliderPosition = position;
-      _currentColor = _calculateSelectedColor(position);
-    });
+    _colorSliderPosition = position;
+    _currentColor = _calculateSelectedColor(position);
+    setState(() {    });
   }
 
-  _colorChangeSend() {
-    widget.changedColor(_currentColor);
+  _colorChangeEnd() {
+    attr.fxColor = _currentColor;
   }
 
   _onFxSizeChangeEnd(value) {
+    attr.fxSize = value;
     setState(() {
       _currentFxSize = value;
     });
-    widget.changedFxSize(_currentFxSize);
   }
 
   double _calculatePositionFromColor(Color col) {
@@ -125,7 +124,7 @@ class _MyColorPickerState extends State<MyColorPicker> {
             _colorChangeHandler(details.localPosition.dx);
           },
           onHorizontalDragEnd: (details) {
-            _colorChangeSend();
+            _colorChangeEnd();
           },
           onHorizontalDragUpdate: (details) {
             //print("DRAG update");
@@ -133,7 +132,7 @@ class _MyColorPickerState extends State<MyColorPicker> {
           },
           onTapDown: (details) {
             _colorChangeHandler(details.localPosition.dx);
-            _colorChangeSend();
+            _colorChangeEnd();
           },
           child: Padding(
             padding: const EdgeInsets.all(25.0),
