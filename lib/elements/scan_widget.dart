@@ -34,7 +34,7 @@ class _ScanWidgetState extends State<ScanWidget> {
               elevation: 10,
               child: Container(
                   padding: EdgeInsets.all(2),
-                  child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(linesColor),)),
+                  child: FittedBox(fit: BoxFit.fitHeight, child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(linesColor),))),
               onPressed: null
           ));
 //        if(snapshot.connectionState == ConnectionState.active) child = child = (RaisedButton(

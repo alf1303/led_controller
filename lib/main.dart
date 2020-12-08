@@ -6,16 +6,12 @@ import 'package:ledcontroller/styles.dart';
 import 'package:provider/provider.dart';
 
 import 'controller.dart';
-import 'elements/custom/fitted_text.dart';
-import 'elements/fixture_view/fixtures_view.dart';
-import 'elements/fixture_view/simple_fixture_view.dart';
-import 'elements/my_app_bar.dart';
 import 'elements/value_setter/my_value_setter.dart';
 import 'elements/playback_view.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
-  await Controller.fakeInit();
+  //await Controller.fakeInit();
   await Controller.initPalettes();
   await Controller.initWiFi();
   runApp(Main());
@@ -29,9 +25,10 @@ class Main extends StatefulWidget {
 class _MainState extends State<Main> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
-//    Future.delayed(Duration(seconds: 2), () {
-//      Controller.scan();
-//    });
+    Future.delayed(Duration(seconds: 2), () {
+      Controller.scan();
+    });
+    final _tabController = TabController(length: 2, vsync: this);
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<ProviderModel>(create: (_) => ProviderModel(),),
@@ -46,7 +43,7 @@ class _MainState extends State<Main> with TickerProviderStateMixin {
         ),
         home: SafeArea(
             child: Scaffold(
-              body: MyValueSetter(),
+              body: TabMainPage(_tabController),
               //bottomNavigationBar: SimpleFixtureView(),
               //bottomNavigationBar: MyBottomBar(),
             ),
@@ -66,9 +63,8 @@ class TabMainPage extends StatelessWidget{
     return TabBarView(
       controller: _tabController,
         children: [
-          FixturesView(),
-          MyValueSetter(),
-          PlaybackView()
+          MyValueSetter(_tabController),
+          PlaybackView(_tabController)
           //Text("")
         ]);
   }

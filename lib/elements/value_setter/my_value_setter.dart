@@ -22,6 +22,9 @@ import 'fx_setter.dart';
 import 'my_color_picker.dart';
 
 class MyValueSetter extends StatelessWidget {
+  final _tabController;
+
+  const MyValueSetter(this._tabController);
 
   @override
   Widget build(BuildContext context) {
@@ -29,12 +32,16 @@ class MyValueSetter extends StatelessWidget {
      padding: EdgeInsets.symmetric(horizontal: 8),
      //color: Colors.black,
      decoration: secondaryDecoration,
-     child: ValueSetterView(),
+     child: ValueSetterView(_tabController),
    );
   }
 }
 
 class ValueSetterView extends StatefulWidget{
+  final _tabController;
+
+  ValueSetterView(this._tabController);
+
   bool pallExp = true;
   bool fxExp = true;
   bool colorExp = true;
@@ -76,7 +83,7 @@ class _ValueSetterViewState extends State<ValueSetterView> {
         mainAxisSize: MainAxisSize.min,
         children: [
           SizedBox(height: 2,),
-          MyAppBar(),
+          MyAppBar(widget._tabController),
           SizedBox(
             height: 30,
             child: Row(

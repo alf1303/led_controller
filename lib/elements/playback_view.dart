@@ -10,6 +10,10 @@ import '../controller.dart';
 import 'custom/fitted_text.dart';
 
 class PlaybackView extends StatelessWidget{
+  final TabController _tabController;
+
+  const PlaybackView(this._tabController);
+
   @override
   Widget build(BuildContext context) {
     final paletteProvider = Provider.of<PaletteProvider>(context, listen: true);
@@ -28,7 +32,7 @@ class PlaybackView extends StatelessWidget{
                     padding: EdgeInsets.symmetric(horizontal: 6),
                     child: Icon(Icons.arrow_back_outlined, size: 24,),
                     onPressed: () {
-                      Navigator.pop(context);
+                      _tabController.animateTo(0);
                     }
                 ),
               ),

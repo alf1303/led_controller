@@ -75,7 +75,7 @@ class _SimpleEspViewState extends State<SimpleEspView> {
               Expanded(
                 child: Row(
                   children: [
-                    Expanded(child: FittedBox(fit: BoxFit.scaleDown, child: Text("${widget._espModel.uni}", style: smallText.copyWith(color: selected ? Colors.black : Colors.white),))),
+                    Expanded(child: FittedBox(fit: BoxFit.fitHeight, child: Text("${widget._espModel.uni}", style: smallText.copyWith(color: selected ? Colors.black : Colors.white),))),
                     //SizedBox(width: 2,),
                     Expanded(child: ColorView(widget._espModel.ramSet.color, true)),
                   ],
@@ -83,7 +83,7 @@ class _SimpleEspViewState extends State<SimpleEspView> {
               ),
               Expanded(child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 3.0),
-                child: FittedBox(fit: BoxFit.scaleDown, child: Text(widget._espModel.name == null ? "empty" : widget._espModel.name, style: smallText. copyWith(color: selected ? Colors.black : Colors.black),)),
+                child: FittedBox(fit: BoxFit.scaleDown, child: Text(widget._espModel.name == null ? "name${widget._espModel.uni}" : widget._espModel.name, style: smallText.copyWith( fontSize: 30, color: selected ? Colors.black : Colors.black),)),
               ))
             ],
           ),
