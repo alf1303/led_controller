@@ -7,6 +7,7 @@ class MyCustomSlider extends StatelessWidget {
   final double value;
   final double min;
   final double max;
+  final double trackHeight;
   final Color shadowColor;
   final Color borderColor;
   final Color sliderColor;
@@ -21,44 +22,42 @@ class MyCustomSlider extends StatelessWidget {
   }
 
   const MyCustomSlider(this._label, this.value, this.min, this.max, this.shadowColor, this.borderColor, this.sliderColor,
-      this.borderRadius, this._valueChanged, this._valueChangeEnd);
+      this.borderRadius, this._valueChanged, this._valueChangeEnd, this.trackHeight);
 
   @override
   Widget build(BuildContext context) {
     double tmpVal = value;
-    return Stack(
-      alignment: Alignment.topCenter,
-      children: <Widget>[
-        Text(_label, style: smallText,),
-        Container(
-          decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey, width: 1),
-              borderRadius: BorderRadius.circular(15)
+    return Container(
+      decoration: BoxDecoration(
+        border: Border.all(),
+        borderRadius: BorderRadius.all(Radius.circular(10))
+      ),
+      child: SliderTheme(
+          data: SliderTheme.of(context).copyWith(
+            trackHeight: trackHeight,
+            //overlayShape: CustomOverlayShape(),
+            thumbShape: RoundSliderThumbShape(enabledThumbRadius: trackHeight*2),
+            overlayShape: RoundSliderOverlayShape(overlayRadius: trackHeight*3)
           ),
-          child: SliderTheme(
-              data: SliderTheme.of(context).copyWith(
-              ),
-              child: StatefulBuilder(
-                builder: (context, setStat) {
-                  return Slider(
-                      min: min,
-                      max: max,
-                      activeColor: sliderColor,
-                      inactiveColor: sliderColor.withOpacity(0.3),
-                      value: tmpVal,
-                      label: tmpVal.round().toString(),
-                      divisions: max.round(),
-                      onChanged: (value) {
-                        setStat(() {tmpVal = value;});
-                        _valueChanged(value);
-                      },
-                      onChangeEnd: onValChangeEnd
-                  );
-                },
-              )
-          ),
-        ),
-      ],
+          child: StatefulBuilder(
+            builder: (context, setStat) {
+              return Slider(
+                  min: min,
+                  max: max,
+                  activeColor: sliderColor,
+                  inactiveColor: sliderColor.withOpacity(0.3),
+                  value: tmpVal,
+                  label: tmpVal.round().toString(),
+                  divisions: max.round(),
+                  onChanged: (value) {
+                    setStat(() {tmpVal = value;});
+                    _valueChanged(value);
+                  },
+                  onChangeEnd: onValChangeEnd
+              );
+            },
+          )
+      ),
     );
   }
 }

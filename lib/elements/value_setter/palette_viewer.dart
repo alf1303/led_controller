@@ -8,56 +8,63 @@ import 'package:ledcontroller/model/palette.dart';
 import '../../styles.dart';
 
 class PaletteViewer extends StatelessWidget {
+//final double height;
+//const PaletteViewer(this.height);
 
   @override
   Widget build(BuildContext context) {
+    final double height = MediaQuery.of(context).size.height;
+    final double width = MediaQuery.of(context).size.width;
+    print("paletteViewer, h: $height, w: $width");
     final paletteProvider = Provider.of<PaletteProvider>(context, listen: true);
     List<Palette> palettes = paletteProvider.getPalettes();
     List<Palette> programs = paletteProvider.getProgramms();
     //print("palLength: ${palettes.length}, progLength: ${programs.length}, allLength: ${paletteProvider.list.length}");
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Expanded(
-          child: Scrollbar(
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                physics: BouncingScrollPhysics(),
-                child: GridView.count(
-                  scrollDirection: Axis.horizontal,
-                  crossAxisCount: 1,
-                  shrinkWrap: true,
-                  childAspectRatio: 1.3,
-                  mainAxisSpacing: 6,
-                  children: List.generate(palettes.length, (index) => ViewPalette(palettes[index])),
-                )
-              )
-          ),
-        ),
-        SizedBox(height: 5,),
-        Expanded(
-          child: Container(
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey, width: 2),
-              color: palBackColor
-            ),
+    return Container(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Expanded(
             child: Scrollbar(
                 child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  physics: BouncingScrollPhysics(),
+                  child: GridView.count(
                     scrollDirection: Axis.horizontal,
-                    physics: BouncingScrollPhysics(),
-                    child: GridView.count(
-                      scrollDirection: Axis.horizontal,
-                      crossAxisCount: 1,
-                      shrinkWrap: true,
-                      childAspectRatio: 1.3,
-                      mainAxisSpacing: 6,
-                      children: List.generate(programs.length, (index) => ViewPrograms(programs[index])),
-                    )
+                    crossAxisCount: 1,
+                    shrinkWrap: true,
+                    childAspectRatio: 1.3,
+                    mainAxisSpacing: 6,
+                    children: List.generate(palettes.length, (index) => ViewPalette(palettes[index])),
+                  )
                 )
             ),
           ),
-        ),
-      ],
+          SizedBox(height: 5,),
+          Expanded(
+            child: Container(
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey, width: 2),
+                color: palBackColor
+              ),
+              child: Scrollbar(
+                  child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      physics: BouncingScrollPhysics(),
+                      child: GridView.count(
+                        scrollDirection: Axis.horizontal,
+                        crossAxisCount: 1,
+                        shrinkWrap: true,
+                        childAspectRatio: 1.3,
+                        mainAxisSpacing: 6,
+                        children: List.generate(programs.length, (index) => ViewPrograms(programs[index])),
+                      )
+                  )
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

@@ -24,9 +24,13 @@ class ColorSetter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final double height = MediaQuery.of(context).size.height;
+    final double width = MediaQuery.of(context).size.width;
+    final double trackHeight = height > width ? height*0.006 : width*0.006;
+    print("ColorSetter, h: $height, w: $width");
     final attr = Provider.of<ProviderModelAttribute>(context, listen: false);
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+      padding: EdgeInsets.symmetric(horizontal: 6, vertical: 5),
       decoration: BoxDecoration(
         color: mainBackgroundColor,
         border: Border.all(),
@@ -40,11 +44,12 @@ class ColorSetter extends StatelessWidget {
                 Expanded(
                   flex: 6,
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
-                      MyCustomSlider("", attr.dim, 0, 255, secondaryBackgroundColor, linesColor, Colors.black45, 5, (v) {setStat((){attr.dim = v;});}, onDimmerChangeEnd),
-                      MyCustomSlider("", attr.red, 0, 255, secondaryBackgroundColor, linesColor, Colors.red, 5, (v) {setStat((){attr.red = v;});}, onColorChangeEnd),
-                      MyCustomSlider("", attr.green, 0, 255, secondaryBackgroundColor, linesColor, Colors.green, 5, (v) {setStat((){attr.green = v;});}, onColorChangeEnd),
-                      MyCustomSlider("", attr.blue, 0, 255, secondaryBackgroundColor, linesColor, Colors.blue, 5, (v) {setStat((){attr.blue = v;});}, onColorChangeEnd),
+                      Expanded(child: MyCustomSlider("", attr.dim, 0, 255, secondaryBackgroundColor, linesColor, Colors.black45, 5, (v) {setStat((){attr.dim = v;});}, onDimmerChangeEnd, trackHeight)),
+                      Expanded(child: MyCustomSlider("", attr.red, 0, 255, secondaryBackgroundColor, linesColor, Colors.red, 5, (v) {setStat((){attr.red = v;});}, onColorChangeEnd, trackHeight)),
+                      Expanded(child: MyCustomSlider("", attr.green, 0, 255, secondaryBackgroundColor, linesColor, Colors.green, 5, (v) {setStat((){attr.green = v;});}, onColorChangeEnd, trackHeight)),
+                      Expanded(child: MyCustomSlider("", attr.blue, 0, 255, secondaryBackgroundColor, linesColor, Colors.blue, 5, (v) {setStat((){attr.blue = v;});}, onColorChangeEnd, trackHeight)),
                     ],
                   ),
                 ),
@@ -52,17 +57,19 @@ class ColorSetter extends StatelessWidget {
                 Expanded(
                   child: Column(
                     children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.only(left: 8, right: 8.0),
-                        child: Container(
-                          height: 120,
-                          decoration: BoxDecoration(
-                              color: Color.fromRGBO(attr.red.round(), attr.green.round(), attr.blue.round(), 1),
-                              border: Border.all(color: Colors.grey),
-                              borderRadius: BorderRadius.all(Radius.circular(5)),
-                              boxShadow: [
-                                boxShadow1
-                              ]
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 8, right: 8.0),
+                          child: Container(
+                            height: 70,
+                            decoration: BoxDecoration(
+                                color: Color.fromRGBO(attr.red.round(), attr.green.round(), attr.blue.round(), 1),
+                                border: Border.all(color: Colors.grey),
+                                borderRadius: BorderRadius.all(Radius.circular(5)),
+                                boxShadow: [
+                                  boxShadow1
+                                ]
+                            ),
                           ),
                         ),
                       ),

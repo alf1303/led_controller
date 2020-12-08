@@ -18,7 +18,7 @@ class MyBottomBar extends StatelessWidget {
     final providerModel = Provider.of<ProviderModel>(context, listen: true);
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
-    print("bottomBar, w: $width, h: $height");
+    print("buttonsBar, h: $height, w: $width");
     return Container(
       padding: EdgeInsets.symmetric(vertical: isEditor ? 5 : 0),
       //decoration: bottomDecoration,

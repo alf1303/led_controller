@@ -8,8 +8,9 @@ class MyColorPicker extends StatefulWidget{
   final double width;
   final Color color;
   final double fxSize;
+  final ValueChanged<bool> updFunc;
 
-  MyColorPicker(this.width, this.color, this.fxSize);
+  MyColorPicker(this.width, this.color, this.fxSize, this.updFunc);
   @override
   _MyColorPickerState createState() => _MyColorPickerState();
 }
@@ -61,6 +62,7 @@ class _MyColorPickerState extends State<MyColorPicker> {
     if(Controller.providerModel.list != null) {
       attr.processFxColor();
       Controller.setSend(129);
+      widget.updFunc(false);
     }
   }
 

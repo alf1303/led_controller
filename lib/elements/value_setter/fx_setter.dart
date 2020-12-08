@@ -21,6 +21,7 @@ class FxSetter extends StatelessWidget {
   Widget build(BuildContext context) {
     final double height = MediaQuery.of(context).size.height;
     final double width = MediaQuery.of(context).size.width;
+    print("fxSetter, h: $height, w: $width");
     final double fontSize = height > width ? (width/25)/1.1 : (height/25)/1.1;
     final attr = Provider.of<ProviderModelAttribute>(context, listen: true);
     return Container(
@@ -36,23 +37,27 @@ class FxSetter extends StatelessWidget {
           /////////////////////////////////////////////////    FX COLOR
           Expanded(
             flex: 2,
-            child: GestureDetector(
-              child: Container(
-                height: height > width ? width/6 : height/6,
-                width: height > width ? width/6 : height/6,
-                decoration: BoxDecoration(
-                    boxShadow: [boxShadow1],
-                    color: attr.fxColor, border: Border.all(color: linesColor), borderRadius: BorderRadius.circular(12)),
-                child: InvertColors(child: FittedBox(fit: BoxFit.scaleDown, child: Text("  FX\ncolor", style: smallText.copyWith(fontSize: fontSize*1.3, color: attr.fxColor),))),
-              ),
-              onTap: () {
-                showDialog(
-                    context: context,
-                    builder: (context) {
-                      return MyColorPicker(width*0.8, attr.fxColor, attr.fxSize);
-                    });
-              },
-            ),
+            child: StatefulBuilder(
+                builder: (context, setStat) {
+                  return GestureDetector(
+                    child: Container(
+                      height: height > width ? width/6 : height/6,
+                      width: height > width ? width/6 : height/6,
+                      decoration: BoxDecoration(
+                          boxShadow: [boxShadow1],
+                          color: attr.fxColor, border: Border.all(color: linesColor), borderRadius: BorderRadius.circular(12)),
+                      child: InvertColors(child: FittedBox(fit: BoxFit.scaleDown, child: Text("  FX\ncolor", style: smallText.copyWith(fontSize: fontSize*1.3, color: attr.fxColor),))),
+                    ),
+                    onTap: () {
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return MyColorPicker(width*0.8, attr.fxColor, attr.fxSize, (val) {setStat((){});});
+                          });
+                    },
+                  );
+                }
+            )
           ),
           Expanded(
             flex: 4,

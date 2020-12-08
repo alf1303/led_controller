@@ -5,9 +5,6 @@ import '../controller.dart';
 import '../styles.dart';
 
 class MyAppBar extends StatelessWidget{
-  final _tabController;
-
-  const MyAppBar(this._tabController);
 
   void onSavePressed() {
     if(Controller.providerModel.list != null) {
@@ -19,7 +16,7 @@ class MyAppBar extends StatelessWidget{
   Widget build(BuildContext context) {
     return  SizedBox(
       width: MediaQuery.of(context).size.width,
-      height: 40,
+      height: 30,
       child: CustomScrollView(
         scrollDirection: Axis.horizontal,
         shrinkWrap: true,
@@ -29,7 +26,7 @@ class MyAppBar extends StatelessWidget{
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                ScanWidget(_tabController),
+                ScanWidget(),
                 GestureDetector(
                     onLongPress: () {
                       showDialog(

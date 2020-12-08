@@ -183,13 +183,14 @@ class _FxNumWidgetState extends State<FxNumWidget> {
     final double height = MediaQuery.of(context).size.height;
     final double width = MediaQuery.of(context).size.width;
     final double fontSize = height > width ? (width/25)/1.1 : (height/25)/1.1;
+    bool portrait = MediaQuery.of(context).orientation == Orientation.portrait;
     wwidth = width;
     hheight = height;
     ffontSize = fontSize;
     return GridView.count(crossAxisCount: 3,
       shrinkWrap: true,
       physics: ClampingScrollPhysics(),
-      childAspectRatio: 1.0,
+      childAspectRatio: portrait ? 1.3 : 1.9,
       children: <Widget>[
         CustomGroupRadio(label: "OFF", value: 0, groupValue: attr.fxNum, onChanged: onFxNumChanged, enabled: true, color: radioColor, fontSize: fontSize,),
         CustomGroupRadio(label: "Sinus", value: 1, groupValue: attr.fxNum, onChanged: onFxNumChanged, enabled: true, color: radioColor, padding: 0, fontSize: fontSize,),

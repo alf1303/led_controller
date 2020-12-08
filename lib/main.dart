@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'controller.dart';
 import 'elements/custom/fitted_text.dart';
 import 'elements/fixture_view/fixtures_view.dart';
+import 'elements/fixture_view/simple_fixture_view.dart';
 import 'elements/my_app_bar.dart';
 import 'elements/value_setter/my_value_setter.dart';
 import 'elements/playback_view.dart';
@@ -28,14 +29,14 @@ class Main extends StatefulWidget {
 class _MainState extends State<Main> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
-    final _tabController = TabController(length: 3, vsync: this);
 //    Future.delayed(Duration(seconds: 2), () {
 //      Controller.scan();
 //    });
     return MaterialApp(
       theme: ThemeData(
         buttonTheme: mainButtonTheme.data,
-        cardColor: secondaryBackgroundColor.withOpacity(0.4)
+        cardColor: secondaryBackgroundColor.withOpacity(0.4),
+        backgroundColor: thirdBackgroundColor
       ),
       home: SafeArea(
         child: MultiProvider(
@@ -45,40 +46,8 @@ class _MainState extends State<Main> with TickerProviderStateMixin {
             ChangeNotifierProvider<PaletteProvider>(create: (_) => PaletteProvider(),)
           ],
           child: Scaffold(
-            appBar: AppBar(
-              flexibleSpace: Container(decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    thirdBackgroundColor,
-                    mainBackgroundColor,
-                  ],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter
-                )
-              ),),
-                title: MyAppBar(_tabController),
-                bottom: TabBar(
-                  controller: _tabController,
-                  labelColor: mainBackgroundColor,
-                  indicatorSize: TabBarIndicatorSize.tab,
-                  indicatorPadding: EdgeInsets.all(0),
-                  indicator: BoxDecoration(
-                      color: thirdBackgroundColor,
-                      border: Border(top: BorderSide(color: Colors.grey, width: 1),
-                        left: BorderSide(color: Colors.grey, width: 1),
-                        right: BorderSide(color: Colors.grey, width: 1),
-                        bottom: BorderSide(color: Colors.grey, width: 1),),
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(10),
-                          topRight: Radius.circular(10)
-                      )),
-                  tabs: [
-                    Tab(child: FText("Fixtures List")),
-                    Tab(child: FText("Color Editor")),
-                    Tab(child: FText("PLAYBACK")),
-                  ],),
-            ),
-            body: TabMainPage(_tabController),
+            body: MyValueSetter(),
+            //bottomNavigationBar: SimpleFixtureView(),
             //bottomNavigationBar: MyBottomBar(),
           ),
         ),

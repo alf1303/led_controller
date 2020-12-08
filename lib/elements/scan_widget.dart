@@ -4,10 +4,6 @@ import '../controller.dart';
 import '../styles.dart';
 
 class ScanWidget extends StatefulWidget{
-  TabController _tabController;
-
-  ScanWidget(this._tabController);
-
   @override
   _ScanWidgetState createState() => _ScanWidgetState();
 }
@@ -20,7 +16,6 @@ class _ScanWidgetState extends State<ScanWidget> {
     futur = Controller.scan();
     setState(() {
     });
-    widget._tabController.animateTo(0);
   }
 
   @override
