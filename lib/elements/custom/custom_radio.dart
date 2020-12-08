@@ -6,6 +6,7 @@ class CustomRadio extends StatefulWidget {
   final bool value;
   final ValueChanged<bool> onChanged;
   final Color color;
+  final Color selectedCol;
   final double margin;
   final double padding;
   final bool visible;
@@ -19,6 +20,7 @@ class CustomRadio extends StatefulWidget {
     @required this.value,
     @required this.onChanged,
     this.color,
+    this.selectedCol,
     this.margin,
     this.padding,
     this.visible = true,
@@ -43,11 +45,11 @@ class CustomRadioState extends State<CustomRadio> {
           margin: EdgeInsets.symmetric(vertical: 6, horizontal: widget.margin == null ? 6 : widget.margin),
           padding: EdgeInsets.symmetric(vertical: 6, horizontal: widget.padding == null ? 6 : widget.padding),
           decoration: BoxDecoration(
-              border: Border.all(color: (widget.value) ? widget.color : Colors.grey),
-              color: Colors.transparent,
+              border: Border.all(color: (widget.value) ? widget.color : Colors.black),
+              color: widget.selectedCol == null ? Colors.transparent : widget.value ? widget.selectedCol : Colors.transparent,
               borderRadius: BorderRadius.circular(7)
           ),
-          child: FittedBox(fit: BoxFit.scaleDown, child: Text(widget.label, style: TextStyle(color: (widget.value) ? widget.color : Colors.grey, fontSize: widget.fontSize == null ? 10 : widget.fontSize), )),
+          child: FittedBox(fit: BoxFit.scaleDown, child: Text(widget.label, style: TextStyle(color: (widget.value) ? widget.color : Colors.black45, fontSize: widget.fontSize == null ? 10 : widget.fontSize), )),
         ),
       ),
     );

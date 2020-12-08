@@ -44,8 +44,8 @@ class _SimpleEspViewState extends State<SimpleEspView> {
         color: selected ? mainBackgroundColor : Colors.blueGrey,
         gradient: LinearGradient(
           colors: [
-            selected ? mainBackgroundColor : Colors.blueGrey,
-            selected ? Colors.white70 : thirdBackgroundColor
+            selected ? Colors.white : Colors.grey,
+            selected ? Colors.white : mainBackgroundColor
           ],
           tileMode: TileMode.mirror,
           begin: Alignment.topLeft,

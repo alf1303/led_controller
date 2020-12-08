@@ -12,6 +12,7 @@ class PaletteProvider extends ChangeNotifier{
   List<Palette> list = List();
   List<Palette> playlist = List();
   int playlistPeriod = 1;
+  double grandMaster = 100;
 
   List<Palette> getPalettes() {
     if(list.isNotEmpty) {

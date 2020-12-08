@@ -32,27 +32,27 @@ class _MainState extends State<Main> with TickerProviderStateMixin {
 //    Future.delayed(Duration(seconds: 2), () {
 //      Controller.scan();
 //    });
-    return MaterialApp(
-      theme: ThemeData(
-        buttonTheme: mainButtonTheme.data,
-        cardColor: secondaryBackgroundColor.withOpacity(0.4),
-        backgroundColor: thirdBackgroundColor
-      ),
-      home: SafeArea(
-        child: MultiProvider(
-          providers: [
-            ChangeNotifierProvider<ProviderModel>(create: (_) => ProviderModel(),),
-            ChangeNotifierProvider<ProviderModelAttribute>(create: (_) => ProviderModelAttribute(),),
-            ChangeNotifierProvider<PaletteProvider>(create: (_) => PaletteProvider(),)
-          ],
-          child: Scaffold(
-            body: MyValueSetter(),
-            //bottomNavigationBar: SimpleFixtureView(),
-            //bottomNavigationBar: MyBottomBar(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<ProviderModel>(create: (_) => ProviderModel(),),
+        ChangeNotifierProvider<ProviderModelAttribute>(create: (_) => ProviderModelAttribute(),),
+        ChangeNotifierProvider<PaletteProvider>(create: (_) => PaletteProvider(),)
+      ],
+      child: MaterialApp(
+        theme: ThemeData(
+          buttonTheme: mainButtonTheme.data,
+          cardColor: secondaryBackgroundColor.withOpacity(0.4),
+          backgroundColor: thirdBackgroundColor
+        ),
+        home: SafeArea(
+            child: Scaffold(
+              body: MyValueSetter(),
+              //bottomNavigationBar: SimpleFixtureView(),
+              //bottomNavigationBar: MyBottomBar(),
+            ),
           ),
         ),
-      ),
-    );
+      );
   }
 }
 

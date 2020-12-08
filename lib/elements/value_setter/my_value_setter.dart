@@ -7,6 +7,7 @@ import 'package:ledcontroller/elements/fixture_view/simple_fixture_view.dart';
 import 'package:ledcontroller/elements/my_app_bar.dart';
 import 'package:ledcontroller/model/palette.dart';
 import '../../palettes_provider.dart';
+import '../playback_view.dart';
 import 'color_setter.dart';
 import 'package:ledcontroller/elements/value_setter/palette_viewer.dart';
 import 'package:ledcontroller/fx_names.dart';

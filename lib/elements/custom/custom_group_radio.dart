@@ -7,6 +7,7 @@ class CustomGroupRadio extends StatefulWidget {
   final groupValue;
   final ValueChanged<dynamic> onChanged;
   final Color color;
+  final Color selectedCol;
   final bool enabled;
   final double margin;
   final double padding;
@@ -22,6 +23,7 @@ class CustomGroupRadio extends StatefulWidget {
     @required this.onChanged,
     @required this.enabled,
     this.color,
+    this.selectedCol,
     this.margin,
     this.padding,
     this.fontSize
@@ -37,6 +39,7 @@ class CustomGroupRadioState extends State<CustomGroupRadio> {
 
   @override
   Widget build(BuildContext context) {
+    print("groupradiobut ${widget.selectedCol}");
     return GestureDetector(
       onTap: widget.enabled ? onTapFunction : null,
       child: Container(
@@ -44,7 +47,7 @@ class CustomGroupRadioState extends State<CustomGroupRadio> {
         padding: EdgeInsets.symmetric(vertical: 6, horizontal: widget.padding == null ? 6 : widget.padding),
         decoration: BoxDecoration(
             border: Border.all(color: (widget.enabled && widget.value == widget.groupValue) ? widget.color : Colors.grey),
-            color: Colors.transparent,
+            color: widget.selectedCol == null ? Colors.transparent : (widget.enabled && widget.value == widget.groupValue) ? widget.selectedCol : Colors.transparent,
             borderRadius: BorderRadius.circular(7)
         ),
         child: Center(child: FittedBox(fit: BoxFit.contain, child: Text(widget.label, style: TextStyle(fontSize: widget.fontSize == null ? 10 : widget.fontSize, color: (widget.enabled && widget.value == widget.groupValue) ? widget.color : Colors.grey),))),

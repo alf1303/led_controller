@@ -18,7 +18,7 @@ const Color radioColor = linesColor2;
 const Color textBlack = Colors.black;
 const Color mainTextColor = Colors.black; //*************
 const Color dividerColor = Colors.black12;
-const Color splashColor = accentColor;
+const Color splashColor = mainBackgroundColor;
 Color emptyPaletteColor = Colors.grey.withOpacity(0.7);
 
 const Color selectedColor = mainBackgroundColor;

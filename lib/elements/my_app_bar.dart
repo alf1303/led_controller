@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ledcontroller/elements/playback_view.dart';
 import 'package:ledcontroller/elements/scan_widget.dart';
 
 import '../controller.dart';
@@ -51,7 +52,19 @@ class MyAppBar extends StatelessWidget{
                     //child: Icon(Icons.save, size: 24,),
                     child: FittedBox(fit: BoxFit.scaleDown, child: Text("Save To Device"),),
                     onPressed: onSavePressed
-                )
+                ),
+                SizedBox( width: 100,
+                  child: RaisedButton(
+                      elevation: 5,
+                      padding: EdgeInsets.symmetric(horizontal: 6),
+                      //child: Icon(Icons.save, size: 24,),
+                      child: Icon(Icons.play_circle_outline),
+                      onPressed: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => PlaybackView()));
+                      }
+                  ),
+                ),
+
 //                IconButton(icon: Icon(Icons.help_outline, color: Colors.black), onPressed: () {
 //                  showDialog(
 //                      context: context,
