@@ -27,7 +27,7 @@ abstract class Controller {
 
 
   static fakeInit() {
-    for (int i = 21; i <= 40; i++) {
+    for (int i = 21; i <= 22; i++) {
       Settings fsSet = Settings(random.nextInt(4), random.nextInt(3), i, i+10, Color.fromRGBO(random.nextInt(255), random.nextInt(255), 0, 1), random.nextInt(255));
       Settings ramSet = Settings(random.nextInt(4), random.nextInt(3), i, i+10, Color.fromRGBO(random.nextInt(255), random.nextInt(255), 0, 1), random.nextInt(255));
       ramSet.fxParts = ramSet.fxWidth = ramSet.fxSpread = ramSet.fxSize = ramSet.fxFade = 1;

@@ -16,21 +16,20 @@ class SimpleFixtureView extends StatelessWidget {
     print("SimpleFixture, h: $height, w: $width");
     return Container(
       padding: EdgeInsets.all(3),
-      color: mainBackgroundColor,
+      color: thirdBackgroundColor,
       child: Column(
         children: [
           MyBottomBar(false),
           SizedBox(height: 3,),
           Expanded(child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-          child: GridView.count(
-            scrollDirection: Axis.horizontal,
-            childAspectRatio: 0.7,
+            child: GridView.count(
+           // scrollDirection: Axis.horizontal,
+            childAspectRatio: 1.4,
             shrinkWrap: true,
-            physics: ClampingScrollPhysics(),
-            mainAxisSpacing: 8,
-            crossAxisSpacing: 8,
-            crossAxisCount: 2,
+            physics: BouncingScrollPhysics(),
+            mainAxisSpacing: 0,
+            crossAxisSpacing: 0,
+            crossAxisCount: model.list.length < 4 ? 3 : model.list.length == 4 ? 4 : 5,
             children: List.generate(model.list.length, (index) {
               return SimpleEspView(model.list[index]);
             }),

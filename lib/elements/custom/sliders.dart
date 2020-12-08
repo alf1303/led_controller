@@ -41,19 +41,36 @@ class MyCustomSlider extends StatelessWidget {
           ),
           child: StatefulBuilder(
             builder: (context, setStat) {
-              return Slider(
-                  min: min,
-                  max: max,
-                  activeColor: sliderColor,
-                  inactiveColor: sliderColor.withOpacity(0.3),
-                  value: tmpVal,
-                  label: tmpVal.round().toString(),
-                  divisions: max.round(),
-                  onChanged: (value) {
-                    setStat(() {tmpVal = value;});
-                    _valueChanged(value);
-                  },
-                  onChangeEnd: onValChangeEnd
+              return Row(
+                children: [
+                  Expanded(
+                    flex: 9,
+                    child: Slider(
+                        min: min,
+                        max: max,
+                        activeColor: sliderColor,
+                        inactiveColor: sliderColor.withOpacity(0.3),
+                        value: tmpVal,
+                        label: tmpVal.round().toString(),
+                        divisions: max.round(),
+                        onChanged: (value) {
+                          setStat(() {tmpVal = value;});
+                          _valueChanged(value);
+                        },
+                        onChangeEnd: onValChangeEnd
+                    ),
+                  ),
+                  Expanded(
+                      flex: 1,
+                      child: Padding(
+                        padding: const EdgeInsets.all(2.0),
+                        child: FittedBox(
+                          fit: BoxFit.contain,
+                            child: SizedBox(
+                                width: 60,
+                                child: Text("${tmpVal.round()}", style: TextStyle(color: sliderColor, fontSize: 30),))),
+                      ))
+                ],
               );
             },
           )

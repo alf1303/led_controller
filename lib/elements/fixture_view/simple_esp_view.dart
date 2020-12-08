@@ -39,8 +39,18 @@ class _SimpleEspViewState extends State<SimpleEspView> {
     final highlited = Controller.highlite;
     final selected = widget._espModel.selected;
     final BoxDecoration espViewDecoration = BoxDecoration(
-        border: Border.all(color: (highlited && selected) ? selectedLinesColor : (selected) ? selectedColor : Colors.grey, width: (selected) ? 4 : 2),
+        border: Border.all(color: (highlited && selected) ? selectedLinesColor : (selected) ? Colors.pinkAccent.shade200 : Colors.white, width: (highlited && selected) ? 5 : selected ? 3 : 2),
         borderRadius: BorderRadius.circular(6),
+        color: selected ? mainBackgroundColor : Colors.blueGrey,
+        gradient: LinearGradient(
+          colors: [
+            selected ? mainBackgroundColor : Colors.blueGrey,
+            selected ? Colors.white70 : thirdBackgroundColor
+          ],
+          tileMode: TileMode.mirror,
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight
+        ),
         boxShadow: [
           BoxShadow(
               color: Colors.blueGrey,
@@ -51,25 +61,32 @@ class _SimpleEspViewState extends State<SimpleEspView> {
         ]
     );
 
-    return GestureDetector(
-      onTap: _onTapFunction,
-      child: AnimatedContainer(
-        duration: Duration(milliseconds: 200),
-        decoration: espViewDecoration,
-        child: Column(
-          children: [
-            DimmerWidget(widget._espModel.ramSet.dimmer),
-            Expanded(
-              child: Row(
-                children: [
-                  Expanded(child: FittedBox(fit: BoxFit.scaleDown, child: Text("${widget._espModel.uni}", style: smallText,))),
-                  //SizedBox(width: 2,),
-                  Expanded(child: ColorView(widget._espModel.ramSet.color, true)),
-                ],
+    return Padding(
+      padding: const EdgeInsets.all(4.0),
+      child: GestureDetector(
+        onTap: _onTapFunction,
+        child: AnimatedContainer(
+          duration: Duration(milliseconds: 300),
+          decoration: espViewDecoration,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              //DimmerWidget(widget._espModel.ramSet.dimmer),
+              Expanded(
+                child: Row(
+                  children: [
+                    Expanded(child: FittedBox(fit: BoxFit.scaleDown, child: Text("${widget._espModel.uni}", style: smallText.copyWith(color: selected ? Colors.black : Colors.white),))),
+                    //SizedBox(width: 2,),
+                    Expanded(child: ColorView(widget._espModel.ramSet.color, true)),
+                  ],
+                ),
               ),
-            ),
-            Expanded(child: FittedBox(fit: BoxFit.scaleDown, child: Text(widget._espModel.name == null ? "empty" : widget._espModel.name, style: smallText,)))
-          ],
+              Expanded(child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 3.0),
+                child: FittedBox(fit: BoxFit.scaleDown, child: Text(widget._espModel.name == null ? "empty" : widget._espModel.name, style: smallText. copyWith(color: selected ? Colors.black : Colors.black),)),
+              ))
+            ],
+          ),
         ),
       ),
     );
