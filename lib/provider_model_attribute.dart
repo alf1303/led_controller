@@ -57,6 +57,33 @@ class ProviderModelAttribute extends ChangeNotifier{
     });
   }
 
+  void processFxAttributes() {
+    Controller.providerModel.list.forEach((element) {
+      if(element.selected) {
+        element.ramSet.speed = fxSpeed.round();
+        element.ramSet.fxParts = fxParts.round();
+        element.ramSet.fxSpread = fxSpread.round();
+        element.ramSet.fxWidth = fxWidth.round();
+        element.ramSet.fxFade = fxFade.round();
+        element.ramSet.fxSize = fxSize.round();
+        element.ramSet.setReverse(fxReverse);
+        element.ramSet.setFxAttack(fxAttack);
+        element.ramSet.setFxSymm(fxSymm);
+        element.ramSet.setFxRnd(fxRnd);
+        element.ramSet.setFxRndColor(fxRndColor);
+        element.ramSet.setPlayListMode(playlistMode);
+      }
+    });
+  }
+
+  void processPlaylist() {
+    Controller.providerModel.list.forEach((element) {
+      if(element.selected) {
+        element.ramSet.setPlayListMode(playlistMode);
+      }
+    });
+  }
+
   zeroColors() {
     dim = 255;
     red = 0;

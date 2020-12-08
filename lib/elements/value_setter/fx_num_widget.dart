@@ -1,16 +1,117 @@
 import 'package:flutter/material.dart';
+import 'package:ledcontroller/elements/custom/custom_group_radio.dart';
+import 'package:ledcontroller/elements/custom/custom_radio.dart';
+import 'package:ledcontroller/elements/custom/sliders.dart';
+import 'package:ledcontroller/provider_model_attribute.dart';
 
-class FxNumWidget extends StatelessWidget{
+import '../../controller.dart';
+import '../../fx_names.dart';
+import '../../styles.dart';
+
+class FxNumWidget extends StatefulWidget{
+
+  @override
+  _FxNumWidgetState createState() => _FxNumWidgetState();
+}
+
+class _FxNumWidgetState extends State<FxNumWidget> {
+  final attr = ProviderModelAttribute();
+  double wwidth;
+  double hheight;
+  double ffontSize;
 
   onFxNumChanged(value) {
     if (value != 0) {
       showFxSettings(context);
     }
     setState(() {
-      _fxNum = value;
+      attr.fxNum = value;
     });
     if(Controller.providerModel.list != null) {
-      processAttributes();
+      attr.processFxNum();
+      Controller.setSend(130);
+    }
+  }
+
+  onFxSpeedChangeEnd(value) {
+    if(value > 99) attr.fxSpeed = 99;
+    else attr.fxSpeed = value;
+    if(Controller.providerModel.list != null) {
+      attr.processFxAttributes();
+      Controller.setSend(130);
+    }
+  }
+
+  onFxPartsChangeEnd(value) {
+    attr.fxParts = value;
+    if(Controller.providerModel.list != null) {
+      attr.processFxAttributes();
+      Controller.setSend(130);
+    }
+  }
+
+  onFxSpreadChangeEnd(value) {
+    attr.fxSpread = value;
+    if(Controller.providerModel.list != null) {
+      attr.processFxAttributes();
+      Controller.setSend(130);
+    }
+  }
+
+  onFxWidthChangeEnd(value) {
+    attr.fxWidth = value;
+    if(Controller.providerModel.list != null) {
+      attr.processFxAttributes();
+      Controller.setSend(130);
+    }
+  }
+
+  onFxAttackChange(value) {
+    setState(() {
+      attr.fxAttack = value;
+    });
+    if(Controller.providerModel.list != null) {
+      attr.processFxAttributes();
+      Controller.setSend(130);
+    }
+  }
+
+  onFxReverseChange(value) {
+    setState(() {
+      attr.fxReverse = value;
+    });
+    if(Controller.providerModel.list != null) {
+      attr.processFxAttributes();
+      Controller.setSend(130);
+    }
+  }
+
+  onFxSymmChange(value) {
+    setState(() {
+      attr.fxSymm = value;
+    });
+    if(Controller.providerModel.list != null) {
+      attr.processFxAttributes();
+      Controller.setSend(130);
+    }
+  }
+
+  onFxRndChange(value) {
+    setState(() {
+      attr.fxRnd = value;
+    });
+    if(Controller.providerModel.list != null) {
+      attr.processFxAttributes();
+      Controller.setSend(130);
+    }
+  }
+
+  onFxRndColorChange(value) {
+    setState(() {
+      attr.fxRndColor = value;
+    });
+    if(Controller.providerModel.list != null) {
+      attr.processFxAttributes();
       Controller.setSend(130);
     }
   }
@@ -41,10 +142,10 @@ class FxNumWidget extends StatelessWidget{
                     StatefulBuilder(builder: (context, setStat) {
                       //print("fxSpeed: $_fxSpeed");
                       //return MyCustomSliderNoCard("Speed", _fxSpeed, 0, 100, secondaryBackgroundColor, linesColor, linesColor, 5, (value) {setStat(() {_fxSpeed = value;}); }, onFxSpeedChangeEnd);
-                      return FxSliderWidget("Speed", _fxSpeed, 100, onFxSpeedChangeEnd, true);
+                      return FxSliderWidget("Speed", attr.fxSpeed, 100, onFxSpeedChangeEnd, true);
                     }),
-                    FxSliderWidget("Width", _fxWidth, 30, onFxWidthChangeEnd, (_fxNum == FxNames.Cyclon.index || _fxNum == FxNames.Fade.index)),
-                    FxSliderWidget("Parts", _fxParts, 100, onFxPartsChangeEnd, (_fxNum != FxNames.OFF.index && _fxNum != FxNames.Cyclon.index)),
+                    FxSliderWidget("Width", attr.fxWidth, 30, onFxWidthChangeEnd, (attr.fxNum == FxNames.Cyclon.index || attr.fxNum == FxNames.Fade.index)),
+                    FxSliderWidget("Parts", attr.fxParts, 100, onFxPartsChangeEnd, (attr.fxNum != FxNames.OFF.index && attr.fxNum != FxNames.Cyclon.index)),
                     StatefulBuilder(builder: (context, setStat) {
                       onAttack(value) {onFxAttackChange(value); setStat(() {});}
                       onSymm(value) {onFxSymmChange(value); setStat(() {});}
@@ -53,18 +154,18 @@ class FxNumWidget extends StatelessWidget{
                       onRandomCol(value) {onFxRndColorChange(value); setStat(() {});}
                       return Column(
                         children: <Widget>[
-                          FxSliderWidget("Spread", _fxSpread, 100, onFxSpreadChangeEnd, (_fxNum == FxNames.Sinus.index || (_fxNum == FxNames.Fade.index && _fxRnd))),
+                          FxSliderWidget("Spread", attr.fxSpread, 100, onFxSpreadChangeEnd, (attr.fxNum == FxNames.Sinus.index || (attr.fxNum == FxNames.Fade.index && attr.fxRnd))),
 
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: <Widget>[
-                              CustomRadio(label: "Attack", value: _fxAttack, onChanged: onAttack, color: radioColor, margin: 0, visible: (_fxNum == FxNames.Sinus.index), fontSize: ffontSize,),
-                              CustomRadio(label: "Symm", value: _fxSymm, onChanged: onSymm, color: radioColor, margin: 0, visible: (_fxNum == FxNames.Sinus.index || _fxNum == FxNames.Fade.index), fontSize: ffontSize,),
-                              CustomRadio(label: "Reverse", value: _fxReverse, onChanged: onReverse, color: radioColor, margin: 0, visible: (_fxNum != FxNames.OFF.index && _fxNum != FxNames.Cyclon.index), fontSize: ffontSize,),
-                              CustomRadio(label: "Random", value: _fxRnd, onChanged: onRandom, color: radioColor, margin: 0, visible: (_fxNum == FxNames.Fade.index), fontSize: ffontSize,),
+                              CustomRadio(label: "Attack", value: attr.fxAttack, onChanged: onAttack, color: radioColor, margin: 0, visible: (attr.fxNum == FxNames.Sinus.index), fontSize: ffontSize,),
+                              CustomRadio(label: "Symm", value: attr.fxSymm, onChanged: onSymm, color: radioColor, margin: 0, visible: (attr.fxNum == FxNames.Sinus.index || attr.fxNum == FxNames.Fade.index), fontSize: ffontSize,),
+                              CustomRadio(label: "Reverse", value: attr.fxReverse, onChanged: onReverse, color: radioColor, margin: 0, visible: (attr.fxNum != FxNames.OFF.index && attr.fxNum != FxNames.Cyclon.index), fontSize: ffontSize,),
+                              CustomRadio(label: "Random", value: attr.fxRnd, onChanged: onRandom, color: radioColor, margin: 0, visible: (attr.fxNum == FxNames.Fade.index), fontSize: ffontSize,),
                             ],
                           ),
-                          CustomRadio(label: "Random Color", value: _fxRndColor, onChanged: onRandomCol, color: radioColor, visible: (_fxNum == FxNames.Fade.index), fontSize: ffontSize,),
+                          CustomRadio(label: "Random Color", value: attr.fxRndColor, onChanged: onRandomCol, color: radioColor, visible: (attr.fxNum == FxNames.Fade.index), fontSize: ffontSize,),
                         ],
                       );
                     })
@@ -79,6 +180,12 @@ class FxNumWidget extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
+    final double height = MediaQuery.of(context).size.height;
+    final double width = MediaQuery.of(context).size.width;
+    final double fontSize = height > width ? (width/25)/1.1 : (height/25)/1.1;
+    wwidth = width;
+    hheight = height;
+    ffontSize = fontSize;
     return GridView.count(crossAxisCount: 3,
       shrinkWrap: true,
       physics: ClampingScrollPhysics(),

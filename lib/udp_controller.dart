@@ -276,7 +276,8 @@ abstract class UDPCotroller {
           }
           if(element.ramSet.reverse) reverse = 1;
           //print("mode: ${element.ramSet.mode}");
-          //print(element.toString());
+          print(element.toString());
+          print(element.ramSet.toJson());
           data.setRange(0, 30, List.from([
             element.ramSet.mode,
             element.ramSet.automode,

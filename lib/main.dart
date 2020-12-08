@@ -14,7 +14,7 @@ import 'elements/playback_view.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
-  await Controller.fakeInit();
+  //await Controller.fakeInit();
   await Controller.initPalettes();
   await Controller.initWiFi();
   runApp(Main());

@@ -28,8 +28,8 @@ abstract class Controller {
 
   static fakeInit() {
     for (int i = 21; i <= 40; i++) {
-      Settings fsSet = Settings(random.nextInt(4), random.nextInt(3), i, i+100, Color.fromRGBO(random.nextInt(255), random.nextInt(255), 0, 1), random.nextInt(255));
-      Settings ramSet = Settings(random.nextInt(4), random.nextInt(3), i, i+100, Color.fromRGBO(random.nextInt(255), random.nextInt(255), 0, 1), random.nextInt(255));
+      Settings fsSet = Settings(random.nextInt(4), random.nextInt(3), i, i+10, Color.fromRGBO(random.nextInt(255), random.nextInt(255), 0, 1), random.nextInt(255));
+      Settings ramSet = Settings(random.nextInt(4), random.nextInt(3), i, i+10, Color.fromRGBO(random.nextInt(255), random.nextInt(255), 0, 1), random.nextInt(255));
       ramSet.fxParts = ramSet.fxWidth = ramSet.fxSpread = ramSet.fxSize = ramSet.fxFade = 1;
       ramSet.address = 223;
       ramSet.universe = i;
@@ -47,6 +47,7 @@ abstract class Controller {
       ramSet.fxSymm = false;
       ramSet.fxRnd = false;
       ramSet.fxRndColor = false;
+      ramSet.playlistMode = false;
       EspModel esp = new EspModel(i, "192.168.0.$i", "v_0.5.9", fsSet, ramSet);
       providerModel.list.add(esp);
     }

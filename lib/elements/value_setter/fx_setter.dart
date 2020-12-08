@@ -11,6 +11,12 @@ import 'my_color_picker.dart';
 
 class FxSetter extends StatelessWidget {
 
+  onPlaylistModeChange(value) {
+    if(Controller.providerModel.list != null) {
+      Controller.setSend(131);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final double height = MediaQuery.of(context).size.height;
@@ -110,6 +116,7 @@ class FxSetter extends StatelessWidget {
                                         setStat((){
                                           attr.playlistMode = value;
                                         });
+                                        attr.processPlaylist();
                                         onPlaylistModeChange(value);
                                       },
                                         color: radioColor, fontSize: fontSize*0.7,);
