@@ -47,7 +47,7 @@ class MyAppBar extends StatelessWidget{
                           }
                       );
                     },
-                    child: Text("LEDController", style: headerText,)),
+                    child: Text("LEDCon", style: headerText,)),
                 RaisedButton(
                     elevation: 5,
                     padding: EdgeInsets.symmetric(horizontal: 6),

@@ -16,6 +16,7 @@ const Color linesColor = mainBackgroundColor;
 const Color linesColor2 = Colors.pink;
 const Color radioColor = linesColor2;
 const Color textBlack = Colors.black;
+const Color mainTextColor = Colors.black; //*************
 const Color dividerColor = Colors.black12;
 const Color splashColor = accentColor;
 Color emptyPaletteColor = Colors.grey.withOpacity(0.7);
@@ -40,7 +41,7 @@ TextStyle headerText = TextStyle(fontSize: 25, letterSpacing: 2, fontWeight: Fon
 TextStyle headerTextSmall = TextStyle(fontSize: 20, letterSpacing: 2, fontWeight: FontWeight.bold, color: Colors.black.withOpacity(1),
     shadows: [Shadow(color: Colors.pinkAccent, blurRadius: 5,)]
 );
-const TextStyle mainText = TextStyle(color: textBlack);
+const TextStyle mainText = TextStyle(color: mainTextColor);
 const TextStyle smallText = TextStyle(fontSize: 20, color: textBlack);
 const TextStyle mainWhiteText = TextStyle(color: Colors.white);
 
@@ -129,6 +130,6 @@ BoxDecoration roundedDecoration = BoxDecoration( //GRADIENT
 );
 
 const BorderRadius expandedHeaderRadius = BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15));
-const BorderRadius expandedBodyRadius = BorderRadius.only(topLeft: Radius.circular(15), bottomRight: Radius.circular(15), bottomLeft: Radius.circular(15));
+const BorderRadius expandedBodyRadius = BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15), bottomRight: Radius.circular(15), bottomLeft: Radius.circular(15));
 
 

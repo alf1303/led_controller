@@ -3,6 +3,7 @@ import 'package:expandable/expandable.dart';
 import 'package:invert_colors/invert_colors.dart';
 import 'package:ledcontroller/elements/custom/custom_group_radio.dart';
 import 'package:ledcontroller/elements/custom/sliders.dart';
+import 'package:ledcontroller/model/palette.dart';
 import '../../palettes_provider.dart';
 import 'color_setter.dart';
 import 'package:ledcontroller/elements/value_setter/palette_viewer.dart';
@@ -35,6 +36,9 @@ class MyValueSetter extends StatelessWidget {
 }
 
 class ValueSetterView extends StatefulWidget{
+  bool pallExp = true;
+  bool fxExp = true;
+  bool colorExp = true;
   @override
   _ValueSetterViewState createState() => _ValueSetterViewState();
 }
@@ -47,6 +51,12 @@ class _ValueSetterViewState extends State<ValueSetterView> {
     final double width = MediaQuery.of(context).size.width;
     final double fontSize = height > width ? (width/25)/1.1 : (height/25)/1.1;
     final _attrModel = Provider.of<ProviderModelAttribute>(context, listen: true);
+    final paletteController = ExpandableController();
+    final fxController = ExpandableController();
+    final colorController = ExpandableController();
+    paletteController.expanded = widget.pallExp;
+    fxController.expanded = widget.fxExp;
+    colorController.expanded = widget.colorExp;
 
     return ExpandableTheme(
       data: ExpandableThemeData(
@@ -59,62 +69,85 @@ class _ValueSetterViewState extends State<ValueSetterView> {
       ),
       child: Column(
         children: <Widget>[
+          SizedBox(
+            height: 30,
+            child: Row(
+              children: [
+                Expanded(
+                  child: RaisedButton(
+                    color: widget.pallExp ? buttonSelectedColor : buttonColor,
+                    shape: widget.pallExp ? buttonSelectShape : buttonShape,
+                    onPressed: () {
+                    setState(() {
+                     widget.pallExp = !widget.pallExp;
+                     paletteController.expanded = widget.pallExp;
+                    //paletteController.toggle();
+                    });
+                  },
+                  child: Text("Palettes", style: mainText.copyWith(color: widget.pallExp ? accentColor : Colors.black),),
+                  ),
+                ),
+                Expanded(
+                  child: RaisedButton(
+                    color: widget.fxExp ? buttonSelectedColor : buttonColor,
+                    shape: widget.fxExp ? buttonSelectShape : buttonShape,
+                    onPressed: () {
+                    setState(() {
+                      widget.fxExp = !widget.fxExp;
+                      fxController.expanded = widget.fxExp;
+                      //paletteController.toggle();
+                    });
+                  },
+                    child: Text("Fx setter", style: mainText.copyWith(color: widget.fxExp ? accentColor : Colors.black)),
+                  ),
+                ),
+                Expanded(
+                  child: RaisedButton(
+                    color: widget.colorExp ? buttonSelectedColor : buttonColor,
+                    shape: widget.colorExp ? buttonSelectShape : buttonShape,
+                    onPressed: () {
+                    setState(() {
+                      widget.colorExp = !widget.colorExp;
+                      colorController.expanded = widget.colorExp;
+                      //paletteController.toggle();
+                    });
+                  },
+                    child: Text("ColorSetter", style: mainText.copyWith(color: widget.colorExp ? accentColor : Colors.black)),
+                  ),
+                ),
+              ],
+            ),
+          ),
           //PALLETES VIEWER
           ExpandablePanel(
-            header: Container(
-                margin: EdgeInsets.only(bottom: 1),
-                height: 45,
-                decoration: BoxDecoration(
-                    color: mainBackgroundColor,
-                    border: Border.all(),
-                    borderRadius: expandedHeaderRadius
-                ),
-                child: FText("Palettes:")),
-            collapsed: Container(
+            controller: paletteController,
+            expanded: Container(
               child: PaletteViewer(),
               // padding: EdgeInsets.symmetric(horizontal: 6, vertical: 4),
               decoration: BoxDecoration(
                 color: mainBackgroundColor,
                 border: Border.all(),
-                borderRadius: BorderRadius.only(topLeft: Radius.circular(15)),
+                borderRadius: BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15)),
               ),
               height: height > width ? height/4 : width/4,
               width: width,
             ),
           ),
-          Container(height: 2 , color: mainBackgroundColor),
-          SizedBox(height: 15,),
+          //Container(height: 2 , color: mainBackgroundColor),
+          SizedBox(height: 5,),
 
           /////////FX SETTER
           ExpandablePanel(
-            header: Container(
-                margin: EdgeInsets.only(bottom: 1),
-                decoration: BoxDecoration(
-                    color: mainBackgroundColor,
-                    border: Border.all(),
-                    borderRadius: expandedHeaderRadius
-                ),
-                child: SizedBox(
-                  height:45 ,
-                  child: FText("FX Setter"),
-                )),
-            collapsed: FxSetter()
+            controller: fxController,
+            expanded: FxSetter()
           ),
-          Container(height: 2, color: mainBackgroundColor),
-          SizedBox(height: 15,),
+         // Container(height: 2, color: mainBackgroundColor),
+          SizedBox(height: 5,),
 
           //COLOR SETTER
           ExpandablePanel(
-            header: Container(
-                margin: EdgeInsets.only(bottom: 1),
-                height: 45,
-                decoration: BoxDecoration(
-                  color: mainBackgroundColor,
-                  border: Border.all(),
-                  borderRadius: expandedHeaderRadius,
-                ),
-                child: FText("Color Setter")),
-            collapsed: ColorSetter()
+            controller: colorController,
+            expanded: ColorSetter()
           ),
           Container(height: 50, color: thirdBackgroundColor),
         ],
