@@ -40,91 +40,13 @@ class ValueSetterView extends StatefulWidget{
 }
 
 class _ValueSetterViewState extends State<ValueSetterView> {
-  double _dim = 0;
-  double _red = 0;
-  double _green = 0;
-  double _blue = 0;
-  int _fxNum = 0;
-  Color _fxColor = Colors.grey;
-  double _fxSpeed = 1;
-  double _fxParts = 1;
-  double _fxSpread = 1;
-  double _fxWidth = 1;
-  double _fxSize = 100;
-  double _fxFade = 0;
-  bool _fxReverse = false;
-  bool _fxAttack = false;
-  bool _fxSymm = false;
-  bool _fxRnd = false;
-  bool _fxRndColor = false;
-  bool _playlistMode = false;
-
-
-  ////////////////
-  double wwidth;
-  double hheight;
-  double ffontSize;
-
-  void processAttributes() {
-    Controller.providerModel.list.forEach((element) {
-      if(element.selected) {
-        element.ramSet.speed = _fxSpeed.round();
-        element.ramSet.numEffect = _fxNum;
-        element.ramSet.fxParts = _fxParts.round();
-        element.ramSet.fxColor = _fxColor;
-        element.ramSet.fxSpread = _fxSpread.round();
-        element.ramSet.fxWidth = _fxWidth.round();
-        element.ramSet.fxFade = _fxFade.round();
-        element.ramSet.fxSize = _fxSize.round();
-        element.ramSet.setReverse(_fxReverse);
-        element.ramSet.setFxAttack(_fxAttack);
-        element.ramSet.setFxSymm(_fxSymm);
-        element.ramSet.setFxRnd(_fxRnd);
-        element.ramSet.setFxRndColor(_fxRndColor);
-        element.ramSet.color = Color.fromRGBO((_red).round(), (_green).round(), (_blue).round(), 1);
-        element.ramSet.dimmer = _dim.round();
-        element.ramSet.setPlayListMode(_playlistMode);
-      }
-    });
-  }
-
-
-
-
-
-
-
-  @override
+    @override
   Widget build(BuildContext context) {
     final double colPickerScale = 1.4;
     final double height = MediaQuery.of(context).size.height;
     final double width = MediaQuery.of(context).size.width;
     final double fontSize = height > width ? (width/25)/1.1 : (height/25)/1.1;
     final _attrModel = Provider.of<ProviderModelAttribute>(context, listen: true);
-
-    wwidth = width;
-    hheight = height;
-    ffontSize = fontSize;
-
-    if(_attrModel.flag) {
-      _dim = _attrModel.dim;
-      _red = _attrModel.red;
-      _green = _attrModel.green;
-      _blue = _attrModel.blue;
-      _fxNum = _attrModel.fxNum;
-      _fxSpeed = _attrModel.fxSpeed;
-      _fxParts = _attrModel.fxParts;
-      _fxSpread = _attrModel.fxSpread;
-      _fxWidth = _attrModel.fxWidth;
-      _fxColor = _attrModel.fxColor;
-      _fxSize = _attrModel.fxSize;
-      _fxReverse = _attrModel.fxReverse;
-      _fxAttack = _attrModel.fxAttack;
-      _fxSymm = _attrModel.fxSymm;
-      _fxRnd = _attrModel.fxRnd;
-      _fxRndColor = _attrModel.fxRndColor;
-      Controller.resetAttributeProviderFlag();
-    }
 
     return ExpandableTheme(
       data: ExpandableThemeData(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ledcontroller/provider_model_attribute.dart';
 
+import '../../controller.dart';
 import '../../styles.dart';
 
 class MyColorPicker extends StatefulWidget{
@@ -57,10 +58,18 @@ class _MyColorPickerState extends State<MyColorPicker> {
 
   _colorChangeEnd() {
     attr.fxColor = _currentColor;
+    if(Controller.providerModel.list != null) {
+      attr.processFxColor();
+      Controller.setSend(129);
+    }
   }
 
   _onFxSizeChangeEnd(value) {
     attr.fxSize = value;
+    if(Controller.providerModel.list != null) {
+      attr.processFxColor();
+      Controller.setSend(130);
+    }
     setState(() {
       _currentFxSize = value;
     });
