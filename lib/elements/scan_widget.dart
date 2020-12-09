@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:ledcontroller/global_keys.dart';
 
 import '../controller.dart';
 import '../styles.dart';
 
 class ScanWidget extends StatefulWidget{
   final buttonsCol;
-
   const ScanWidget(this.buttonsCol);
 
   @override
@@ -25,6 +25,7 @@ class _ScanWidgetState extends State<ScanWidget> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
+      key: scanKey,
         future: futur,
         builder: (context, snapshot) {
           Widget child;

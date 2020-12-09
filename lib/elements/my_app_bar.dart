@@ -3,6 +3,7 @@ import 'package:ledcontroller/elements/scan_widget.dart';
 import 'package:provider/provider.dart';
 
 import '../controller.dart';
+import '../global_keys.dart';
 import '../provider_model.dart';
 import '../styles.dart';
 
@@ -56,6 +57,7 @@ class MyAppBar extends StatelessWidget{
           Expanded(
             flex: 2,
             child: RaisedButton(
+              key: saveKey,
                 color: thirdBackgroundColor,
                 elevation: 5,
                 padding: EdgeInsets.symmetric(horizontal: 6),
@@ -68,6 +70,7 @@ class MyAppBar extends StatelessWidget{
             flex: 2,
             child: SizedBox( width: 100,
               child: RaisedButton(
+                key: playbackKey,
                 color: thirdBackgroundColor,
                   elevation: 5,
                   padding: EdgeInsets.symmetric(horizontal: 6),
@@ -81,13 +84,33 @@ class MyAppBar extends StatelessWidget{
             ),
           ),
 
-//                IconButton(icon: Icon(Icons.help_outline, color: Colors.black), onPressed: () {
-//                  showDialog(
-//                      context: context,
-//                      builder: (context) {
-//                        return HelpWidget();
-//                      });
-//                })
+                IconButton(icon: Icon(Icons.help_outline, color: Colors.black), onPressed: () async{
+                 RenderBox box = scanKey.currentState.context.findRenderObject();
+                 Offset position = box.localToGlobal(Offset.zero);
+                 Size size = box.size;
+                 print(position);
+                 print(size);
+                 OverlayState overlayState = Overlay.of(context);
+                 OverlayEntry entry = OverlayEntry(
+                   builder: (context) => Positioned(
+                     top: position.dy,
+                     left: position.dx,
+                     child: GestureDetector(
+                       onTap: () {
+                         print("lala");
+                       },
+                       child: Container(
+                         width: size.width,
+                         height: size.height,
+                         color: Colors.purple.withOpacity(0.5),
+                       ),
+                     ),
+                   )
+                 );
+                 overlayState.insert(entry);
+                 await Future.delayed(Duration(seconds: 5));
+                 entry.remove();
+                })
         ],
       ),
     );

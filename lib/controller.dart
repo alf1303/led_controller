@@ -24,6 +24,7 @@ abstract class Controller {
   static bool highlite = false;
   static File f;
   static bool firstTime = true;
+  static bool help = false;
 
 
   static fakeInit() {

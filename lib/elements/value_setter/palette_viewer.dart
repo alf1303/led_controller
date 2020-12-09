@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:invert_colors/invert_colors.dart';
+import 'package:ledcontroller/global_keys.dart';
 import 'package:provider/provider.dart';
 import '../../controller.dart';
 import '../../palettes_provider.dart';
@@ -31,6 +32,7 @@ class PaletteViewer extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Expanded(
+            key: palettesKey,
             child: Scrollbar(
                 child: SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
@@ -49,6 +51,7 @@ class PaletteViewer extends StatelessWidget {
           SizedBox(height: 5,),
           Expanded(
             child: Container(
+              key: programsKey,
               decoration: BoxDecoration(
                 border: Border.all(color: Colors.grey, width: 1),
                 borderRadius: BorderRadius.only(bottomLeft: Radius.circular(15), bottomRight: Radius.circular(15)),

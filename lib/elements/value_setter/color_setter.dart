@@ -4,6 +4,7 @@ import 'package:ledcontroller/provider_model_attribute.dart';
 import 'package:provider/provider.dart';
 
 import '../../controller.dart';
+import '../../global_keys.dart';
 import '../../styles.dart';
 
 class ColorSetter extends StatelessWidget {
@@ -30,6 +31,7 @@ class ColorSetter extends StatelessWidget {
     //print("ColorSetter, h: $height, w: $width");
     final attr = Provider.of<ProviderModelAttribute>(context, listen: false);
     return Container(
+      key: colorSetterKey, ///////////////////////////////
       padding: EdgeInsets.symmetric(horizontal: 6, vertical: 5),
       decoration: BoxDecoration(
         color: mainBackgroundColor,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ledcontroller/elements/custom/custom_group_radio.dart';
 import 'package:ledcontroller/elements/custom/custom_radio.dart';
+import 'package:ledcontroller/global_keys.dart';
 import 'package:provider/provider.dart';
 import 'package:invert_colors/invert_colors.dart';
 import '../../controller.dart';
@@ -41,6 +42,7 @@ class FxSetter extends StatelessWidget {
                 builder: (context, setStat) {
                   return GestureDetector(
                     child: Container(
+                      key: fxColorKey, ///////////////////////////////////////////
                       height: height > width ? width/6 : height/6,
                       width: height > width ? width/6 : height/6,
                       decoration: BoxDecoration(
@@ -150,6 +152,7 @@ class FxSetter extends StatelessWidget {
                 );
               },
               child: Container(
+                key: playlistKey, ////////////////////////////////////////////////////////
                   height: height > width ? width/6 : height/6,
                   width: height > width ? width/6 : height/6,
                   decoration: BoxDecoration(

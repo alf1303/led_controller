@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ledcontroller/elements/buttons_bar/buttons_bar.dart';
 import 'package:ledcontroller/elements/fixture_view/simple_esp_view.dart';
+import 'package:ledcontroller/global_keys.dart';
 import 'package:ledcontroller/styles.dart';
 import 'package:provider/provider.dart';
 import 'package:ledcontroller/provider_model.dart';
@@ -25,6 +26,7 @@ class SimpleFixtureView extends StatelessWidget {
         children: [
           SizedBox(height: 3,),
           Expanded(child: SingleChildScrollView(
+            key: fixtureViewKey,
             child: GridView.count(
            // scrollDirection: Axis.horizontal,
             childAspectRatio: 1.4,

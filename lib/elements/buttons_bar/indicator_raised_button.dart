@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ledcontroller/controller.dart';
+import 'package:ledcontroller/global_keys.dart';
 
 import '../../styles.dart';
 class IndicatorRaisedButton extends StatelessWidget{
@@ -13,6 +14,7 @@ class IndicatorRaisedButton extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return RaisedButton(
+      key: highliteKey, //////////////////////////////////////
       color: Controller.highlite ? buttonSelectedColor : buttonColor,
         shape: Controller.highlite ? buttonSelectShape : buttonShape,
         //padding: EdgeInsets.only(top: 25),

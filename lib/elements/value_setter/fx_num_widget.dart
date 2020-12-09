@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ledcontroller/elements/custom/custom_group_radio.dart';
 import 'package:ledcontroller/elements/custom/custom_radio.dart';
 import 'package:ledcontroller/elements/custom/sliders.dart';
+import 'package:ledcontroller/global_keys.dart';
 import 'package:ledcontroller/provider_model_attribute.dart';
 
 import '../../controller.dart';
@@ -187,7 +188,9 @@ class _FxNumWidgetState extends State<FxNumWidget> {
     wwidth = width;
     hheight = height;
     ffontSize = fontSize;
-    return GridView.count(crossAxisCount: 3,
+    return GridView.count(
+      key: fxNumKey, /////////////////////////////////////////////
+      crossAxisCount: 3,
       shrinkWrap: true,
       physics: ClampingScrollPhysics(),
       childAspectRatio: portrait ? 1.3 : 1.9,

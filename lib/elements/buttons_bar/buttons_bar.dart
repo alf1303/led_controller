@@ -7,6 +7,7 @@ import 'package:ledcontroller/provider_model.dart';
 import 'package:provider/provider.dart';
 
 import '../../controller.dart';
+import '../../global_keys.dart';
 import 'indicator_raised_button.dart';
 
 class MyBottomBar extends StatelessWidget {
@@ -32,6 +33,7 @@ class MyBottomBar extends StatelessWidget {
               visible: !isEditor,
               child: Expanded(
                 child: RaisedButton(
+                  key: resetKey, ///////////////////////////////////
                     elevation: 5,
                     child: Text("Reset", style: mainText,),
                     onPressed: !providerModel.selected ? null : () {
@@ -58,6 +60,7 @@ class MyBottomBar extends StatelessWidget {
               visible: !isEditor,
               child: Expanded(
                 child: RaisedButton(
+                  key: areaKey, ////////////////////////////////////////////////////////
                   elevation: 5,
                     child: Text("Area", style: mainText,),
                     onPressed: !Controller.providerModel.selected ? null : () {
@@ -145,6 +148,7 @@ class MyBottomBar extends StatelessWidget {
             ),
             Expanded(
               child: RaisedButton(
+                key: selectKey, ////////////////////////////////
                 shape: buttonShape,
                 elevation: 5,
                   child: Icon(Icons.select_all),
@@ -154,6 +158,7 @@ class MyBottomBar extends StatelessWidget {
             ),
             Expanded(
               child: RaisedButton(
+                key: deselectKey, ///////////////////////////
                   color: Controller.areNotSelected() ? buttonColor : buttonSelectedColor,
                 shape: Controller.areNotSelected() ? buttonShape : buttonSelectShape,
                 elevation: 5,
