@@ -26,6 +26,11 @@ class PaletteProvider extends ChangeNotifier{
     }
   }
 
+  Palette getSelectedProgram() {
+    Palette result = getProgramms().firstWhere((element) => element.selected, orElse: () => null);
+    return result;
+  }
+
   deselectPalettes() {
     if(list.isNotEmpty) {
       list.forEach((element) {

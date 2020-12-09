@@ -21,7 +21,7 @@ class FxSetter extends StatelessWidget {
   Widget build(BuildContext context) {
     final double height = MediaQuery.of(context).size.height;
     final double width = MediaQuery.of(context).size.width;
-    print("fxSetter, h: $height, w: $width");
+    //print("fxSetter, h: $height, w: $width");
     final double fontSize = height > width ? (width/25)/1.1 : (height/25)/1.1;
     final attr = Provider.of<ProviderModelAttribute>(context, listen: true);
     return Container(

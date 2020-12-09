@@ -9,6 +9,7 @@ import 'package:udp/udp.dart';
 
 import 'controller.dart';
 import 'model/palette.dart';
+import 'model/palette_entry.dart';
 
 abstract class UDPCotroller {
   static final int _PORT_OUT = 6454;
@@ -252,8 +253,9 @@ abstract class UDPCotroller {
     });
   }
 
-  static void setSend(int save, [bool program]) async{
+  static void setSend(int save, [bool program, int grandmaster]) async{
     if(program == null) program = false;
+    if(grandmaster == null) grandmaster = 100;
     setLocalIp();
     await senderBind();
     if(Controller.providerModel.list != null) {
@@ -276,8 +278,19 @@ abstract class UDPCotroller {
           }
           if(element.ramSet.reverse) reverse = 1;
           //print("mode: ${element.ramSet.mode}");
-          print(element.toString());
-          print(element.ramSet.toJson());
+          //print(element.toString());
+          //print(element.ramSet.toJson());
+          int dimmer = element.ramSet.dimmer;;
+          if(program) {
+            Palette selPal = Controller.paletteProvider.getSelectedProgram();
+            if(selPal != null) {
+              PaletteEntry tmpPalEntry = selPal.settings.firstWhere((el) => el.uni == element.uni, orElse: () => null);
+              if(tmpPalEntry != null) {
+                dimmer = (tmpPalEntry.settings.dimmer*(grandmaster/100)).round();
+              }
+            }
+          }
+          print("uni: ${element.uni}, dimmer: $dimmer");
           data.setRange(0, 30, List.from([
             element.ramSet.mode,
             element.ramSet.automode,
@@ -286,7 +299,7 @@ abstract class UDPCotroller {
             element.ramSet.color.red,
             element.ramSet.color.green,
             element.ramSet.color.blue,
-            element.ramSet.dimmer,
+            dimmer,
             save,
             element.ramSet.universe,
             addrLow,

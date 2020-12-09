@@ -15,7 +15,7 @@ class PaletteViewer extends StatelessWidget {
   Widget build(BuildContext context) {
     final double height = MediaQuery.of(context).size.height;
     final double width = MediaQuery.of(context).size.width;
-    print("paletteViewer, h: $height, w: $width");
+    //print("paletteViewer, h: $height, w: $width");
     final paletteProvider = Provider.of<PaletteProvider>(context, listen: true);
     List<Palette> palettes = paletteProvider.getPalettes();
     List<Palette> programs = paletteProvider.getProgramms();

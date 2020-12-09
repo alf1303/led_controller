@@ -27,7 +27,7 @@ class ColorSetter extends StatelessWidget {
     final double height = MediaQuery.of(context).size.height;
     final double width = MediaQuery.of(context).size.width;
     final double trackHeight = height > width ? height*0.006 : width*0.006;
-    print("ColorSetter, h: $height, w: $width");
+    //print("ColorSetter, h: $height, w: $width");
     final attr = Provider.of<ProviderModelAttribute>(context, listen: false);
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 6, vertical: 5),

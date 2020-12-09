@@ -10,6 +10,11 @@ import 'elements/value_setter/my_value_setter.dart';
 import 'elements/playback_view.dart';
 
 void main() async{
+  int a = 50;
+  int b = 100;
+  int c = 10;
+  int d = (c*(a/b)).round();
+  print(d);
   WidgetsFlutterBinding.ensureInitialized();
   //await Controller.fakeInit();
   await Controller.initPalettes();

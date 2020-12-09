@@ -13,7 +13,7 @@ class SimpleFixtureView extends StatelessWidget {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     final model = Provider.of<ProviderModel>(context, listen: true);
-    print("SimpleFixture, h: $height, w: $width");
+    //print("SimpleFixture, h: $height, w: $width");
     return Container(
       padding: EdgeInsets.all(3),
       color: thirdBackgroundColor,

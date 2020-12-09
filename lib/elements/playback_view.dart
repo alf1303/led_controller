@@ -47,7 +47,7 @@ class PlaybackView extends StatelessWidget{
                       thumbShape: CustomSliderThumbRoundedRect(
                         thumbRadius: 20,
                         thumbHeight: 50,
-                        min: 1,
+                        min: 0,
                         max: 100,
                       ),
                       overlayColor: Colors.white.withOpacity(.4),
@@ -67,7 +67,7 @@ class PlaybackView extends StatelessWidget{
                       });
                     },
                     onChangeEnd: (value) {
-                       
+                       Controller.setSendWithoutUpdate(1, value.round());
                     },
                     ),
                   );
@@ -109,7 +109,7 @@ class _ViewPlaybackState extends State<ViewPlayback> {
     return GestureDetector(
       onTap: () {
         Controller.loadPalette(widget._palette);
-        Controller.setSendWithoutUpdate(128);
+        Controller.setSendWithoutUpdate(128, paletteProvider.grandMaster.round());
         paletteProvider.deselectPrograms();
         setState(() {
           widget._palette.selected = true;

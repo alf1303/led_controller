@@ -54,12 +54,12 @@ class _ValueSetterViewState extends State<ValueSetterView> {
   Widget build(BuildContext context) {
     final double colPickerScale = 1.4;
     final double h = MediaQuery.of(context).size.height;
-    print("aspectRatio: ${MediaQuery.of(context).size.aspectRatio}");
+    //print("aspectRatio: ${MediaQuery.of(context).size.aspectRatio}");
     final double width = MediaQuery.of(context).size.width;
     final double height = h - 100;
     final double uniform = h > width ? h : width;
     double paletteHeight = (uniform - (uniform*0.16 + uniform*0.25 + 140 + 60 + 65));
-    print("valueSetter, h: $h, w: $width");
+    //print("valueSetter, h: $h, w: $width");
     if(paletteHeight < 100) paletteHeight = uniform*0.25;
     final double fontSize = h > width ? (width/25)/1.1 : (h/25)/1.1;
     final _attrModel = Provider.of<ProviderModelAttribute>(context, listen: true);
