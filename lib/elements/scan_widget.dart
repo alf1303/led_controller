@@ -4,6 +4,10 @@ import '../controller.dart';
 import '../styles.dart';
 
 class ScanWidget extends StatefulWidget{
+  final buttonsCol;
+
+  const ScanWidget(this.buttonsCol);
+
   @override
   _ScanWidgetState createState() => _ScanWidgetState();
 }
@@ -25,16 +29,18 @@ class _ScanWidgetState extends State<ScanWidget> {
         builder: (context, snapshot) {
           Widget child;
           if(snapshot.connectionState == ConnectionState.none) child = (RaisedButton(
+              color: widget.buttonsCol,
               elevation: 10,
               padding: EdgeInsets.symmetric(horizontal: 6),
               child: Text("Scan"),
               onPressed: onScanPressed
           ));
           if(snapshot.connectionState == ConnectionState.waiting) child = child = (RaisedButton(
+              color: widget.buttonsCol,
               elevation: 10,
               child: Container(
                   padding: EdgeInsets.all(2),
-                  child: FittedBox(fit: BoxFit.fitHeight, child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(linesColor),))),
+                  child: FittedBox(fit: BoxFit.cover, child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(linesColor),))),
               onPressed: null
           ));
 //        if(snapshot.connectionState == ConnectionState.active) child = child = (RaisedButton(
@@ -42,6 +48,7 @@ class _ScanWidgetState extends State<ScanWidget> {
 //            onPressed: onScanPressed
 //        ));
           if(snapshot.connectionState == ConnectionState.done) child = (RaisedButton(
+              color: widget.buttonsCol,
               elevation: 10,
               child: Text("Scan"),
               onPressed: onScanPressed

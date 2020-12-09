@@ -29,39 +29,46 @@ class MyAppBar extends StatelessWidget{
         children: <Widget>[
           Expanded(
               flex: 2,
-              child: ScanWidget()),
+              child: ScanWidget(thirdBackgroundColor)),
           Expanded(
             flex: 5,
-            child: GestureDetector(
-                onLongPress: () {
-                  showDialog(
-                      context: context,
-                      builder: (context) {
-                        return AlertDialog(
-                          content: Text("Insert virtual fixtures?"),
-                          actions: [
-                            IconButton(icon: Icon(Icons.check), onPressed: () {
-                              Controller.fakeInit();
-                              Navigator.pop(context);
-                            })
-                          ],
-                        );
-                      }
-                  );
-                },
-                child: Text("LEDControl", style: headerText,)),
+            child: Center(
+              child: GestureDetector(
+                  onLongPress: () {
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            content: Text("Insert virtual fixtures?"),
+                            actions: [
+                              IconButton(icon: Icon(Icons.check), onPressed: () {
+                                Controller.fakeInit();
+                                Navigator.pop(context);
+                              })
+                            ],
+                          );
+                        }
+                    );
+                  },
+                  child: Text("LEDControll", style: headerText,)),
+            ),
           ),
-          RaisedButton(
-              elevation: 5,
-              padding: EdgeInsets.symmetric(horizontal: 6),
-              //child: Icon(Icons.save, size: 24,),
-              child: FittedBox(fit: BoxFit.scaleDown, child: Text("Save To Device"),),
-              onPressed: Controller.areNotSelected() ? null : onSavePressed
+          Expanded(
+            flex: 2,
+            child: RaisedButton(
+                color: thirdBackgroundColor,
+                elevation: 5,
+                padding: EdgeInsets.symmetric(horizontal: 6),
+                child: Icon(Icons.save, size: 24,),
+                //child: FittedBox(fit: BoxFit.scaleDown, child: Text("Save To Device"),),
+                onPressed: Controller.areNotSelected() ? null : onSavePressed
+            ),
           ),
           Expanded(
             flex: 2,
             child: SizedBox( width: 100,
               child: RaisedButton(
+                color: thirdBackgroundColor,
                   elevation: 5,
                   padding: EdgeInsets.symmetric(horizontal: 6),
                   //child: Icon(Icons.save, size: 24,),

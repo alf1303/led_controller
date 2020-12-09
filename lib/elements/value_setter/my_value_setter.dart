@@ -147,7 +147,7 @@ class _ValueSetterViewState extends State<ValueSetterView> {
                       decoration: BoxDecoration(
                         color: mainBackgroundColor,
                         border: Border.all(),
-                        borderRadius: BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15)),
+                        borderRadius: BorderRadius.all(Radius.circular(15)),
                       ),
                       height: height > width ? height*0.26 : width*0.25,
                       width: width,

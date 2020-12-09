@@ -66,7 +66,7 @@ class _SimpleEspViewState extends State<SimpleEspView> {
       child: GestureDetector(
         onTap: _onTapFunction,
         child: AnimatedContainer(
-          duration: Duration(milliseconds: 300),
+          duration: Duration(milliseconds: 200),
           decoration: espViewDecoration,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

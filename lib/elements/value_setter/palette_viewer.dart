@@ -21,6 +21,12 @@ class PaletteViewer extends StatelessWidget {
     List<Palette> programs = paletteProvider.getProgramms();
     //print("palLength: ${palettes.length}, progLength: ${programs.length}, allLength: ${paletteProvider.list.length}");
     return Container(
+      //color: Colors.yellow,
+      decoration: BoxDecoration(
+        //color: Colors.yellow,
+        //border: Border.all(),
+        //borderRadius: BorderRadius.all(Radius.circular(15))
+      ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -44,8 +50,9 @@ class PaletteViewer extends StatelessWidget {
           Expanded(
             child: Container(
               decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey, width: 2),
-                color: palBackColor
+                border: Border.all(color: Colors.grey, width: 1),
+                borderRadius: BorderRadius.only(bottomLeft: Radius.circular(15), bottomRight: Radius.circular(15)),
+                //color: palBackColor
               ),
               child: Scrollbar(
                   child: SingleChildScrollView(
@@ -203,6 +210,7 @@ class _ViewProgramsState extends State<ViewPrograms> {
 
   void _showCustomMenu() {
     final RenderBox overlay = Overlay.of(context).context.findRenderObject();
+    //print(overlay.size.width);
     showMenu(
         context: context,
         color: Colors.transparent,
@@ -212,7 +220,7 @@ class _ViewProgramsState extends State<ViewPrograms> {
         position: RelativeRect.fromRect(
             _tapPosition & const Size(40, 40), // smaller rect, the touch area
             Offset.zero & overlay.size   // Bigger rect, the entire screen
-        )
+        ),
     )
     // This is how you handle user selection
         .then<void>((void g) {
@@ -257,7 +265,7 @@ class _ViewProgramsState extends State<ViewPrograms> {
             flex: 6,
             child: AnimatedContainer(
               duration: Duration(milliseconds: 400),
-              decoration: BoxDecoration(border: Border.all(color: palBackColor, width: selected ? 6 : 2), borderRadius: BorderRadius.circular(10), shape: BoxShape.rectangle
+              decoration: BoxDecoration(border: Border.all(color: mainBackgroundColor, width: selected ? 6 : 2), borderRadius: BorderRadius.circular(10), shape: BoxShape.rectangle
               ),
               child: AnimatedContainer(
                 duration: Duration(milliseconds: 400),
@@ -323,6 +331,7 @@ class MyPaletteEntry extends PopupMenuEntry<int>{
 }
 
 class MyPaletteEntryState extends State<MyPaletteEntry> {
+  final butCol = thirdBackgroundColor;
   void save() {
     if (!Controller.areNotSelected()) {
       Controller.savePalette(widget._palette);
@@ -385,25 +394,24 @@ class MyPaletteEntryState extends State<MyPaletteEntry> {
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        RaisedButton(materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,shape: buttonShape, onPressed: save, color: buttonColor.withOpacity(0.9), child: Text("Save"),),
-        SizedBox(height: 2,),
-        RaisedButton(materialTapTargetSize: MaterialTapTargetSize.shrinkWrap, shape: buttonShape, onPressed: clear, color: buttonColor.withOpacity(0.9), child: Text("Clear"),),
-        SizedBox(height: 2,),
-        RaisedButton(materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,shape: buttonShape, onPressed: rename, color: buttonColor.withOpacity(0.9), child: Text("Rename"),),
-        SizedBox(height: 2,),
+        RaisedButton(materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,shape: buttonShape, onPressed: save, color: butCol.withOpacity(0.9), child: Text("    Save   "),),
+        SizedBox(height: 1,),
+        RaisedButton(materialTapTargetSize: MaterialTapTargetSize.shrinkWrap, shape: buttonShape, onPressed: clear, color: butCol.withOpacity(0.9), child: Text("   Clear   "),),
+        SizedBox(height: 1,),
+        RaisedButton(materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,shape: buttonShape, onPressed: rename, color: butCol.withOpacity(0.9), child: Text(" Rename"),),
+        SizedBox(height: 1,),
         Visibility(
           child:
-          RaisedButton(materialTapTargetSize: MaterialTapTargetSize.shrinkWrap, shape: buttonShape, onPressed: add, color: buttonColor.withOpacity(0.9), child: Text("Playlist +"),),
+          RaisedButton(materialTapTargetSize: MaterialTapTargetSize.shrinkWrap, shape: buttonShape, onPressed: add, color: butCol.withOpacity(0.9), child: Text("Playlist +"),),
           visible: widget._palette.canAdd(),
         ),
-        SizedBox(height: 2,),
+        SizedBox(height: 1,),
         Visibility(
           child:
-          RaisedButton(materialTapTargetSize: MaterialTapTargetSize.shrinkWrap, shape: buttonShape, onPressed: remove, color: buttonColor.withOpacity(0.9), child: Text("Playlist -", style: TextStyle(color: Colors.red),),),
+          RaisedButton(materialTapTargetSize: MaterialTapTargetSize.shrinkWrap, shape: buttonShape, onPressed: remove, color: butCol.withOpacity(0.9), child: Text("Playlist -", style: TextStyle(color: Colors.red),),),
           visible: widget._palette.canRemove(),
         ),
       ],

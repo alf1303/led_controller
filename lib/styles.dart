@@ -10,7 +10,7 @@ const Color thirdBackgroundColor = Color.fromARGB(255, 212, 255, 233);
 const Color palBackColor = thirdBackgroundColor;
 
 //const Color buttonColor = Color.fromARGB(255, 161, 230, 255);
-const Color buttonColor = Colors.white;
+const Color buttonColor = mainBackgroundColor;
 const Color buttonBorderColor = Colors.grey;
 const Color linesColor = mainBackgroundColor;
 const Color linesColor2 = Colors.pink;
