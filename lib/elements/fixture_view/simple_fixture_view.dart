@@ -19,7 +19,6 @@ class SimpleFixtureView extends StatelessWidget {
       color: thirdBackgroundColor,
       child: Column(
         children: [
-          MyBottomBar(false),
           SizedBox(height: 3,),
           Expanded(child: SingleChildScrollView(
             child: GridView.count(
@@ -35,7 +34,8 @@ class SimpleFixtureView extends StatelessWidget {
             }),
           ),
           ),
-          )
+          ),
+          MyBottomBar(false),
         ],
       ),
     );

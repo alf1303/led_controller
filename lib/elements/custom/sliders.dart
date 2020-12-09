@@ -54,8 +54,9 @@ class MyCustomSlider extends StatelessWidget {
                         label: tmpVal.round().toString(),
                         divisions: max.round(),
                         onChanged: (value) {
-                          setStat(() {tmpVal = value;});
+                          tmpVal = value;
                           _valueChanged(value);
+                          //setStat(() {});
                         },
                         onChangeEnd: onValChangeEnd
                     ),
