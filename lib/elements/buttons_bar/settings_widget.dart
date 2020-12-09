@@ -36,7 +36,7 @@ class SettingsWidget extends StatelessWidget{
                 String _inputPassword = _passwordController.text;
                 String _inputPixel = _pixelController.text;
                 return AlertDialog(
-                  backgroundColor: thirdBackgroundColor.withOpacity(0.3),
+                  backgroundColor: alertBackgroundColor,
                   title: Text("Settings", style: mainWhiteText,),
                   shape: alertShape,
                   content: SingleChildScrollView(

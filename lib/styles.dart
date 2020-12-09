@@ -25,6 +25,7 @@ const Color selectedColor = mainBackgroundColor;
 const Color selectedLinesColor = Colors.yellowAccent;
 const Color accentColor = Colors.yellowAccent;
 Color buttonSelectedColor = Colors.blueGrey;
+Color alertBackgroundColor = thirdBackgroundColor.withOpacity(0.3);
 
 //SHADOWS
 BoxShadow boxShadow1 = BoxShadow(

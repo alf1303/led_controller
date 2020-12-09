@@ -35,7 +35,22 @@ class MyBottomBar extends StatelessWidget {
                     elevation: 5,
                     child: Text("Reset", style: mainText,),
                     onPressed: !providerModel.selected ? null : () {
-                      Controller.setReset();
+                      showDialog(
+                          context: context,
+                      builder: (context) {
+                            return AlertDialog(
+                              shape: alertShape,
+                              backgroundColor: alertBackgroundColor,
+                              title: Text("Reset selected fixtures?", style: mainWhiteText,),
+                              actions: [
+                                IconButton(icon: Icon(Icons.check, color: Colors.white,), onPressed: () {
+                                  Controller.setReset();
+                                  Navigator.pop(context);
+                                })
+                              ],
+                            );
+                      }
+                      );
                     }),
               ),
             ),

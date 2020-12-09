@@ -16,7 +16,11 @@ class SimpleFixtureView extends StatelessWidget {
     //print("SimpleFixture, h: $height, w: $width");
     return Container(
       padding: EdgeInsets.all(3),
-      color: thirdBackgroundColor,
+      decoration: BoxDecoration(
+        border: Border.all(),
+        borderRadius: expandedHeaderRadius,
+        color: thirdBackgroundColor,
+      ),
       child: Column(
         children: [
           SizedBox(height: 3,),
@@ -35,6 +39,7 @@ class SimpleFixtureView extends StatelessWidget {
           ),
           ),
           ),
+          SizedBox(height: 2,),
           MyBottomBar(false),
         ],
       ),

@@ -10,13 +10,8 @@ import 'elements/value_setter/my_value_setter.dart';
 import 'elements/playback_view.dart';
 
 void main() async{
-  int a = 50;
-  int b = 100;
-  int c = 10;
-  int d = (c*(a/b)).round();
-  print(d);
   WidgetsFlutterBinding.ensureInitialized();
-  //await Controller.fakeInit();
+  await Controller.fakeInit();
   await Controller.initPalettes();
   await Controller.initWiFi();
   runApp(Main());
@@ -30,9 +25,9 @@ class Main extends StatefulWidget {
 class _MainState extends State<Main> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
-    Future.delayed(Duration(seconds: 2), () {
-      Controller.scan();
-    });
+//    Future.delayed(Duration(seconds: 2), () {
+//      Controller.scan();
+//    });
     final _tabController = TabController(length: 2, vsync: this);
     return MultiProvider(
       providers: [

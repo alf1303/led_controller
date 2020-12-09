@@ -78,7 +78,7 @@ class FxSetter extends StatelessWidget {
                       return AlertDialog(
                         contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
                         shape: alertShape,
-                        backgroundColor: thirdBackgroundColor.withOpacity(0.3),
+                        backgroundColor: alertBackgroundColor,
                         title: Text("Playlist settings", style: mainWhiteText,),
                         content: Form(
                           key: _formKey,
