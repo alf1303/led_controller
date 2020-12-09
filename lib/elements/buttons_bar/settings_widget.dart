@@ -186,7 +186,6 @@ class SettingsWidget extends StatelessWidget{
                   ),
                   actions: <Widget>[
                     RaisedButton(
-                        color: thirdBackgroundColor.withOpacity(0.9),
                         child: Text("Send", style: mainText,),
                         onPressed: () async{
                           if(_formKey.currentState.validate()) {
@@ -211,7 +210,6 @@ class SettingsWidget extends StatelessWidget{
                           }
                         }),
                     RaisedButton(
-                        color: thirdBackgroundColor.withOpacity(0.9),
                         child: Text("Close", style: mainText,),
                         onPressed: () async{
                           Navigator.of(context).pop();

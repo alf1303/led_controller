@@ -130,7 +130,7 @@ class _FxNumWidgetState extends State<FxNumWidget> {
           return Center(
             child: Card(
               shape: alertShape,
-              color: thirdBackgroundColor.withOpacity(0.8),
+              color: alertBackgroundColor,
               child: Container(
                 width: alertWidth,
                 decoration: BoxDecoration(
@@ -142,10 +142,10 @@ class _FxNumWidgetState extends State<FxNumWidget> {
                     StatefulBuilder(builder: (context, setStat) {
                       //print("fxSpeed: $_fxSpeed");
                       //return MyCustomSliderNoCard("Speed", _fxSpeed, 0, 100, secondaryBackgroundColor, linesColor, linesColor, 5, (value) {setStat(() {_fxSpeed = value;}); }, onFxSpeedChangeEnd);
-                      return FxSliderWidget("Speed", attr.fxSpeed, 100, onFxSpeedChangeEnd, true);
+                      return FxSliderWidget("Speed", mainBackgroundColor, attr.fxSpeed, 100, onFxSpeedChangeEnd, true);
                     }),
-                    FxSliderWidget("Width", attr.fxWidth, 30, onFxWidthChangeEnd, (attr.fxNum == FxNames.Cyclon.index || attr.fxNum == FxNames.Fade.index)),
-                    FxSliderWidget("Parts", attr.fxParts, 100, onFxPartsChangeEnd, (attr.fxNum != FxNames.OFF.index && attr.fxNum != FxNames.Cyclon.index)),
+                    FxSliderWidget("Width", mainBackgroundColor, attr.fxWidth, 30, onFxWidthChangeEnd, (attr.fxNum == FxNames.Cyclon.index || attr.fxNum == FxNames.Fade.index)),
+                    FxSliderWidget("Parts", mainBackgroundColor, attr.fxParts, 100, onFxPartsChangeEnd, (attr.fxNum != FxNames.OFF.index && attr.fxNum != FxNames.Cyclon.index)),
                     StatefulBuilder(builder: (context, setStat) {
                       onAttack(value) {onFxAttackChange(value); setStat(() {});}
                       onSymm(value) {onFxSymmChange(value); setStat(() {});}
@@ -154,7 +154,7 @@ class _FxNumWidgetState extends State<FxNumWidget> {
                       onRandomCol(value) {onFxRndColorChange(value); setStat(() {});}
                       return Column(
                         children: <Widget>[
-                          FxSliderWidget("Spread", attr.fxSpread, 100, onFxSpreadChangeEnd, (attr.fxNum == FxNames.Sinus.index || (attr.fxNum == FxNames.Fade.index && attr.fxRnd))),
+                          FxSliderWidget("Spread", mainBackgroundColor, attr.fxSpread, 100, onFxSpreadChangeEnd, (attr.fxNum == FxNames.Sinus.index || (attr.fxNum == FxNames.Fade.index && attr.fxRnd))),
 
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,

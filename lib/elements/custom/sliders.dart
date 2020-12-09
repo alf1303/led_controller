@@ -108,7 +108,7 @@ class MyCustomSliderNoCard extends StatelessWidget {
     return Stack(
       alignment: Alignment.topCenter,
       children: <Widget>[
-        Text("$_label: ${value.round()}", style: smallText.copyWith(fontSize: 14),),
+        FittedBox(fit: BoxFit.scaleDown, child: Text("$_label: ${value.round()}", style: TextStyle(color: shadowColor, fontSize: 14),)),
         SliderTheme(
           data: SliderTheme.of(context).copyWith(
           ),
@@ -133,6 +133,7 @@ class MyCustomSliderNoCard extends StatelessWidget {
 /////////////////////////////////////////////////////////////////////////////////////////
 class FxSliderWidget extends StatefulWidget{
   final String label;
+  final Color color;
   final double fxParametr;
   final double max;
   final ValueChanged<double> onChanged;
@@ -143,6 +144,7 @@ class FxSliderWidget extends StatefulWidget{
   }
   const FxSliderWidget(
       this.label,
+      this.color,
       this.fxParametr,
       this.max,
       this.onChanged,
@@ -155,7 +157,7 @@ class _FxSliderWidgetState extends State<FxSliderWidget> {
   @override
   Widget build(BuildContext context) {
     double _param = widget.fxParametr;
-    print("${widget.label}, $_param");
+    //print("${widget.label}, $_param");
     return  Visibility(
       visible: widget.visible,
       child: StatefulBuilder(
@@ -163,16 +165,16 @@ class _FxSliderWidgetState extends State<FxSliderWidget> {
           return Row(
             children: <Widget>[
               IconButton(
-                  icon: Icon(Icons.arrow_back_ios, color: linesColor2,),
+                  icon: Icon(Icons.arrow_back_ios, color: widget.color,),
                   onPressed: () {
                     setStat(() {
                       _param <= 1 ? 1 : _param--;
                       widget.onParametrChanged(_param);
                     });
                   }),
-              Expanded(child: MyCustomSliderNoCard(widget.label, _param, 1, widget.max, secondaryBackgroundColor, linesColor2, linesColor2, 5, (value) {setStat(() {_param = value;}); }, widget.onParametrChanged)),
+              Expanded(child: MyCustomSliderNoCard(widget.label, _param, 1, widget.max, Colors.white, widget.color, widget.color, 5, (value) {setStat(() {_param = value;}); }, widget.onParametrChanged)),
               IconButton(
-                  icon: Icon(Icons.arrow_forward_ios, color: linesColor2,),
+                  icon: Icon(Icons.arrow_forward_ios, color: widget.color,),
                   onPressed: () {
                     setStat(() {
                       _param >= widget.max ? widget.max : _param++;

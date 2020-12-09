@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:ledcontroller/styles.dart';
 
 class CustomRadio extends StatefulWidget {
   final String label;
@@ -45,11 +46,11 @@ class CustomRadioState extends State<CustomRadio> {
           margin: EdgeInsets.symmetric(vertical: 6, horizontal: widget.margin == null ? 6 : widget.margin),
           padding: EdgeInsets.symmetric(vertical: 6, horizontal: widget.padding == null ? 6 : widget.padding),
           decoration: BoxDecoration(
-              border: Border.all(color: (widget.value) ? widget.color : Colors.black),
+              border: Border.all(color: (widget.value) ? widget.color : Colors.white70),
               color: widget.selectedCol == null ? Colors.transparent : widget.value ? widget.selectedCol : Colors.transparent,
               borderRadius: BorderRadius.circular(7)
           ),
-          child: FittedBox(fit: BoxFit.scaleDown, child: Text(widget.label, style: TextStyle(color: (widget.value) ? widget.color : Colors.black45, fontSize: widget.fontSize == null ? 10 : widget.fontSize), )),
+          child: FittedBox(fit: BoxFit.fill, child: Text(widget.label, style: TextStyle(color: (widget.value) ? widget.color : Colors.white, fontSize: 16), )),
         ),
       ),
     );

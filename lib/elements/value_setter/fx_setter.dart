@@ -112,23 +112,27 @@ class FxSetter extends StatelessWidget {
                         actions: <Widget>[
                           Container(
                             //color: mainBackgroundColor,
-                            decoration: roundedDecoration,
+                            //decoration: roundedDecoration,
                             child: Row(
                               children: [
                                 StatefulBuilder(
                                     builder: (context, setStat) {
-                                      return CustomRadio(label: attr.playlistMode ? "Stop Playlist" : "Start Playlist", value: attr.playlistMode, onChanged: (value) {
-                                        setStat((){
-                                          attr.playlistMode = value;
-                                        });
-                                        attr.processPlaylist();
-                                        onPlaylistModeChange(value);
-                                      },
-                                        color: radioColor, fontSize: fontSize*0.7,);
+                                      return SizedBox(
+                                        //width: 100,
+                                        child: CustomRadio(label: attr.playlistMode ? "Stop Playlist" : "Start Playlist", value: attr.playlistMode, onChanged: (value) {
+                                          setStat((){
+                                            attr.playlistMode = value;
+                                          });
+                                          attr.processPlaylist();
+                                          onPlaylistModeChange(value);
+                                        },
+                                          color: accentColor,
+                                          selectedCol: buttonSelectedColor,
+                                          fontSize: fontSize*0.7,),
+                                      );
                                     }
                                 ),
                                 RaisedButton(
-                                    shape: roundedButtonShape,
                                     child: Text("Save to Device"),
                                     onPressed: () {
                                       if(_formKey.currentState.validate()) {

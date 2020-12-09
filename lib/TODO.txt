@@ -1,4 +1,4 @@
-1) Рамка вокруг FixtureView, AlertDialog для Reset, padding перед кнопками
-2) Прозрачное окно в эффектах
+1) Рамка вокруг FixtureView, AlertDialog для Reset, padding перед кнопками +
+2) Прозрачное окно в эффектах +
 3) AppBar иконки
 4) Hints
