@@ -186,6 +186,11 @@ abstract class UDPCotroller {
           var dataLength = await sender.send(data, Endpoint.unicast(InternetAddress(element.ipAddress), port: Port(_PORT_OUT)));
         }
       });
+      List<EspModel> toDelete = Controller.providerModel.list.where((element) => element.selected).toList();
+      toDelete.forEach((element) {
+        Controller.providerModel.list.remove(element);
+      });
+      Controller.providerModel.notify();
     }
   }
 
@@ -280,13 +285,15 @@ abstract class UDPCotroller {
           //print("mode: ${element.ramSet.mode}");
           //print(element.toString());
           //print(element.ramSet.toJson());
-          int dimmer = element.ramSet.dimmer;;
+          int dimmer = element.ramSet.dimmer;
+          int fxSize = element.ramSet.fxSize;
           if(program) {
             Palette selPal = Controller.paletteProvider.getSelectedProgram();
             if(selPal != null) {
               PaletteEntry tmpPalEntry = selPal.settings.firstWhere((el) => el.uni == element.uni, orElse: () => null);
               if(tmpPalEntry != null) {
                 dimmer = (tmpPalEntry.settings.dimmer*(grandmaster/100)).round();
+                fxSize = (tmpPalEntry.settings.fxSize*(grandmaster/100)).round();
               }
             }
           }
@@ -316,7 +323,7 @@ abstract class UDPCotroller {
             element.ramSet.fxColor.green,
             element.ramSet.fxColor.blue,
             element.ramSet.strobe,
-            element.ramSet.fxSize,
+            fxSize,
             element.ramSet.fxParts,
             element.ramSet.fxFade,
             element.ramSet.fxParams,

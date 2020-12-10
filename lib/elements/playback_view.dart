@@ -67,7 +67,7 @@ class PlaybackView extends StatelessWidget{
                       });
                     },
                     onChangeEnd: (value) {
-                       Controller.setSendWithoutUpdate(1, value.round());
+                       Controller.setSendWithoutUpdate(3, value.round());
                     },
                     ),
                   );

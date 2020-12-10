@@ -11,7 +11,7 @@ import 'elements/playback_view.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
-  await Controller.fakeInit();
+  //await Controller.fakeInit();
   await Controller.initPalettes();
   await Controller.initWiFi();
   runApp(Main());
@@ -25,9 +25,9 @@ class Main extends StatefulWidget {
 class _MainState extends State<Main> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
-//    Future.delayed(Duration(seconds: 2), () {
-//      Controller.scan();
-//    });
+    Future.delayed(Duration(seconds: 2), () {
+      Controller.scan();
+    });
     final _tabController = TabController(length: 2, vsync: this);
     return MultiProvider(
       providers: [
