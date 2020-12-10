@@ -174,7 +174,7 @@ abstract class Controller {
 
   static setSend(int save) {
     UDPCotroller.setSend(save);
-    //providerModel.notify();
+    providerModel.notify();
   }
 
   static setSendWithoutUpdate(int save, [int grandmaster]) {

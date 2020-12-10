@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:invert_colors/invert_colors.dart';
 import 'package:ledcontroller/global_keys.dart';
+import 'package:ledcontroller/model/palette_types.dart';
 import 'package:provider/provider.dart';
 import '../../controller.dart';
 import '../../palettes_provider.dart';
@@ -336,9 +337,15 @@ class MyPaletteEntry extends PopupMenuEntry<int>{
 class MyPaletteEntryState extends State<MyPaletteEntry> {
   final butCol = thirdBackgroundColor;
   void save() {
-    if (!Controller.areNotSelected()) {
+    if(widget._palette.paletteType == PaletteType.PROGRAM) {
       Controller.savePalette(widget._palette);
     }
+    else {
+      if (!Controller.areNotSelected()) {
+        Controller.savePalette(widget._palette);
+      }
+    }
+
     Navigator.pop(context);
   }
 
@@ -365,22 +372,28 @@ class MyPaletteEntryState extends State<MyPaletteEntry> {
           _nameController.text = widget._palette.name;
           return AlertDialog(
             shape: alertShape,
-            backgroundColor: thirdBackgroundColor.withOpacity(0.8),
+            backgroundColor: alertBackgroundColor,
+            title: Text("Palette name:", style: mainWhiteText,),
             content: Form(
               key: _formKey67,
               child: Row(
                 children: [
                   Expanded(
-                    child: TextFormField(
-                      decoration: inputDecoration,
-                      controller: _nameController,
-                      validator: (value) {
-                        if(value.length > 10) return "<10";
-                        return null;
-                      },
+                    child: Container(
+                      color: mainBackgroundColor.withOpacity(0.8),
+                      child: TextFormField(
+                        decoration: inputDecoration,
+                        controller: _nameController,
+                        validator: (value) {
+                          if(value.length > 10) return "<10";
+                          return null;
+                        },
+                      ),
                     ),
                   ),
-                  IconButton(icon: Icon(Icons.save, size: 40,), onPressed: () {
+                  IconButton(
+                      padding: EdgeInsets.all(0),
+                      icon: Icon(Icons.save, size: 40, color: Colors.white,), onPressed: () {
                     if(_formKey67.currentState.validate()) {
                       widget._palette.name = _nameController.text;
                       Navigator.pop(context);

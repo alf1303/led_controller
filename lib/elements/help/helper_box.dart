@@ -18,7 +18,7 @@ OverlayEntry HelperBox(BuildContext context, Offset position, Size size, String 
                   return AlertDialog(
                     shape: alertShape,
                     backgroundColor: alertBackgroundColor,
-                    content: Text(text, style: TextStyle(color: Colors.white, fontSize: 20),),
+                    content: SingleChildScrollView(child: Text(text, style: TextStyle(color: Colors.white, fontSize: 20),)),
                       actions: [
                         IconButton(icon: Icon(Icons.check, color: Colors.white,), onPressed: () {
                           Navigator.pop(context);

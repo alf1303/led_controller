@@ -65,7 +65,7 @@ final Map<GlobalKey, String> globalKeysMap = {
   fixtureViewKey : fixtureViewText,
   resetKey : resetText,
   areaKey : areaText,
-  settingsKey : selectText,
+  settingsKey : settingsText,
   highliteKey : highliteText,
   selectKey : selectText,
   deselectKey : deselectText
