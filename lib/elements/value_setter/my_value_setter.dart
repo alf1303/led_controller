@@ -5,6 +5,7 @@ import 'package:ledcontroller/elements/custom/custom_group_radio.dart';
 import 'package:ledcontroller/elements/custom/sliders.dart';
 import 'package:ledcontroller/elements/fixture_view/simple_fixture_view.dart';
 import 'package:ledcontroller/elements/my_app_bar.dart';
+import 'package:ledcontroller/global_keys.dart';
 import 'package:ledcontroller/model/palette.dart';
 import '../../palettes_provider.dart';
 import '../playback_view.dart';
@@ -84,14 +85,16 @@ class _ValueSetterViewState extends State<ValueSetterView> {
         children: [
           SizedBox(height: 2,),
           MyAppBar(widget._tabController),
+          SizedBox(height: 2,),
           SizedBox(
             height: 30,
             child: Row(
               children: [
                 Expanded(
                   child: RaisedButton(
-                    color: widget.pallExp ? buttonSelectedColor : buttonColor,
-                    shape: widget.pallExp ? buttonSelectShape : buttonShape,
+                    key: palButKey,
+                    color: !widget.pallExp ? buttonSelectedColor.withOpacity(0.6) : buttonColor,
+                    shape: !widget.pallExp ? buttonSelectShape2 : buttonShape,
                     onPressed: () {
                       setState(() {
                         widget.pallExp = !widget.pallExp;
@@ -99,13 +102,14 @@ class _ValueSetterViewState extends State<ValueSetterView> {
                         //paletteController.toggle();
                       });
                     },
-                    child: Text("Palettes", style: mainText.copyWith(color: widget.pallExp ? accentColor : Colors.black),),
+                    child: Text("Palettes", style: mainText.copyWith(color: !widget.pallExp ? mainBackgroundColor : Colors.black),),
                   ),
                 ),
                 Expanded(
                   child: RaisedButton(
-                    color: widget.fxExp ? buttonSelectedColor : buttonColor,
-                    shape: widget.fxExp ? buttonSelectShape : buttonShape,
+                    key: fxButKey,
+                    color: !widget.fxExp ? buttonSelectedColor.withOpacity(0.6) : buttonColor,
+                    shape: !widget.fxExp ? buttonSelectShape2 : buttonShape,
                     onPressed: () {
                       setState(() {
                         widget.fxExp = !widget.fxExp;
@@ -113,13 +117,14 @@ class _ValueSetterViewState extends State<ValueSetterView> {
                         //paletteController.toggle();
                       });
                     },
-                    child: Text("Fx setter", style: mainText.copyWith(color: widget.fxExp ? accentColor : Colors.black)),
+                    child: Text("Fx setter", style: mainText.copyWith(color: !widget.fxExp ? mainBackgroundColor : Colors.black)),
                   ),
                 ),
                 Expanded(
                   child: RaisedButton(
-                    color: widget.colorExp ? buttonSelectedColor : buttonColor,
-                    shape: widget.colorExp ? buttonSelectShape : buttonShape,
+                    key: colButKey,
+                    color: !widget.colorExp ? buttonSelectedColor.withOpacity(0.6) : buttonColor,
+                    shape: !widget.colorExp ? buttonSelectShape2 : buttonShape,
                     onPressed: () {
                       setState(() {
                         widget.colorExp = !widget.colorExp;
@@ -127,12 +132,13 @@ class _ValueSetterViewState extends State<ValueSetterView> {
                         //paletteController.toggle();
                       });
                     },
-                    child: Text("ColorSetter", style: mainText.copyWith(color: widget.colorExp ? accentColor : Colors.black)),
+                    child: Text("ColorSetter", style: mainText.copyWith(color: !widget.colorExp ? mainBackgroundColor : Colors.black)),
                   ),
                 ),
               ],
             ),
           ),
+          SizedBox(height: 4,),
           Expanded(
             child: SingleChildScrollView(
               child: Column(
@@ -141,31 +147,35 @@ class _ValueSetterViewState extends State<ValueSetterView> {
                   //PALLETES VIEWER
                   ExpandablePanel(
                     controller: paletteController,
-                    expanded: Container(
-                      child: PaletteViewer(),
-                      // padding: EdgeInsets.symmetric(horizontal: 6, vertical: 4),
-                      decoration: BoxDecoration(
-                        color: mainBackgroundColor,
-                        border: Border.all(),
-                        borderRadius: BorderRadius.all(Radius.circular(15)),
+                    expanded: Padding(
+                      padding: const EdgeInsets.only(bottom: 4.0),
+                      child: Container(
+                        child: PaletteViewer(),
+                        // padding: EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: mainBackgroundColor,
+                          border: Border.all(),
+                          borderRadius: BorderRadius.all(Radius.circular(15)),
+                        ),
+                        height: height > width ? height*0.26 : width*0.25,
+                        width: width,
                       ),
-                      height: height > width ? height*0.26 : width*0.25,
-                      width: width,
                     ),
                   ),
                   //Container(height: 2 , color: mainBackgroundColor),
-                  SizedBox(height: 5,),
 
                   /////////FX SETTER
                   ExpandablePanel(
                     controller: fxController,
-                    expanded: Container(
-                      height: height > width ? height*0.20 : width*0.20,
-                        child: FxSetter()
+                    expanded: Padding(
+                      padding: const EdgeInsets.only(bottom: 4.0),
+                      child: Container(
+                        height: height > width ? height*0.20 : width*0.20,
+                          child: FxSetter()
+                      ),
                     )
                   ),
                  // Container(height: 2, color: mainBackgroundColor),
-                  SizedBox(height: 5,),
 
                   //COLOR SETTER
                   ExpandablePanel(
@@ -181,7 +191,7 @@ class _ValueSetterViewState extends State<ValueSetterView> {
             ),
           ),
           Container(
-              height: height > width ? height*0.25 : width*0.25,
+              height: height > width ? height*0.25 : height*0.33,
               child: SimpleFixtureView())
         ],
       ),

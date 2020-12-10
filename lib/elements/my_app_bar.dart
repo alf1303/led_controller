@@ -6,6 +6,7 @@ import '../controller.dart';
 import '../global_keys.dart';
 import '../provider_model.dart';
 import '../styles.dart';
+import 'help/help_widget.dart';
 
 class MyAppBar extends StatelessWidget{
   final TabController _tabController;
@@ -40,9 +41,11 @@ class MyAppBar extends StatelessWidget{
                         context: context,
                         builder: (context) {
                           return AlertDialog(
-                            content: Text("Insert virtual fixtures?"),
+                            shape: alertShape,
+                            backgroundColor: alertBackgroundColor,
+                            content: Text("Insert virtual fixtures?", style: mainWhiteText,),
                             actions: [
-                              IconButton(icon: Icon(Icons.check), onPressed: () {
+                              IconButton(icon: Icon(Icons.check, color: Colors.white,), onPressed: () {
                                 Controller.fakeInit();
                                 Navigator.pop(context);
                               })
@@ -57,7 +60,7 @@ class MyAppBar extends StatelessWidget{
           Expanded(
             flex: 2,
             child: RaisedButton(
-              key: saveKey,
+                key: saveKey,
                 color: thirdBackgroundColor,
                 elevation: 5,
                 padding: EdgeInsets.symmetric(horizontal: 6),
@@ -70,8 +73,8 @@ class MyAppBar extends StatelessWidget{
             flex: 2,
             child: SizedBox( width: 100,
               child: RaisedButton(
-                key: playbackKey,
-                color: thirdBackgroundColor,
+                  key: playbackKey,
+                  color: thirdBackgroundColor,
                   elevation: 5,
                   padding: EdgeInsets.symmetric(horizontal: 6),
                   //child: Icon(Icons.save, size: 24,),
@@ -83,34 +86,7 @@ class MyAppBar extends StatelessWidget{
               ),
             ),
           ),
-
-                IconButton(icon: Icon(Icons.help_outline, color: Colors.black), onPressed: () async{
-                 RenderBox box = scanKey.currentState.context.findRenderObject();
-                 Offset position = box.localToGlobal(Offset.zero);
-                 Size size = box.size;
-                 print(position);
-                 print(size);
-                 OverlayState overlayState = Overlay.of(context);
-                 OverlayEntry entry = OverlayEntry(
-                   builder: (context) => Positioned(
-                     top: position.dy,
-                     left: position.dx,
-                     child: GestureDetector(
-                       onTap: () {
-                         print("lala");
-                       },
-                       child: Container(
-                         width: size.width,
-                         height: size.height,
-                         color: Colors.purple.withOpacity(0.5),
-                       ),
-                     ),
-                   )
-                 );
-                 overlayState.insert(entry);
-                 await Future.delayed(Duration(seconds: 5));
-                 entry.remove();
-                })
+          HelpWidget()
         ],
       ),
     );

@@ -13,10 +13,11 @@ class SimpleFixtureView extends StatelessWidget {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
+    final bool landscape = MediaQuery.of(context).orientation == Orientation.landscape;
     final model = Provider.of<ProviderModel>(context, listen: true);
     //print("SimpleFixture, h: $height, w: $width");
     return Container(
-      padding: EdgeInsets.all(3),
+      padding: EdgeInsets.all(2),
       decoration: BoxDecoration(
         border: Border.all(),
         borderRadius: expandedHeaderRadius,
@@ -24,9 +25,10 @@ class SimpleFixtureView extends StatelessWidget {
       ),
       child: Column(
         children: [
-          SizedBox(height: 3,),
-          Expanded(child: SingleChildScrollView(
+          //SizedBox(height: 1,),
+          Expanded(
             key: fixtureViewKey,
+            child: SingleChildScrollView(
             child: GridView.count(
            // scrollDirection: Axis.horizontal,
             childAspectRatio: 1.4,
@@ -34,7 +36,7 @@ class SimpleFixtureView extends StatelessWidget {
             physics: BouncingScrollPhysics(),
             mainAxisSpacing: 0,
             crossAxisSpacing: 0,
-            crossAxisCount: model.list.length < 4 ? 3 : model.list.length == 4 ? 4 : 5,
+            crossAxisCount: landscape ? 8 : model.list.length < 4 ? 3 : model.list.length == 4 ? 4 : 5,
             children: List.generate(model.list.length, (index) {
               return SimpleEspView(model.list[index]);
             }),

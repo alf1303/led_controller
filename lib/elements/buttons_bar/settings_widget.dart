@@ -3,6 +3,7 @@ import 'package:ledcontroller/model/esp_model.dart';
 import 'package:provider/provider.dart';
 
 import '../../controller.dart';
+import '../../global_keys.dart';
 import '../../provider_model.dart';
 import '../../styles.dart';
 
@@ -12,6 +13,7 @@ class SettingsWidget extends StatelessWidget{
   Widget build(BuildContext context) {
     final providerModel = Provider.of<ProviderModel>(context, listen: true);
     return RaisedButton(
+      key: settingsKey,
         child: Icon(Icons.settings),
         elevation: 10,
         onPressed: !Controller.providerModel.selected ? null : () {
