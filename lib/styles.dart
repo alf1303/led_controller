@@ -28,11 +28,17 @@ Color buttonSelectedColor = Colors.blueGrey;
 Color alertBackgroundColor = thirdBackgroundColor.withOpacity(0);
 
 //SHADOWS
-BoxShadow boxShadow1 = BoxShadow(
-    color: mainBackgroundColor.withOpacity(0.3),
-    spreadRadius: 0.5,
-    blurRadius: 2,
-    offset: Offset(1, 2)
+const BoxShadow boxShadow1 = BoxShadow(
+    color: Colors.blueGrey,
+    spreadRadius: 1,
+    blurRadius: 1,
+    offset: Offset(1, 1)
+);
+const BoxShadow boxShadow2 = BoxShadow(
+    color: Colors.blueGrey,
+    spreadRadius: 0,
+    blurRadius: 0,
+    offset: Offset(0, 0)
 );
 
 //TEXT STYLES

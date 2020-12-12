@@ -146,6 +146,7 @@ class _ViewPaletteState extends State<ViewPalette> {
             child: AnimatedContainer(
               duration: Duration(milliseconds: 400),
               decoration: BoxDecoration(
+                boxShadow: [selected ? boxShadow2 : boxShadow1],
                 color: colorPal,
                 border: Border.all(color: selected ? Colors.blueGrey : Colors.grey, width: selected ? 6 : 2),
                 borderRadius: BorderRadius.circular(selected ? radius/3 : radius)
@@ -269,11 +270,13 @@ class _ViewProgramsState extends State<ViewPrograms> {
             flex: 6,
             child: AnimatedContainer(
               duration: Duration(milliseconds: 400),
-              decoration: BoxDecoration(border: Border.all(color: mainBackgroundColor, width: selected ? 6 : 2), borderRadius: BorderRadius.circular(10), shape: BoxShape.rectangle
+              decoration: BoxDecoration(
+                  border: Border.all(color: mainBackgroundColor, width: selected ? 6 : 2), borderRadius: BorderRadius.circular(10), shape: BoxShape.rectangle
               ),
               child: AnimatedContainer(
                 duration: Duration(milliseconds: 400),
                 decoration: BoxDecoration(
+                  boxShadow: [selected ? boxShadow2 : boxShadow1],
                     border: Border.all(color: selected ? Colors.blueGrey : Colors.grey, width: selected ? 4 : 2), borderRadius: BorderRadius.circular(10),
                     gradient: colorPal != emptyPaletteColor ? LinearGradient(
                     colors: selected ? colors2 : colors,
