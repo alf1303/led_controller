@@ -63,7 +63,7 @@ class _ValueSetterViewState extends State<ValueSetterView> {
     //print("valueSetter, h: $h, w: $width");
     if(paletteHeight < 100) paletteHeight = uniform*0.25;
     final double fontSize = h > width ? (width/25)/1.1 : (h/25)/1.1;
-    final _attrModel = Provider.of<ProviderModelAttribute>(context, listen: true);
+   // final _attrModel = Provider.of<ProviderModelAttribute>(context, listen: false);
     final paletteController = ExpandableController();
     final fxController = ExpandableController();
     final colorController = ExpandableController();

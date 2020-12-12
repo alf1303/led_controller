@@ -3,6 +3,7 @@ import 'package:ledcontroller/palettes_provider.dart';
 import 'package:ledcontroller/provider_model.dart';
 import 'package:ledcontroller/provider_model_attribute.dart';
 import 'package:ledcontroller/styles.dart';
+import 'package:ledcontroller/udp_controller.dart';
 import 'package:provider/provider.dart';
 
 import 'controller.dart';
@@ -25,9 +26,10 @@ class Main extends StatefulWidget {
 class _MainState extends State<Main> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
-    Future.delayed(Duration(seconds: 2), () {
-      Controller.scan();
-    });
+    //Future.delayed(Duration(seconds: 1), () async{
+      //Controller.scan();
+      UDPCotroller.udpServerUpdate();
+    //});
     final _tabController = TabController(length: 2, vsync: this);
     return MultiProvider(
       providers: [

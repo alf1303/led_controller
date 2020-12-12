@@ -22,7 +22,7 @@ class MyAppBar extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-    final providerModer = Provider.of<ProviderModel>(context, listen: true);
+    final providerModer = Provider.of<ProviderModel>(context, listen: false);
     return  SizedBox(
       width: MediaQuery.of(context).size.width,
       height: 30,
@@ -57,17 +57,21 @@ class MyAppBar extends StatelessWidget{
                   child: Text("LEDControll", style: headerText,)),
             ),
           ),
-          Expanded(
-            flex: 2,
-            child: RaisedButton(
-                key: saveKey,
-                color: thirdBackgroundColor,
-                elevation: 5,
-                padding: EdgeInsets.symmetric(horizontal: 6),
-                child: Icon(Icons.save, size: 24,),
-                //child: FittedBox(fit: BoxFit.scaleDown, child: Text("Save To Device"),),
-                onPressed: Controller.areNotSelected() ? null : onSavePressed
-            ),
+          Consumer<ProviderModel>(
+            builder: (context, provMod, _) {
+              return Expanded(
+                flex: 2,
+                child: RaisedButton(
+                    key: saveKey,
+                    color: thirdBackgroundColor,
+                    elevation: 5,
+                    padding: EdgeInsets.symmetric(horizontal: 6),
+                    child: Icon(Icons.save, size: 24,),
+                    //child: FittedBox(fit: BoxFit.scaleDown, child: Text("Save To Device"),),
+                    onPressed: Controller.areNotSelected() ? null : onSavePressed
+                ),
+              );
+            },
           ),
           Expanded(
             flex: 2,
