@@ -50,7 +50,6 @@ abstract class Controller {
       ramSet.fxRndColor = false;
       ramSet.playlistMode = false;
       EspModel esp = new EspModel(i, "192.168.0.$i", "v_0.5.9", fsSet, ramSet);
-      esp.name = "Virtual$i";
       providerModel.list.add(esp);
     }
     providerModel.notify();
@@ -130,7 +129,6 @@ abstract class Controller {
   }
 
   static Future<void> scan() async{
-    print("ScanPressed");
     providerModel.list.clear();
     providerModel.selected = false;
     providerModel.notify();
@@ -139,7 +137,7 @@ abstract class Controller {
     //await UDPCotroller.scanRequest();
     //setSend(255);
     providerModel.notify();
-    //return await Future.delayed(Duration(seconds: 1), () {return false;});
+    return await Future.delayed(Duration(seconds: 1), () {return false;});
   }
 
   static void setHighlite() {
@@ -257,11 +255,11 @@ abstract class Controller {
   static void updateEspView2(Datagram datagr) {
     if(datagr != null)
     {
-      print("updateEspView2, uni: ${datagr.data[2]}");
+      //print("updateEspView2, uni: ${datagr.data[2]}");
     //print("${providerModel.list.length}");
        }
     else {
-      print("updateEspView2, null");
+      //print("updateEspView2, null");
     }
     if(datagr != null) {
       Uint8List d = datagr.data;

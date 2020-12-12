@@ -147,16 +147,8 @@ class _ViewPaletteState extends State<ViewPalette> {
               duration: Duration(milliseconds: 400),
               decoration: BoxDecoration(
                 color: colorPal,
-                border: Border.all(color: selected ? Colors.blueGrey : Colors.grey, width: selected ? 5 : 2),
-                borderRadius: BorderRadius.circular(selected ? radius/3 : radius),
-                  boxShadow: [
-                    BoxShadow(
-                        color: Colors.blueGrey,
-                        spreadRadius: 1,
-                        blurRadius: 1,
-                        offset: Offset(0, 1)
-                    )
-                  ]
+                border: Border.all(color: selected ? Colors.blueGrey : Colors.grey, width: selected ? 6 : 2),
+                borderRadius: BorderRadius.circular(selected ? radius/3 : radius)
               ),
               child: Material(
                 //clipBehavior: Clip.hardEdge,
@@ -282,14 +274,6 @@ class _ViewProgramsState extends State<ViewPrograms> {
               child: AnimatedContainer(
                 duration: Duration(milliseconds: 400),
                 decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                          color: Colors.blueGrey,
-                          spreadRadius: 1,
-                          blurRadius: 1,
-                          offset: Offset(0, 1)
-                      )
-                    ],
                     border: Border.all(color: selected ? Colors.blueGrey : Colors.grey, width: selected ? 4 : 2), borderRadius: BorderRadius.circular(10),
                     gradient: colorPal != emptyPaletteColor ? LinearGradient(
                     colors: selected ? colors2 : colors,

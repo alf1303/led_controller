@@ -46,16 +46,8 @@ class FxSetter extends StatelessWidget {
                       height: height > width ? width/6 : height/6,
                       width: height > width ? width/6 : height/6,
                       decoration: BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                              color: Colors.blueGrey,
-                              spreadRadius: 1,
-                              blurRadius: 1,
-                              offset: Offset(0, 1)
-                          )
-                        ],
-                          color: attr.fxColor, border: Border.all(color: Colors.black45), borderRadius: BorderRadius.circular(12),
-                      ),
+                          boxShadow: [boxShadow1],
+                          color: attr.fxColor, border: Border.all(color: Colors.black45), borderRadius: BorderRadius.circular(12)),
                       child: InvertColors(child: FittedBox(fit: BoxFit.scaleDown, child: Text("  FX\ncolor", style: smallText.copyWith(fontSize: fontSize*1.3, color: attr.fxColor),))),
                     ),
                     onTap: () {
@@ -164,14 +156,7 @@ class FxSetter extends StatelessWidget {
                   height: height > width ? width/6 : height/6,
                   width: height > width ? width/6 : height/6,
                   decoration: BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                            color: Colors.blueGrey,
-                            spreadRadius: 1,
-                            blurRadius: 1,
-                            offset: Offset(0, 1)
-                        )
-                      ],
+                      boxShadow: [boxShadow1],
                       color: Colors.grey, border: Border.all(color: linesColor), borderRadius: BorderRadius.circular(12)),
                   child: FittedBox(fit: BoxFit.scaleDown, child: Text("Playlist \nSettings", style: smallText.copyWith(fontSize: fontSize*1.3),))
               ),
