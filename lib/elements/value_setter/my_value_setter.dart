@@ -170,7 +170,7 @@ class _ValueSetterViewState extends State<ValueSetterView> {
                     expanded: Padding(
                       padding: const EdgeInsets.only(bottom: 4.0),
                       child: Container(
-                        height: height > width ? height*0.20 : width*0.20,
+                        height: height > width ? height*0.18 : width*0.18,
                           child: FxSetter()
                       ),
                     )
@@ -191,7 +191,7 @@ class _ValueSetterViewState extends State<ValueSetterView> {
             ),
           ),
           Container(
-              height: height > width ? height*0.25 : height*0.33,
+              height: height > width ? height*0.27 : height*0.33,
               child: SimpleFixtureView())
         ],
       ),

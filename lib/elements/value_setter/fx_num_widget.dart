@@ -193,7 +193,7 @@ class _FxNumWidgetState extends State<FxNumWidget> {
       crossAxisCount: 3,
       shrinkWrap: true,
       physics: ClampingScrollPhysics(),
-      childAspectRatio: portrait ? 1.3 : 1.9,
+      childAspectRatio: portrait ? 1.6 : 2,
       children: <Widget>[
         CustomGroupRadio(label: "OFF", value: 0, groupValue: attr.fxNum, onChanged: onFxNumChanged, enabled: true, color: accentColor, selectedCol: buttonSelectedColor, fontSize: fontSize,),
         CustomGroupRadio(label: "Sinus", value: 1, groupValue: attr.fxNum, onChanged: onFxNumChanged, enabled: true, color: accentColor, selectedCol: buttonSelectedColor, padding: 0, fontSize: fontSize,),

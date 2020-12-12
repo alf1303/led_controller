@@ -173,22 +173,27 @@ class _MyColorPickerState extends State<MyColorPicker> {
                     data: Theme.of(context).copyWith(
                         accentTextTheme: TextTheme(bodyText2: TextStyle(color: mainBackgroundColor))
                     ),
-                    child: Slider(
-                      activeColor: linesColor,
-                      inactiveColor: mainBackgroundColor,
-                      value: _currentFxSize,
-                      label: _currentFxSize.round().toString(),
-                      divisions: 100,
-                      min: 0,
-                      max: 100,
-                      onChanged: (value) {
-                        setStat(() {
-                          _currentFxSize = value;
-                        });
-                      },
-                      onChangeEnd: (value) {
-                        _onFxSizeChangeEnd(value);
-                      },
+                    child: Column(
+                      children: [
+                        Text("FX color Size:", style: mainWhiteText.copyWith(fontSize: 14)),
+                        Slider(
+                          activeColor: linesColor,
+                          inactiveColor: mainBackgroundColor,
+                          value: _currentFxSize,
+                          label: _currentFxSize.round().toString(),
+                          divisions: 100,
+                          min: 0,
+                          max: 100,
+                          onChanged: (value) {
+                            setStat(() {
+                              _currentFxSize = value;
+                            });
+                          },
+                          onChangeEnd: (value) {
+                            _onFxSizeChangeEnd(value);
+                          },
+                        ),
+                      ],
                     ),
                   ),
                 ),
