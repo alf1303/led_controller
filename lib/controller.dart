@@ -50,13 +50,14 @@ abstract class Controller {
       ramSet.fxRndColor = false;
       ramSet.playlistMode = false;
       EspModel esp = new EspModel(i, "192.168.0.$i", "v_0.5.9", fsSet, ramSet);
+      esp.name = "virtual$i";
       providerModel.list.add(esp);
     }
     providerModel.notify();
   }
 
-  static initWiFi() {
-    UDPCotroller.setLocalIp();
+  static Future<void> initWiFi() async{
+    await UDPCotroller.setLocalIp();
   }
 
   static initPalettes() async{

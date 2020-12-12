@@ -22,7 +22,7 @@ abstract class UDPCotroller {
   static bool ipChanged = false;
   static List<EspModel> scanList = List();
 
-  static setLocalIp() async {
+  static Future<void> setLocalIp() async {
     WifiIpInfo info;
     try {
       info = await WifiIp.getWifiIp;
@@ -86,11 +86,14 @@ abstract class UDPCotroller {
   }
 
   static Future<void> receiverUpdateBind() async{
+    print("receiverUpdateBinding attempt 1, localIp: ${_local_ip}");
     if (!receiverUpdateBinded) {
-      receiverUpdate = await UDP.bind(Endpoint.unicast(_local_ip, port: Port(_PORT_IN_UPD)));
+      if(_local_ip != null) {
+        receiverUpdate = await UDP.bind(Endpoint.unicast(_local_ip, port: Port(_PORT_IN_UPD)));
+        receiverUpdateBinded = true;
+        print("receiverUpdateBinded");
+      }
       //receiverUpdate = await UDP.bind(Endpoint.broadcast(port: Port(_PORT_IN_UPD)));
-      receiverUpdateBinded = true;
-      print("receiverUpdateBinded");
     } else{
       print("receiverUpdate already binded");
     }
