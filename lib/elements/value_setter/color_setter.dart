@@ -48,7 +48,7 @@ class ColorSetter extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
-                      Expanded(child: MyCustomSlider("", attr.dim, 0, 255, secondaryBackgroundColor, linesColor, Colors.black45, 5, (v) {attr.dim = v; setStat((){});}, onDimmerChangeEnd, trackHeight)),
+                      Expanded(child: MyCustomSlider("", attr.dim, 0, 255, secondaryBackgroundColor, linesColor, Colors.grey, 5, (v) {attr.dim = v; setStat((){});}, onDimmerChangeEnd, trackHeight)),
                       Expanded(child: MyCustomSlider("", attr.red, 0, 255, secondaryBackgroundColor, linesColor, Colors.red, 5, (v) {attr.red = v; setStat((){});}, onColorChangeEnd, trackHeight)),
                       Expanded(child: MyCustomSlider("", attr.green, 0, 255, secondaryBackgroundColor, linesColor, Colors.green, 5, (v) {attr.green = v; setStat((){});}, onColorChangeEnd, trackHeight)),
                       Expanded(child: MyCustomSlider("", attr.blue, 0, 255, secondaryBackgroundColor, linesColor, Colors.blue, 5, (v) {attr.blue = v; setStat((){});}, onColorChangeEnd, trackHeight)),
@@ -67,10 +67,8 @@ class ColorSetter extends StatelessWidget {
                             decoration: BoxDecoration(
                                 color: Color.fromRGBO(attr.red.round(), attr.green.round(), attr.blue.round(), 1),
                                 border: Border.all(color: Colors.grey),
-                                borderRadius: BorderRadius.all(Radius.circular(5)),
-                                boxShadow: [
-                                  boxShadow1
-                                ]
+                                borderRadius: const BorderRadius.all(Radius.circular(5)),
+                                boxShadow: [boxShadow1]
                             ),
                           ),
                         ),

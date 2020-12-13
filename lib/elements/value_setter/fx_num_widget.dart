@@ -157,16 +157,18 @@ class _FxNumWidgetState extends State<FxNumWidget> {
                         children: <Widget>[
                           FxSliderWidget("Spread", mainBackgroundColor, attr.fxSpread, 100, onFxSpreadChangeEnd, (attr.fxNum == FxNames.Sinus.index || (attr.fxNum == FxNames.Fade.index && attr.fxRnd))),
 
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: <Widget>[
-                              CustomRadio(label: "Attack", value: attr.fxAttack, onChanged: onAttack, color: accentColor, selectedCol: buttonSelectedColor, margin: 0, visible: (attr.fxNum == FxNames.Sinus.index), fontSize: ffontSize,),
-                              CustomRadio(label: "Symm", value: attr.fxSymm, onChanged: onSymm, color: accentColor, selectedCol: buttonSelectedColor, margin: 0, visible: (attr.fxNum == FxNames.Sinus.index || attr.fxNum == FxNames.Fade.index), fontSize: ffontSize,),
-                              CustomRadio(label: "Reverse", value: attr.fxReverse, onChanged: onReverse, color: accentColor, selectedCol: buttonSelectedColor, margin: 0, visible: (attr.fxNum != FxNames.OFF.index && attr.fxNum != FxNames.Cyclon.index), fontSize: ffontSize,),
-                              CustomRadio(label: "Random", value: attr.fxRnd, onChanged: onRandom, color: accentColor, selectedCol: buttonSelectedColor, margin: 0, visible: (attr.fxNum == FxNames.Fade.index), fontSize: ffontSize,),
-                            ],
+                          SingleChildScrollView(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: <Widget>[
+                                CustomRadio(label: "Attack", value: attr.fxAttack, onChanged: onAttack, color: accentColor, selectedCol: buttonSelectedColor, margin: 0, visible: (attr.fxNum == FxNames.Sinus.index), fontSize: ffontSize,),
+                                CustomRadio(label: "Symm", value: attr.fxSymm, onChanged: onSymm, color: accentColor, selectedCol: buttonSelectedColor, margin: 0, visible: (attr.fxNum == FxNames.Sinus.index || attr.fxNum == FxNames.Fade.index), fontSize: ffontSize,),
+                                CustomRadio(label: "Reverse", value: attr.fxReverse, onChanged: onReverse, color: accentColor, selectedCol: buttonSelectedColor, margin: 0, visible: (attr.fxNum != FxNames.OFF.index && attr.fxNum != FxNames.Cyclon.index), fontSize: ffontSize,),
+                                CustomRadio(label: "Random", value: attr.fxRnd, onChanged: onRandom, color: accentColor, selectedCol: buttonSelectedColor, margin: 0, visible: (attr.fxNum == FxNames.Fade.index), fontSize: ffontSize,),
+                                CustomRadio(label: "Random Color", value: attr.fxRndColor, onChanged: onRandomCol, color: accentColor, selectedCol: buttonSelectedColor, visible: (attr.fxNum == FxNames.Fade.index), fontSize: ffontSize,),
+                              ],
+                            ),
                           ),
-                          CustomRadio(label: "Random Color", value: attr.fxRndColor, onChanged: onRandomCol, color: accentColor, selectedCol: buttonSelectedColor, visible: (attr.fxNum == FxNames.Fade.index), fontSize: ffontSize,),
                         ],
                       );
                     })
