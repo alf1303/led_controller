@@ -30,7 +30,7 @@ class MyCustomSlider extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         border: Border.all(),
-        borderRadius: BorderRadius.all(Radius.circular(10))
+        borderRadius: const BorderRadius.all(Radius.circular(10))
       ),
       child: SliderTheme(
           data: SliderTheme.of(context).copyWith(
