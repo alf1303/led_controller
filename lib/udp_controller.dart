@@ -27,7 +27,7 @@ abstract class UDPCotroller {
     try {
       info = await WifiIp.getWifiIp;
     } on PlatformException {
-      print('Failed to get local IP');
+      //print('Failed to get local IP');
     }
     if(_prevIP == null) _prevIP = InternetAddress(info.ip);
     else _prevIP = _local_ip;
@@ -35,7 +35,7 @@ abstract class UDPCotroller {
     if(_local_ip != _prevIP) {
       Controller.providerModel.list.clear();
       Controller.providerModel.notify();
-      print("**setLocalIP** ip Changed: localIP: $_local_ip, prevIP: $_prevIP}");
+     // print("**setLocalIP** ip Changed: localIP: $_local_ip, prevIP: $_prevIP}");
       unBindAll();
     }
     //print("**setLocalIP** localIP: $_local_ip}");
@@ -43,7 +43,7 @@ abstract class UDPCotroller {
   }
 
   static void unBindAll() {
-    print("Start unbinding");
+   // print("Start unbinding");
     if (sender != null) {
       sender.close();
     }
@@ -54,7 +54,7 @@ abstract class UDPCotroller {
       receiverUpdate.close();
     }
     resetBindFlags();
-    print("Unbunded");
+   // print("Unbunded");
   }
 
   static void resetBindFlags() {
@@ -67,9 +67,9 @@ abstract class UDPCotroller {
     if (!senderBinded) {
       sender = await UDP.bind(Endpoint.unicast(_local_ip, port: Port(_PORT_OUT)));
       senderBinded = true;
-      print("senderBinded");
+     // print("senderBinded");
     } else{
-      print("sender already binded");
+     // print("sender already binded");
     }
   }
 
@@ -78,24 +78,24 @@ abstract class UDPCotroller {
     if (!receiverBinded) {
       udpreceiver = await UDP.bind(Endpoint.unicast(_local_ip, port: Port(_PORT_IN)));
       receiverBinded = true;
-      print("receiverBinded");
+      //print("receiverBinded");
     } else{
-      print("receiver already binded");
+      //print("receiver already binded");
     }
     return udpreceiver;
   }
 
   static Future<void> receiverUpdateBind() async{
-    print("receiverUpdateBinding attempt 1, localIp: ${_local_ip}");
+    //print("receiverUpdateBinding attempt 1, localIp: ${_local_ip}");
     if (!receiverUpdateBinded) {
       if(_local_ip != null) {
         receiverUpdate = await UDP.bind(Endpoint.unicast(_local_ip, port: Port(_PORT_IN_UPD)));
         receiverUpdateBinded = true;
-        print("receiverUpdateBinded");
+        //print("receiverUpdateBinded");
       }
       //receiverUpdate = await UDP.bind(Endpoint.broadcast(port: Port(_PORT_IN_UPD)));
     } else{
-      print("receiverUpdate already binded");
+      //print("receiverUpdate already binded");
     }
   }
 
@@ -300,7 +300,7 @@ abstract class UDPCotroller {
               }
             }
           }
-          print("uni: ${element.uni}, dimmer: $dimmer");
+         // print("uni: ${element.uni}, dimmer: $dimmer");
           data.setRange(0, 30, List.from([
             element.ramSet.mode,
             element.ramSet.automode,
@@ -393,7 +393,7 @@ abstract class UDPCotroller {
     String name = "Elka";
     String ssid = "NetworkName0";
     String pass = "1234567";
-    print("${pass.codeUnits.length}");
+    //print("${pass.codeUnits.length}");
     data2.setRange(0, 12, List.from([4, 5, 6, 7, 8, 9, 10, 11 , name.length, ssid.length, pass.length, 3]));
     List<int> temp = header + data + data2 + name.codeUnits + ssid.codeUnits + pass.codeUnits;
           //print(temp);
