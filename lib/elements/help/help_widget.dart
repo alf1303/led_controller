@@ -57,7 +57,8 @@ class HelpWidget extends StatelessWidget{
               }
               );
             }
-            });
+            },
+            );
       }
     );
   }

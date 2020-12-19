@@ -188,6 +188,37 @@ class SettingsWidget extends StatelessWidget{
                   ),
                   actions: <Widget>[
                     RaisedButton(
+                      color: Colors.black,
+                      textColor: Colors.red,
+                      shape: buttonShape.copyWith(side: BorderSide(color: Colors.red)),
+                      child: Text("Format FS"),
+                        onPressed: () {
+                          showDialog(
+                              context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              shape: alertShape,
+                             backgroundColor: Colors.black,
+                             title: Text("Format FS system?", style: TextStyle(color: Colors.red),),
+                              content: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  IconButton(icon: Icon(Icons.check, size: 30, color: Colors.red,), onPressed: ()
+                                  {
+                                    Controller.formatFS();
+                                    Navigator.pop(context);
+                                  }),
+                                  IconButton(icon: Icon(Icons.cancel_outlined, size: 30, color: Colors.white,), onPressed: ()
+                                  {
+                                    Navigator.pop(context);
+                                  })
+                                ],
+                              ),
+                            );
+                          }
+                          );
+                        }),
+                    RaisedButton(
                         child: Text("Send", style: mainText,),
                         onPressed: () async{
                           if(_formKey.currentState.validate()) {

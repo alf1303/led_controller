@@ -82,7 +82,7 @@ class MyAppBar extends StatelessWidget{
                   onPressed: () {
                     //Navigator.push(context, MaterialPageRoute(builder: (context) => PlaybackView()));
                     _tabController.animateTo(1);
-                  }
+                  },
               ),
             ),
           ),
