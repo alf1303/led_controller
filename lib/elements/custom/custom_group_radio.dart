@@ -40,7 +40,7 @@ class CustomGroupRadioState extends State<CustomGroupRadio> {
   @override
   Widget build(BuildContext context) {
     //print("groupradiobut ${widget.selectedCol}");
-    print("${widget.fontSize}");
+   // print("${widget.fontSize}");
     return GestureDetector(
       onTap: widget.enabled ? onTapFunction : null,
       child: Container(

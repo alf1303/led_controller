@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:ledcontroller/elements/fixture_view/dimmer_widget.dart';
 import 'package:ledcontroller/model/esp_model.dart';
 import 'package:ledcontroller/styles.dart';
 

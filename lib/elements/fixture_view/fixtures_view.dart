@@ -1,14 +1,10 @@
-import 'package:expandable/expandable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ledcontroller/elements/buttons_bar/buttons_bar.dart';
-import 'package:ledcontroller/model/esp_model.dart';
 import 'package:ledcontroller/provider_model.dart';
 import 'package:provider/provider.dart';
 import 'package:ledcontroller/styles.dart';
 
-import '../../controller.dart';
-import '../custom/fitted_text.dart';
 import 'esp_view.dart';
 
 class FixturesView extends StatelessWidget {

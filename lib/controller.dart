@@ -70,7 +70,7 @@ abstract class Controller {
       if(await prevFile.exists()) {
         await prevFile.delete();
       }
-      print("palette2 file notExists");
+      //print("palette2 file notExists");
       //List<Palette> palettes = List();
       Settings black = new Settings.full(2, 0, 0, 40, Color.fromRGBO(0, 0, 0, 1), 255, 0, 0, false, 120, 0, 120, 8, 0, false, Colors.blue, 0, 100, 1, 0, 0, 1, 1, false, false, false, false, false);
       Palette pBlack = new Palette.withParams(PaletteType.PALETTE, black);
@@ -235,7 +235,7 @@ abstract class Controller {
       Uint8List d = datagr.data;
       //print(datagr.data[33]);
       int uni = d[2];
-      print("***fillEspView*** $uni");
+     // print("***fillEspView*** $uni");
       //int uni = int.parse(ipaddr.split('.')[3]);
       EspModel espModel = createEspFromData(d);
       espModel.ipAddress = ipaddr;
@@ -247,7 +247,7 @@ abstract class Controller {
       }
       if(findModel == null) {
         providerModel.list.add(espModel);
-        print("**fillEspView** added");
+        //print("**fillEspView** added");
       }
       providerModel.notify();
     }
@@ -288,7 +288,7 @@ abstract class Controller {
   }
 
   static void updateEspView(Datagram datagr) {
-    print("AAAAAAAAAAALAAARM updateEspView");
+    //print("AAAAAAAAAAALAAARM updateEspView");
     if(datagr != null) {
       Uint8List d = datagr.data;
       int uni = d[2];

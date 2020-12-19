@@ -65,6 +65,7 @@ abstract class UDPCotroller {
 
   static Future<void> senderBind() async{
     if (!senderBinded) {
+     // print(_local_ip);
       sender = await UDP.bind(Endpoint.unicast(_local_ip, port: Port(_PORT_OUT)));
       senderBinded = true;
      // print("senderBinded");
@@ -109,7 +110,7 @@ abstract class UDPCotroller {
 
   static Future<void> scanRequest() async{
     // if(_local_ip == null) {
-    setLocalIp();
+    await setLocalIp();
     initScanList();
     await senderBind();
     scanList.forEach((element) async{

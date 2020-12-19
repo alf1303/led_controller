@@ -27,7 +27,7 @@ class HelpWidget extends StatelessWidget{
                                         entries.add(HelperBox(context, position, size, value));
                                         //print(key);
                                       } catch (e) {
-                                        print("ogogog");
+                                        //print("ogogog");
                                       }
                                     });
 
