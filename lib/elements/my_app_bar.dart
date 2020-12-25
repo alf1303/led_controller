@@ -23,11 +23,14 @@ class MyAppBar extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     final providerModer = Provider.of<ProviderModel>(context, listen: true);
+    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
     return  SizedBox(
       width: MediaQuery.of(context).size.width,
-      height: 30,
+      height: height > width ? 0.04*height : 0.04 * width,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           Expanded(
               flex: 2,

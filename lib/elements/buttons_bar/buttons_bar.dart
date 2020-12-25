@@ -25,9 +25,10 @@ class MyBottomBar extends StatelessWidget {
       //decoration: bottomDecoration,
       child: SizedBox(
         width: MediaQuery.of(context).size.width,
-        height: 30,
+        height: height > width ? 0.04*height : 0.04 * width,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Visibility(
               visible: !isEditor,

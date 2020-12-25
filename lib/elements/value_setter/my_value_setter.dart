@@ -57,7 +57,7 @@ class _ValueSetterViewState extends State<ValueSetterView> {
     final double h = MediaQuery.of(context).size.height;
     //print("aspectRatio: ${MediaQuery.of(context).size.aspectRatio}");
     final double width = MediaQuery.of(context).size.width;
-    final double height = h - 100;
+    final double height = h - 0.12*h - 10;
     final double uniform = h > width ? h : width;
     double paletteHeight = (uniform - (uniform*0.16 + uniform*0.25 + 140 + 60 + 65));
     //print("valueSetter, h: $h, w: $width");
@@ -87,8 +87,9 @@ class _ValueSetterViewState extends State<ValueSetterView> {
           MyAppBar(widget._tabController),
           SizedBox(height: 2,),
           SizedBox(
-            height: 30,
+            height: height > width ? 0.04 * height : 0.04 * width,
             child: Row(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Expanded(
                   child: RaisedButton(
