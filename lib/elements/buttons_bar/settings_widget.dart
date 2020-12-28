@@ -9,12 +9,15 @@ import '../../styles.dart';
 
 
 class SettingsWidget extends StatelessWidget{
+  final double fontSize;
+  SettingsWidget(this.fontSize);
+
   @override
   Widget build(BuildContext context) {
     final providerModel = Provider.of<ProviderModel>(context, listen: true);
     return RaisedButton(
       key: settingsKey,
-        child: Icon(Icons.settings),
+        child: Icon(Icons.settings, size: fontSize*1.4,),
         elevation: 10,
         onPressed: !Controller.providerModel.selected ? null : () {
           showDialog(

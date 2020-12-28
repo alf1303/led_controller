@@ -25,6 +25,7 @@ class MyAppBar extends StatelessWidget{
     final providerModer = Provider.of<ProviderModel>(context, listen: true);
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
+    final iconSize = height > width ? 0.04*height : 0.04 * width;
     return  SizedBox(
       width: MediaQuery.of(context).size.width,
       height: height > width ? 0.04*height : 0.04 * width,
@@ -48,7 +49,7 @@ class MyAppBar extends StatelessWidget{
                             backgroundColor: alertBackgroundColor,
                             content: Text("Insert virtual fixtures?", style: mainWhiteText,),
                             actions: [
-                              IconButton(icon: Icon(Icons.check, color: Colors.white,), onPressed: () {
+                              IconButton(icon: Icon(Icons.check, color: Colors.white), onPressed: () {
                                 Controller.fakeInit();
                                 Navigator.pop(context);
                               })
@@ -66,8 +67,8 @@ class MyAppBar extends StatelessWidget{
                 key: saveKey,
                 color: thirdBackgroundColor,
                 elevation: 5,
-                padding: EdgeInsets.symmetric(horizontal: 6),
-                child: Icon(Icons.save, size: 24,),
+                padding: EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+                child: FittedBox(fit: BoxFit.fitHeight, child: Icon(Icons.save, size: 40,)),
                 //child: FittedBox(fit: BoxFit.scaleDown, child: Text("Save To Device"),),
                 onPressed: Controller.areNotSelected() ? null : onSavePressed
             ),
@@ -79,9 +80,9 @@ class MyAppBar extends StatelessWidget{
                   key: playbackKey,
                   color: thirdBackgroundColor,
                   elevation: 5,
-                  padding: EdgeInsets.symmetric(horizontal: 6),
+                  padding: EdgeInsets.symmetric(horizontal: 6, vertical: 4),
                   //child: Icon(Icons.save, size: 24,),
-                  child: Icon(Icons.play_circle_outline),
+                  child: FittedBox(fit: BoxFit.fitHeight, child: Icon(Icons.play_circle_outline, size: 40,)),
                   onPressed: () {
                     //Navigator.push(context, MaterialPageRoute(builder: (context) => PlaybackView()));
                     _tabController.animateTo(1);
@@ -89,7 +90,7 @@ class MyAppBar extends StatelessWidget{
               ),
             ),
           ),
-          HelpWidget()
+          HelpWidget(iconSize)
         ],
       ),
     );

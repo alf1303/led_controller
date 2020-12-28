@@ -7,10 +7,12 @@ class IndicatorRaisedButton extends StatelessWidget{
   final String label;
   final bool value;
   final ValueChanged<bool> onPressed;
+  final fontSize;
   const IndicatorRaisedButton({
     @required this.label,
     @required this.value,
-    @required this.onPressed});
+    @required this.onPressed,
+    @required this.fontSize});
   @override
   Widget build(BuildContext context) {
     return RaisedButton(
@@ -22,7 +24,7 @@ class IndicatorRaisedButton extends StatelessWidget{
          // mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(label == null ? "" : label, style: mainText.copyWith(color: Controller.highlite ? Colors.yellowAccent : Colors.black),),
+            Text(label == null ? "" : label, style: mainText.copyWith(fontSize: fontSize, color: Controller.highlite ? Colors.yellowAccent : Colors.black),),
             SizedBox(width: 4,),
             Container(
               decoration: BoxDecoration(
@@ -34,8 +36,8 @@ class IndicatorRaisedButton extends StatelessWidget{
                   ]
               ),
 
-              width: 12,
-              height: 12,
+              width: fontSize*0.8,
+              height: fontSize*0.8,
             ),
           ],
         ),

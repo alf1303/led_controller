@@ -103,7 +103,7 @@ class _ValueSetterViewState extends State<ValueSetterView> {
                         //paletteController.toggle();
                       });
                     },
-                    child: Text("Palettes", style: mainText.copyWith(color: !widget.pallExp ? mainBackgroundColor : Colors.black),),
+                    child: FittedBox(fit: BoxFit.fitHeight, child: Text("Palettes", style: mainText.copyWith(fontSize: 20, color: !widget.pallExp ? mainBackgroundColor : Colors.black),)),
                   ),
                 ),
                 Expanded(
@@ -118,7 +118,7 @@ class _ValueSetterViewState extends State<ValueSetterView> {
                         //paletteController.toggle();
                       });
                     },
-                    child: Text("Fx setter", style: mainText.copyWith(color: !widget.fxExp ? mainBackgroundColor : Colors.black)),
+                    child: FittedBox(fit: BoxFit.fitHeight, child: Text("Fx setter", style: mainText.copyWith(fontSize: 20, color: !widget.fxExp ? mainBackgroundColor : Colors.black))),
                   ),
                 ),
                 Expanded(
@@ -133,7 +133,7 @@ class _ValueSetterViewState extends State<ValueSetterView> {
                         //paletteController.toggle();
                       });
                     },
-                    child: Text("ColorSetter", style: mainText.copyWith(color: !widget.colorExp ? mainBackgroundColor : Colors.black)),
+                    child: FittedBox(fit: BoxFit.fitHeight, child: Text("ColorSetter", style: mainText.copyWith(fontSize: 20, color: !widget.colorExp ? mainBackgroundColor : Colors.black))),
                   ),
                 ),
               ],

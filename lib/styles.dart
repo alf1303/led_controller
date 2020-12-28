@@ -87,7 +87,7 @@ ButtonTheme mainButtonTheme = ButtonTheme(
   splashColor: splashColor,
   shape: buttonShape,
   minWidth: 20,
-  padding: EdgeInsets.symmetric(horizontal: 6),
+  padding: EdgeInsets.symmetric(horizontal: 6, vertical: 4),
 );
 
 //DECORATION

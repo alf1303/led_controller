@@ -19,6 +19,7 @@ class MyBottomBar extends StatelessWidget {
     final providerModel = Provider.of<ProviderModel>(context, listen: true);
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
+    final double fontSize = height > width ? (width/25)/1.1 : (height/25)/1.1;
     //print("buttonsBar, h: $height, w: $width");
     return Container(
       padding: EdgeInsets.symmetric(vertical: isEditor ? 5 : 0),
@@ -36,7 +37,7 @@ class MyBottomBar extends StatelessWidget {
                 child: RaisedButton(
                   key: resetKey, ///////////////////////////////////
                     elevation: 5,
-                    child: Text("Reset", style: mainText,),
+                    child: FittedBox(fit: BoxFit.fitHeight, child: Text("Reset", style: mainText.copyWith(fontSize: fontSize),)),
                     onPressed: !providerModel.selected ? null : () {
                       showDialog(
                           context: context,
@@ -63,7 +64,7 @@ class MyBottomBar extends StatelessWidget {
                 child: RaisedButton(
                   key: areaKey, ////////////////////////////////////////////////////////
                   elevation: 5,
-                    child: Text("Area", style: mainText,),
+                    child: Text("Area", style: mainText.copyWith(fontSize: fontSize),),
                     onPressed: !Controller.providerModel.selected ? null : () {
                       showDialog(
                           context: context,
@@ -131,7 +132,7 @@ class MyBottomBar extends StatelessWidget {
                     }),
               ),
             ),
-            Expanded(child: SettingsWidget()),
+            Expanded(child: SettingsWidget(fontSize)),
             Expanded(
               child: StatefulBuilder(builder: (context, setState) {
                 onChanged(bool value) {
@@ -144,7 +145,7 @@ class MyBottomBar extends StatelessWidget {
                   }
                   setState(() {});
                 }
-                return IndicatorRaisedButton(label: "HL", value: Controller.highlite, onPressed: onChanged,);
+                return IndicatorRaisedButton(label: "HL", value: Controller.highlite, onPressed: onChanged, fontSize: fontSize,);
               }),
             ),
             Expanded(
@@ -152,7 +153,7 @@ class MyBottomBar extends StatelessWidget {
                 key: selectKey, ////////////////////////////////
                 shape: buttonShape,
                 elevation: 5,
-                  child: Icon(Icons.select_all),
+                  child: Icon(Icons.select_all, size: fontSize*1.4,),
                   onPressed: () {
                     Controller.selectAll();
                   }),
@@ -163,7 +164,7 @@ class MyBottomBar extends StatelessWidget {
                   color: Controller.areNotSelected() ? buttonColor : buttonSelectedColor,
                 shape: Controller.areNotSelected() ? buttonShape : buttonSelectShape,
                 elevation: 5,
-                  child: Icon(Icons.clear, color: Controller.areNotSelected() ? Colors.black : accentColor,),
+                  child: Icon(Icons.clear, size: fontSize*1.4, color: Controller.areNotSelected() ? Colors.black : accentColor,),
                   onPressed: () {
                     Controller.deselectAll();
                   }),

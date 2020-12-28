@@ -33,7 +33,7 @@ class _ScanWidgetState extends State<ScanWidget> {
               color: widget.buttonsCol,
               elevation: 10,
               padding: EdgeInsets.symmetric(horizontal: 6),
-              child: Text("Scan"),
+              child: FittedBox(fit: BoxFit.fitHeight, child: Text("Scan", style: mainText.copyWith(fontSize: 20),)),
               onPressed: onScanPressed
           ));
           if(snapshot.connectionState == ConnectionState.waiting) child = child = (RaisedButton(

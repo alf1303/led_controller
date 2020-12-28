@@ -6,6 +6,8 @@ import '../../controller.dart';
 import '../../global_keys.dart';
 
 class HelpWidget extends StatelessWidget{
+  final double iconSize;
+  const HelpWidget(this.iconSize);
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +15,7 @@ class HelpWidget extends StatelessWidget{
       builder: (context, setStat) {
         return IconButton(
           padding: EdgeInsets.all(0),
-            icon: Icon(Icons.help_outline, color: Controller.help ? Colors.red : Colors.black),
+            icon: Icon(Icons.help_outline, color: Controller.help ? Colors.red : Colors.black, size: iconSize*0.8,),
             onPressed: () {
             if (MediaQuery.of(context).orientation == Orientation.portrait) {
               Controller.help = !Controller.help;
