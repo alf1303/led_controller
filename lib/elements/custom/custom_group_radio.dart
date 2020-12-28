@@ -51,7 +51,7 @@ class CustomGroupRadioState extends State<CustomGroupRadio> {
             color: widget.selectedCol == null ? Colors.transparent : (widget.enabled && widget.value == widget.groupValue) ? widget.selectedCol : Colors.transparent,
             borderRadius: BorderRadius.circular(7)
         ),
-        child: FittedBox(fit: BoxFit.contain, child: Text(widget.label, style: TextStyle(fontSize: widget.fontSize == null ? 10 : widget.fontSize, color: (widget.enabled && widget.value == widget.groupValue) ? widget.color : Colors.grey),)),
+        child: FittedBox(fit: BoxFit.fitWidth, child: Text(widget.label, style: TextStyle(fontSize: widget.fontSize == null ? 10 : widget.fontSize, color: (widget.enabled && widget.value == widget.groupValue) ? widget.color : Colors.grey),)),
       ),
     );
   }

@@ -197,11 +197,11 @@ class _FxNumWidgetState extends State<FxNumWidget> {
       physics: ClampingScrollPhysics(),
       childAspectRatio: portrait ? 1.6 : 2,
       children: <Widget>[
-        CustomGroupRadio(label: "OFF", value: 0, groupValue: attr.fxNum, onChanged: onFxNumChanged, enabled: true, color: accentColor, selectedCol: buttonSelectedColor, fontSize: fontSize,),
-        CustomGroupRadio(label: "Sinus", value: 1, groupValue: attr.fxNum, onChanged: onFxNumChanged, enabled: true, color: accentColor, selectedCol: buttonSelectedColor, padding: 0, fontSize: fontSize,),
-        CustomGroupRadio(label: "Cyclon", value: 2, groupValue: attr.fxNum, onChanged: onFxNumChanged, enabled: true, color: accentColor, selectedCol: buttonSelectedColor, padding: 0, fontSize: fontSize),
-        CustomGroupRadio(label: "Fade", value: 3, groupValue: attr.fxNum, onChanged: onFxNumChanged, enabled: true, color: accentColor, selectedCol: buttonSelectedColor, fontSize: fontSize,),
-        CustomGroupRadio(label: "RGB", value: 4, groupValue: attr.fxNum, onChanged: onFxNumChanged, enabled: true, color: accentColor, selectedCol: buttonSelectedColor, fontSize: fontSize),
+        CustomGroupRadio(label: " OFF ", value: 0, groupValue: attr.fxNum, onChanged: onFxNumChanged, enabled: true, color: accentColor, selectedCol: buttonSelectedColor, fontSize: fontSize,),
+        CustomGroupRadio(label: " Sinus ", value: 1, groupValue: attr.fxNum, onChanged: onFxNumChanged, enabled: true, color: accentColor, selectedCol: buttonSelectedColor, padding: 0, fontSize: fontSize,),
+        CustomGroupRadio(label: " Cyclon ", value: 2, groupValue: attr.fxNum, onChanged: onFxNumChanged, enabled: true, color: accentColor, selectedCol: buttonSelectedColor, padding: 0, fontSize: fontSize),
+        CustomGroupRadio(label: " Fade ", value: 3, groupValue: attr.fxNum, onChanged: onFxNumChanged, enabled: true, color: accentColor, selectedCol: buttonSelectedColor, fontSize: fontSize,),
+        CustomGroupRadio(label: " RGB ", value: 4, groupValue: attr.fxNum, onChanged: onFxNumChanged, enabled: true, color: accentColor, selectedCol: buttonSelectedColor, fontSize: fontSize),
       ],);
   }
 }
