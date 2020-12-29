@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:expandable/expandable.dart';
 import 'package:invert_colors/invert_colors.dart';
+import 'package:ledcontroller/elements/buttons_bar/buttons_bar.dart';
 import 'package:ledcontroller/elements/custom/custom_group_radio.dart';
 import 'package:ledcontroller/elements/custom/sliders.dart';
 import 'package:ledcontroller/elements/fixture_view/simple_fixture_view.dart';
@@ -192,8 +193,11 @@ class _ValueSetterViewState extends State<ValueSetterView> {
             ),
           ),
           Container(
-              height: height > width ? height*0.27 : height*0.33,
-              child: SimpleFixtureView())
+            color: Colors.transparent,
+              height: height > width ? height*0.23 : height*0.3,
+              child: SimpleFixtureView()),
+          SizedBox(height: 2,),
+          MyBottomBar(false),
         ],
       ),
     );

@@ -22,12 +22,12 @@ class SimpleFixtureView extends StatelessWidget {
       padding: EdgeInsets.all(2),
       decoration: BoxDecoration(
         border: Border.all(),
-        borderRadius: expandedHeaderRadius,
+        borderRadius: expandedBodyRadius,
         color: thirdBackgroundColor,
       ),
       child: Column(
         children: [
-          //SizedBox(height: 1,),
+          //SizedBox(height: 3,),
           Expanded(
             key: fixtureViewKey,
             child: Scrollbar(
@@ -49,8 +49,6 @@ class SimpleFixtureView extends StatelessWidget {
           ),
             ),
           ),
-          SizedBox(height: 2,),
-          MyBottomBar(false),
         ],
       ),
     );
