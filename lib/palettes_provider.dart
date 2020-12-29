@@ -1,3 +1,4 @@
+import 'package:expandable/expandable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:ledcontroller/model/palette_types.dart';
 import 'package:ledcontroller/model/palette.dart';
@@ -13,6 +14,10 @@ class PaletteProvider extends ChangeNotifier{
   List<Palette> playlist = List();
   int playlistPeriod = 1;
   double grandMaster = 100;
+
+  final paletteController = ExpandableController();
+  final fxController = ExpandableController();
+  final colorController = ExpandableController();
 
   List<Palette> getPalettes() {
     if(list.isNotEmpty) {

@@ -49,6 +49,7 @@ class SimpleFixtureView extends StatelessWidget {
           ),
             ),
           ),
+          MyBottomBar(false)
         ],
       ),
     );
