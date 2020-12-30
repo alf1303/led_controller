@@ -104,7 +104,7 @@ class _ValueSetterViewState extends State<ValueSetterView> {
           SliverToBoxAdapter(child: SizedBox(height: 2,)),
           SliverToBoxAdapter(
             child: SizedBox(
-              height: height > width ? 0.04 * height : 0.04 * width,
+              height: height > width ? 0.045 * height : 0.045 * width,
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [

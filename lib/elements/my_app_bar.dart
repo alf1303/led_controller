@@ -28,7 +28,7 @@ class MyAppBar extends StatelessWidget{
     final iconSize = height > width ? 0.04*height : 0.04 * width;
     return  SizedBox(
       width: MediaQuery.of(context).size.width,
-      height: height > width ? 0.04*height : 0.04 * width,
+      height: height > width ? 0.045*height : 0.045 * width,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -58,7 +58,7 @@ class MyAppBar extends StatelessWidget{
                         }
                     );
                   },
-                  child: Text("LEDControll", style: headerText,)),
+                  child: FittedBox(fit: BoxFit.fitHeight, child: Text("LEDControll", style: headerText,))),
             ),
           ),
           Expanded(

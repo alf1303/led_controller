@@ -26,7 +26,7 @@ class MyBottomBar extends StatelessWidget {
       //decoration: bottomDecoration,
       child: SizedBox(
         width: MediaQuery.of(context).size.width,
-        height: height > width ? 0.04*height : 0.04 * width,
+        height: height > width ? 0.045*height : 0.045 * width,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.stretch,

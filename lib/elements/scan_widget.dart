@@ -50,8 +50,8 @@ class _ScanWidgetState extends State<ScanWidget> {
 //        ));
           if(snapshot.connectionState == ConnectionState.done) child = (RaisedButton(
               color: widget.buttonsCol,
-              elevation: 10,
-              child: Text("Scan"),
+              padding: EdgeInsets.symmetric(horizontal: 6),
+              child: FittedBox(fit: BoxFit.fitHeight, child: Text("Scan", style: mainText.copyWith(fontSize: 20),)),
               onPressed: onScanPressed
           ));
           return child;
